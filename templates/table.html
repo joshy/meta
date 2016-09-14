@@ -1,0 +1,37 @@
+{% extends "index.html" %} 
+
+{% block content %}
+<p class="important">
+  See the results
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Modality</th>
+      <th>Study Date</th>
+      <th>Study Description</th>
+      <th>Series Description</th>
+      <th>Accession Number</th>
+      <th>Study ID</th>
+      <th>Series Number</th>
+      <th>Referring Physician Name</th>
+      <th>Institution Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for doc in docs %}
+     <tr>
+      <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
+      <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
+      <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
+      <td>{% if doc['SeriesDescription'] is defined %} {{ doc['SeriesDescription'][0] }} {% endif %}</td>
+      <td>{% if doc['AccessionNumber'] is defined %} {{ doc['AccessionNumber'][0] }} {% endif %}</td>
+      <td>{% if doc['StudyID'] is defined %} {{ doc['StudyID'][0] }} {% endif %}</td>
+      <td>{% if doc['SeriesNumber'] is defined %} {{ doc['SeriesNumber'][0] }} {% endif %}</td>
+      <td>{% if doc['ReferringPhysicianName'] is defined %} {{ doc['ReferringPhysicianName'][0] }} {% endif %}</td>
+      <td>{% if doc['InstitutionName'] is defined %} {{ doc['InstitutionName'][0] }} {% endif %}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

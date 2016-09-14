@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Meta - PACS</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+    <h1>Meta</h1>
+    <small>&mdash; Search the PACS &mdash;</small>
+    
+
+    <form id="search-form" action="/search">
+    <div class="form-group row">
+      <label for="search-input" class="col-xs-2 col-form-label">Search</label>
+      <div class="col-xs-10">
+        <input class="form-control" type="text" placeholder="E.g. Shoulder" id="search-input" name="q">
+      </div>
+    </div>
+    </form>
+  </div>
+  
+  <div class="row">
+    <div id="content">{% block content %}{% endblock %}</div>
+  </div>
+  </div>
+  <script type=text/javascript src="{{url_for('static', filename='jquery-3.1.0.min.js') }}"></script>
+  <script src="{{url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
