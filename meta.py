@@ -13,11 +13,11 @@ def main():
 
 @app.route('/search')
 def search():
-    searchterm = request.args.get('q')
+    searchterm = request.args.get('StudyDescription')
     url = 'http://localhost:8983/solr/pacs/query?wt=json&start=0&rows=500&q=StudyDescription:' + searchterm
     print(url)
     response = requests.get(url)
     data = response.json()
     docs = data['response']['docs']
     results = data['response']['numFound']
-    return render_template('table.html', docs=docs, results=results)
+    return render_template('table.html', docs=docs, results=results, searchterm=searchterm)
