@@ -15,7 +15,9 @@ def main():
 def search():
     searchterm = request.args.get('q')
     url = 'http://localhost:8983/solr/pacs/query?wt=json&start=0&rows=500&q=StudyDescription:' + searchterm
+    print(url)
     response = requests.get(url)
     data = response.json()
     docs = data['response']['docs']
-    return render_template('table.html', docs=docs)
+    results = data['response']['numFound']
+    return render_template('table.html', docs=docs, results=results)
