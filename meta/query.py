@@ -1,7 +1,9 @@
 import datetime
 
 
-default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*'}
+default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*', 'facet': 'true', 
+    'json.facet': '{ SeriesDescription:{type:terms, field:SeriesDescription}, StudyDescription:{type:terms, field:StudyDescription}}'}
+
 
 
 def create_payload(search_term, start_date, end_date):

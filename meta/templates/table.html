@@ -1,33 +1,66 @@
-{% extends "search.html" %} 
+{% extends "search.html" %}
 
-{% block content %}
-<p class="important">
-  Results found: {{ results }}
-</p>
-<table class="table table-sm table-hover">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Modality</th>
-      <th>Date</th>
-      <th>Study Description</th>
-      <th>Series Description</th>
-      <th>Physician</th>
-      <th>Institution</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for doc in docs %}
-     <tr>
-      <td><input type="checkbox" name="{{ (doc['StudyInstanceUID'],doc['SeriesInstanceUID']) }}"></td>
-      <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
-      <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
-      <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
-      <td>{% if doc['SeriesDescription'] is defined %} {{ doc['SeriesDescription'][0] }} {% endif %}</td>
-      <td>{% if doc['ReferringPhysicianName'] is defined %} {{ doc['ReferringPhysicianName'][0] }} {% endif %}</td>
-      <td>{% if doc['InstitutionName'] is defined %} {{ doc['InstitutionName'][0] }} {% endif %}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% block table %}
+<div class="col-xs-3 col-sm-3">
+  
+  <p class="important">
+    Facets found: {{ facets.count }}
+  </p>
+  <ul class="list-group small">
+    <a href="#" class="list-group-item active">
+      Study Descriptions
+    </a>  
+    {% for facet in facets.StudyDescription.buckets %}
+    <li class="list-group-item">
+      <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+      {{facet.val}}
+    </li>
+  {% endfor %}
+  </ul>
+  <ul class="list-group small">
+    <a href="#" class="list-group-item active">
+      Series Descriptions
+    </a>
+    {% for facet in facets.SeriesDescription.buckets %}
+    <li class="list-group-item">
+      <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+      {{facet.val}}
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+<div class="col-xs-9 col-sm-9">
+  <div id="table">
+    <p class="important">
+      Results found: {{ results }}
+    </p>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Modality</th>
+          <th>Date</th>
+          <th>Study Description</th>
+          <th>Series Description</th>
+          <th>Referring Physician</th>
+          <th>Institution</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in docs %}
+        <tr>
+          <td><input type="checkbox" name="{{ (doc['StudyInstanceUID'],doc['SeriesInstanceUID']) }}"></td>
+          <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
+          <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
+          <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
+          <td>{% if doc['SeriesDescription'] is defined %} {{ doc['SeriesDescription'][0] }} {% endif %}</td>
+          <td>{% if doc['ReferringPhysicianName'] is defined %} {{ doc['ReferringPhysicianName'][0] }} {% endif %}</td>
+          <td>{% if doc['InstitutionName'] is defined %} {{ doc['InstitutionName'][0] }} {% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock %}

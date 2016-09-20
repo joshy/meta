@@ -18,8 +18,9 @@ def search():
     print(r.url)
     data = r.json()
     docs = data['response']['docs']
+    facets= data['facets']
     results = data['response']['numFound']
-    return render_template('table.html', docs=docs, results=results, searchterm=search_term, startdate=start_date,
+    return render_template('table.html', docs=docs, results=results, facets=facets, searchterm=search_term, startdate=start_date,
                            enddate=end_date)
 
 
