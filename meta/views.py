@@ -4,9 +4,8 @@ from meta import app
 from flask import render_template, request
 
 import meta.query
+from meta.settings import *
 
-
-SOLR_URL = 'http://localhost:8983/solr/pacs/query'
 
 @app.route('/')
 def main():
@@ -30,7 +29,8 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
-    print(request.get_json(force=True))
+    data = request.get_json(force=True)
+    print(data)
     return 'OK'
 
 def search_params(request):
