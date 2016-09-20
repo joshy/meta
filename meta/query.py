@@ -6,9 +6,19 @@ default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*', 'facet': '
 
 
 
-def create_payload(search_term, start_date, end_date):
+def create_payload(search_term, start_date, end_date, facet_key, facet_value):
     payload = _add_search_term(search_term)
-    return _add_date_range(start_date, end_date, payload)
+    payload = _add_date_range(start_date, end_date, payload)
+    return _add_facet_query(facet_key, facet_value, payload)
+
+
+def _add_facet_query(facet_key, facet_value, payload):
+    print(str(facet_key) + ", " + str(facet_value))
+    if facet_key and facet_value:
+        payload['fq'] = facet_key + ':' + facet_value
+    else:
+        payload.pop('fq', None)
+    return payload
 
 
 def _add_search_term(search_term):
