@@ -28,5 +28,10 @@ def search():
         startdate=start_date, enddate=end_date, payload=payload, facet_url=request.url)
 
 
+@app.route('/download', methods=['POST'])
+def download():
+    print(request.get_json(force=True))
+    return 'OK'
+
 def search_params(request):
     return request.args.get('q'), request.args.get('StartDate'), request.args.get('EndDate'), request.args.get('FacetKey'), request.args.get('FacetValue')

@@ -2,7 +2,6 @@
 
 {% block table %}
 <div class="col-xs-3 col-sm-3">
-  
   <p class="important">
     Facets
   </p>
@@ -38,15 +37,15 @@
     {% endfor %}
   </ul>
   {% endif %}
-  
-
 </div>
+
 <div class="col-xs-9 col-sm-9">
   <div id="table">
-    <p class="important">
+    <div>
       Results found: {{ results }}
-    </p>
-    <table class="table table-sm table-hover">
+       <button id="download-button" class="btn btn-primary btn-sm pull-xs-right">Download</button>
+    </div>
+    <table class="table table-sm table-hover m-t-2">
       <thead>
         <tr>
           <th></th>
@@ -60,7 +59,7 @@
       <tbody>
         {% for doc in docs %}
         <tr>
-          <td><input type="checkbox" name="{{ (doc['StudyInstanceUID'],doc['SeriesInstanceUID']) }}"></td>
+          <td><input type="checkbox" data-id="{{ [doc['StudyInstanceUID'],doc['SeriesInstanceUID']] }}"></td>
           <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
