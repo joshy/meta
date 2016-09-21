@@ -4,6 +4,7 @@ from flask import render_template, request
 
 import meta.query
 from meta.settings import *
+from meta.pull import *
 
 
 @app.route('/')
@@ -14,7 +15,8 @@ def main():
 @app.route('/search')
 def search():
     search_term, start_date, end_date, facet_key, facet_value = get_params(request)
-    payload = meta.query.create_payload(search_term, start_date, end_date, facet_key, facet_value)
+    payload = meta.query.create_payload(search_term, start_date, end_date,
+                                        facet_key, facet_value)
     r = requests.get(SOLR_URL, params=payload)
     print(r.url)
     data = r.json()
@@ -29,8 +31,9 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
-    data = request.get_json(force=True)
-    print(data)
+    l = request.get_json(force=True)
+    # for now assumes only one checkbox clicked
+    download(l[0], l[1])
     return 'OK'
 
 
