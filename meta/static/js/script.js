@@ -18,7 +18,14 @@ $(function () {
   });
 
   $('#download-button').on('click', function(e) {
-    var data = $('input:checked').map(function() {return $(this).attr('data-id'); }).get().join();
+    var data = $('input:checked').map(function() {
+      var study_id = $(this).attr('data-study-id');
+      var series_id =  $(this).attr('data-series-id');
+      result = { "study_id" : study_id, "series_id" : series_id};
+      console.log(result);
+      return result; })
+      .get();
+    console.log(data);
     var jsonData = JSON.stringify(data);
     console.log(jsonData);
     $.ajax({

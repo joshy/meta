@@ -32,8 +32,9 @@ def search():
 @app.route('/download', methods=['POST'])
 def download():
     l = request.get_json(force=True)
-    # for now assumes only one checkbox clicked
-    download(l[0], l[1])
+    # for now process only the first one in the list
+    first = l[0]
+    meta.pull.download(first['study_id'], first['series_id'])
     return 'OK'
 
 

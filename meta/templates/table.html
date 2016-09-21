@@ -59,7 +59,7 @@
       <tbody>
         {% for doc in docs %}
         <tr>
-          <td><input type="checkbox" data-id="{{ [doc['StudyInstanceUID'],doc['SeriesInstanceUID']] }}"></td>
+          <td><input type="checkbox" data-study-id="{{ doc['StudyInstanceUID'][0] }}" data-series-id="{{ doc['SeriesInstanceUID'][0] }}"></td>
           <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
