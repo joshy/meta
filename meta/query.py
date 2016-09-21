@@ -1,9 +1,7 @@
 import datetime
 
-
-default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*', 'facet': 'true', 
-    'json.facet': '{ SeriesDescription:{type:terms, field:SeriesDescription}, StudyDescription:{type:terms, field:StudyDescription}}'}
-
+default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*', 'facet': 'true',
+                   'json.facet': '{ SeriesDescription:{type:terms, field:SeriesDescription}, StudyDescription:{type:terms, field:StudyDescription}}'}
 
 
 def create_payload(search_term, start_date, end_date, facet_key, facet_value):
@@ -25,7 +23,7 @@ def _add_search_term(search_term):
     print(default_payload)
     default_payload['q'] = search_term
     return default_payload
-    
+
 
 def _add_date_range(start_date, end_date, payload):
     if (not start_date) and (not end_date):
@@ -36,7 +34,7 @@ def _add_date_range(start_date, end_date, payload):
     start_date = start_date if start_date else '*'
     end_date = end_date if end_date else '*'
     print(payload['q'])
-    if (payload['q']):
+    if payload["q"]:
         payload['q'] = payload['q'] + ' AND '
     payload['q'] = payload['q'] + 'StudyDate:[' + start_date + ' TO ' + end_date + ']'
     print(payload)

@@ -18,7 +18,7 @@ def download(study_instance_uid, series_instance_uid):
     subprocess.call(cmd, shell=True)
 
 
-if len(sys.argv)<4:
+if len(sys.argv) < 4:
     print("usage: pullFromPACS StudyInstanceUID SeriesInstanceUID OutPath")
     print("  StudyInstanceUID,SeriesInstanceUID = unique identifier of series to PULL")
     print("  OutPath = directory in which to send output")
