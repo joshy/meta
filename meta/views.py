@@ -1,9 +1,8 @@
 import requests
-from meta import app
 from flask import render_template, request
 
 import meta.query
-from meta.settings import *
+from meta import app
 from meta.pull import *
 
 
@@ -14,11 +13,11 @@ def main():
 
 @app.route('/search')
 def search():
-    search_term, start_date, end_date, facet_key, facet_value = get_params(request)
+    search_term, start_date, end_date, facet_key, facet_value = get_params(request.args)
     payload = meta.query.create_payload(search_term, start_date, end_date,
                                         facet_key, facet_value)
     r = requests.get(SOLR_URL, params=payload)
-    print(r.url)
+    app.logger.debug('Calling Solr with url %s', r.url)
     data = r.json()
     docs = data['response']['docs']
     facets = data['facets']
@@ -31,14 +30,13 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
-    l = request.get_json(force=True)
-    # for now process only the first one in the list
-    first = l[0]
-    meta.pull.download(first['study_id'], first['series_id'])
+    series_list = request.get_json(force=True)
+    for entry in series_list:
+        meta.pull.download(entry['study_id'], entry['series_id'])
     return 'OK'
 
 
-def get_params(request):
-    return request.args.get('q'), request.args.get('StartDate'), \
-           request.args.get('EndDate'), request.args.get('FacetKey'), \
-           request.args.get('FacetValue')
+def get_params(args):
+    return args.get('q'), args.get('StartDate'), \
+           args.get('EndDate'), args.get('FacetKey'), \
+           args.get('FacetValue')

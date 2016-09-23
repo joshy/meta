@@ -13,9 +13,11 @@ from meta.settings import *
 
 
 def download(study_instance_uid, series_instance_uid):
-    cmd = BASE_COMMAND + " --output-directory " + OUTPUT_DIR + " -k StudyInstanceUID=" + study_instance_uid + " -k SeriesInstanceUID=" + series_instance_uid
-    print(cmd)
-    subprocess.call(cmd, shell=True)
+    command = BASE_COMMAND + " --output-directory " + OUTPUT_DIR \
+          + " -k StudyInstanceUID=" + study_instance_uid \
+          + " -k SeriesInstanceUID=" + series_instance_uid
+    print(command)
+    subprocess.call(command, shell=True)
 
 
 if len(sys.argv) < 4:

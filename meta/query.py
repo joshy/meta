@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*', 'facet': 'true',
                    'json.facet': '{ SeriesDescription:{type:terms, field:SeriesDescription}, StudyDescription:{type:terms, field:StudyDescription}}'}
@@ -46,4 +46,5 @@ def _date_to_long(date):
     Converts a date from the frontend which is passed in the following format
     31.12.2016 to 20161231. This is how it is stored in the metadata db.
     """
-    return datetime.datetime.strptime(date, '%d.%m.%Y').strftime('%Y%m%d') if date else ''
+    return datetime.strptime(date, '%d.%m.%Y').strftime('%Y%m%d') \
+        if date else ''
