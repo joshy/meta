@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*',
-                    'sort': 'StudyDate asc',
+                    #'sort': 'StudyDate asc',
                    'facet': 'true',
 
                    'json.facet':
