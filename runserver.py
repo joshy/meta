@@ -17,4 +17,4 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 
 app.logger.addHandler(handler)
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0')
