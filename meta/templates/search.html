@@ -21,5 +21,8 @@
       <button type="submit" class="btn btn-primary">Search</button>
     </div>
   </div>
+  <div class="alert alert-danger small {% if not error %} hidden-xs-up" {% endif %}role="alert">
+      <strong>Error:</strong>{{error}}
+    </div>
 </form>
 {% endblock %}
