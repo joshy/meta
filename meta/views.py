@@ -43,6 +43,7 @@ def download():
 
 @app.route('/transfer', methods=['POST'])
 def transfer():
+    app.logger.debug("tranfer called")
     series_list = request.get_json(force=True)
     meta.pull.transfer(series_list)
     return 'OK'
