@@ -15,9 +15,9 @@ def main():
 
 @app.route('/search')
 def search():
-    search_term, start_date, end_date, facet_key, facet_value = get_params(request.args)
+    search_term, start_date, end_date, study_desc, series_desc = get_params(request.args)
     payload = meta.query.create_payload(search_term, start_date, end_date,
-                                        facet_key, facet_value)
+                                        study_desc, series_desc)
     r = requests.get(SOLR_URL, params=payload)
     app.logger.debug('Calling Solr with url %s', r.url)
     try:
@@ -41,7 +41,14 @@ def download():
     return 'OK'
 
 
+@app.route('/transfer', methods=['POST'])
+def transfer():
+    series_list = request.get_json(force=True)
+    meta.pull.transfer(series_list)
+    return 'OK'
+
+
 def get_params(args):
     return args.get('q'), args.get('StartDate'), \
-           args.get('EndDate'), args.get('FacetKey'), \
-           args.get('FacetValue')
+           args.get('EndDate'), args.get('StudyDescription'), \
+           args.get('SeriesDescription')

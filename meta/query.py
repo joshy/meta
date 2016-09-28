@@ -2,9 +2,7 @@ import logging
 from datetime import datetime
 
 default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*',
-                    #'sort': 'StudyDate asc',
                    'facet': 'true',
-
                    'json.facet':
                        '{ SeriesDescription: '
                        '{ type:terms, field:SeriesDescription}, '
@@ -12,17 +10,26 @@ default_payload = {'start': 0, 'rows': 500, 'wt': 'json', 'q': '*:*',
                        '{ type:terms, field:StudyDescription}}'}
 
 
-def create_payload(search_term, start_date, end_date, facet_key, facet_value):
+def create_payload(search_term, start_date, end_date, study_desc, series_desc):
     payload = _add_search_term(search_term)
     payload = _add_date_range(start_date, end_date, payload)
-    return _add_facet_query(facet_key, facet_value, payload)
+    return _add_facet_query(study_desc, series_desc, payload)
 
 
-def _add_facet_query(facet_key, facet_value, payload):
-    if facet_key and facet_value:
-        payload['fq'] = facet_key + ':' + facet_value
+def _add_facet_query(study_desc, series_desc, payload):
+
+    if study_desc and series_desc:
+        payload['fq'] = 'StudyDescription:"' + study_desc + '"&' \
+                        + 'SeriesDescription:"' + series_desc + '"'
+    elif study_desc:
+        payload['fq'] = 'StudyDescription:"' + study_desc + '"'
+
+    elif series_desc:
+        payload['fq'] = 'SeriesDescription:"' + series_desc + '"'
+
     else:
         payload.pop('fq', None)
+
     return payload
 
 

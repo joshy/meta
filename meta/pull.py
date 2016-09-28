@@ -1,42 +1,42 @@
-""" 
-    PULL Series from PACS
-    Takes parameters: StudyInstanceUID SeriesInstanceUID OutPath
-    StudyInstanceUID, SeriesInstanceUID = unique identifiers
-       for series stored in PACS
-    OutPath= full path to directory where result should be stored.
-"""
-import sys
-import os
+import logging
 import subprocess
+from concurrent.futures import ThreadPoolExecutor as Pool
 
 from meta.settings import *
 
 
-def download(study_instance_uid, series_instance_uid):
-    command = BASE_COMMAND + " --output-directory " + OUTPUT_DIR \
-          + " -k StudyInstanceUID=" + study_instance_uid \
-          + " -k SeriesInstanceUID=" + series_instance_uid
-    print(command)
-    subprocess.call(command, shell=True)
+def callback(future):
+    if future.exception is not None:
+        logging.warning('Got Exception: %s', future.exception)
+    else:
+        logging.info('Download done')
 
 
-if len(sys.argv) < 4:
-    print("usage: pullFromPACS StudyInstanceUID SeriesInstanceUID OutPath")
-    print("  StudyInstanceUID,SeriesInstanceUID = unique identifier of series to PULL")
-    print("  OutPath = directory in which to send output")
-else:
-    if not os.path.exists(DCMIN):
-        print(DCMIN + " does not exist!")
-        exit(-1)
-    StudyInstanceUID = sys.argv[1]
-    SeriesInstanceUID = sys.argv[2]
-    outPath = sys.argv[3]
-    print(StudyInstanceUID)
-    print(SeriesInstanceUID)
-    if os.path.isfile(outPath):
-        outPath = os.path.dirname(outPath)
-    elif not os.path.exists(outPath):
-        os.makedirs(outPath)
-    cmd = BASE_COMMAND + " --output-directory " + outPath + " -k StudyInstanceUID=" + StudyInstanceUID + " -k SeriesInstanceUID=" + SeriesInstanceUID
-    print(cmd)
-    subprocess.call(cmd, shell=True)
+def download(series_list):
+    for entry in series_list:
+        study_instance_uid = entry['study_id']
+        series_instance_uid = entry['series_id']
+        command = BASE_COMMAND + ' --output-directory ' \
+                  + OUTPUT_DIR \
+                  + ' -k StudyInstanceUID=' + study_instance_uid \
+                  + ' -k SeriesInstanceUID=' + series_instance_uid
+        logging.debug('Running command %s', command)
+        pool = Pool(max_workers=1)
+        f = pool.submit(subprocess.call, command, shell=True)
+        f.add_done_callback(callback)
+        subprocess.call(command, shell=True)
+
+
+def transfer(series_list):
+    for entry in series_list:
+        study_instance_uid = entry['study_id']
+        series_instance_uid = entry['series_id']
+        command = BASE_COMMAND + ' --output-directory ' \
+                  + OUTPUT_DIR \
+                  + ' -k StudyInstanceUID=' + study_instance_uid \
+                  + ' -k SeriesInstanceUID=' + series_instance_uid
+        logging.debug('Running command %s', command)
+        pool = Pool(max_workers=1)
+        f = pool.submit(subprocess.call, command, shell=True)
+        f.add_done_callback(callback)
+        subprocess.call(command, shell=True)

@@ -12,7 +12,7 @@
     </a>  
     {% for facet in facets.StudyDescription.buckets %}
     <li class="list-group-item">
-      <a href="{{ facet_url ~ "&FacetKey=StudyDescription&FacetValue=" ~ facet.val }}">
+      <a href="{{ facet_url ~ "&StudyDescription=" ~ facet.val }}">
         <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
         {{facet.val}}
       </a>
@@ -22,6 +22,7 @@
   </ul>
   {% endif %}
 
+
   {% if facets.SeriesDescription %}
   <ul class="list-group small">
     <a href="#" class="list-group-item active">
@@ -29,7 +30,7 @@
     </a>
     {% for facet in facets.SeriesDescription.buckets %}
     <li class="list-group-item">
-      <a href="{{ facet_url ~ "&FacetKey=SeriesDescription&FacetValue=" ~ facet.val|e }}">
+      <a href="{{ facet_url ~ "&SeriesDescription=" ~ facet.val|e }}">
         <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
         {{facet.val}}
       </a>
@@ -37,18 +38,22 @@
     {% endfor %}
   </ul>
   {% endif %}
+
 </div>
 
 <div class="col-xs-9 col-sm-9">
   <div id="table">
     <div>
       Results found: {{ results }}
-       <button id="download-button" class="btn btn-primary btn-sm pull-xs-right">Download</button>
+       <button id="transfer-button" class="btn btn-primary btn-sm pull-xs-right">Transfer</button>
     </div>
     <table class="table table-sm table-hover m-t-2">
       <thead>
         <tr>
           <th><input type="checkbox" id='select-all'></th>
+          <th>PatientID</th>
+          <th>AccessionNumber</th>
+          <th>SeriesNumber</th>
           <th>Modality</th>
           <th>Date</th>
           <th>Study Description</th>
@@ -60,6 +65,9 @@
         {% for doc in docs %}
         <tr>
           <td><input type="checkbox" data-study-id="{{ doc['StudyInstanceUID'][0] }}" data-series-id="{{ doc['SeriesInstanceUID'][0] }}"></td>
+          <td>{% if doc['PatientID'] is defined %} {{ doc['PatientID'][0] }} {% endif %}</td>
+          <td>{% if doc['AccessionNumber'] is defined %} {{ doc['AccessionNumber'][0] }} {% endif %}</td>
+          <td>{% if doc['SeriesNumber'] is defined %} {{ doc['SeriesNumber'][0] }} {% endif %}</td>
           <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
           <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>

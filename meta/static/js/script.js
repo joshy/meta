@@ -17,7 +17,7 @@ $(function () {
     yearRange: [2010, 2016]
   });
 
-  $('#download-button').on('click', function(e) {
+  $('#transfer-button').on('click', function(e) {
     var data = $('input:checked').map(function() {
       var study_id = $(this).attr('data-study-id');
       var series_id =  $(this).attr('data-series-id');
@@ -30,7 +30,7 @@ $(function () {
     console.log(jsonData);
     $.ajax({
       type: 'POST',
-      url: 'download',
+      url: 'transfer',
       data: jsonData,
       dataType: 'application/json',
       success: function() { console.log('sucessful posted')}
