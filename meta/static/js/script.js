@@ -34,7 +34,10 @@ $(function () {
       data: jsonData,
       dataType: 'application/json',
       success: function() { console.log('sucessful posted')}
-
     })
+  })
+
+  $('#select-all').on('click', function(e) {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
   })
 });
