@@ -18,26 +18,27 @@ $(function () {
   });
 
   $('#transfer-button').on('click', function(e) {
-    var data = $('input:checked').map(function() {
-      var study_id = $(this).attr('data-study-id');
-      var series_id =  $(this).attr('data-series-id');
-      result = { "study_id" : study_id, "series_id" : series_id};
-      console.log(result);
-      return result; })
+    e.preventDefault();
+    var data = $('input:checkbox:checked')
+      .map(function() {
+        var study_id = $(this).attr('data-study-id');
+        var series_id =  $(this).attr('data-series-id');
+        result = { "study_id" : study_id, "series_id" : series_id};
+        return result;
+       })
       .get();
-    console.log(data);
     var jsonData = JSON.stringify(data);
-    console.log(jsonData);
+    var target = $("input[type='radio']:checked").val();
     $.ajax({
       type: 'POST',
-      url: 'transfer',
+      url: 'transfer/' + target,
       data: jsonData,
       dataType: 'application/json',
-      success: function() { console.log('sucessful posted')}
-    })
-  })
+      success: function() { console.log('successfully posted')}
+    });
+  });
 
   $('#select-all').on('click', function(e) {
     $("input:checkbox").prop('checked', $(this).prop("checked"));
-  })
+  });
 });
