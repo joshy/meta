@@ -25,10 +25,12 @@ def search():
         docs = data['response']['docs']
         facets = data['facets']
         results = data['response']['numFound']
+        disable_links = (True if study_desc or series_desc else False)
         return render_template('table.html', docs=docs, results=results,
                                facets=facets, searchterm=search_term,
                                startdate=start_date, enddate=end_date,
-                               payload=payload, facet_url=request.url)
+                               payload=payload, facet_url=request.url,
+                               disable_links=disable_links)
     except JSONDecodeError:
         return render_template('search.html', error='Can\'t decode JSON, is '
                                                     'Solr running?')
