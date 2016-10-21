@@ -3,21 +3,53 @@
 {% block search %}
 <form id="search-form" action="/search">
   <div class="form-group row">
-    <label for="search-input" class="col-sm-2 col-form-label">Search for</label>
-    <div class="col-sm-10">
-      <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="q" value="{{searchterm}}" autofocus>
+    <label for="studydescription-input" class="col-sm-2 col-form-label">Study Description</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" placeholder="E.g. '*' or CT Schaedel" id="studydescription-input" name="StudyDescription" value="{{studydescription}}" autofocus>
     </div>
   </div>
   <div class="form-group row">
-    <label for="start-date-picker" class="offset-sm-2 col-sm-2 col-form-label">Start Date</label>
+    <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
+    <div class="col-sm-3">
+      <input class="form-control" type="text" placeholder="E.g. '*' or CT Schaedel" id="seriesdescription-input" name="SeriesDescription" value="{{seriesdescription}}">
+    </div>
+    <a class="btn" data-toggle="collapse" href="#search-details" aria-expanded="false" aria-controls="collapseExample">Show more inputs</a>
+  </div>
+  <div id="search-details" class="collapse">
+  <div class="form-group row ">
+    <label for="seriesdescription-input" class="col-sm-2 col-form-label">Modality</label>
+    <div class="col-sm-10">
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality1" value="CT"> CT</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality2" value="MR"> MR</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality3" value="CR"> CR</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality4" value="XA"> XA</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality5" value="SR"> SR</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality6" value="NM"> NM</label>
+    <label class="form-check-inline">
+    <input class="form-check-input" type="checkbox" id="modality7" value="BG"> BG</label>
+      </div>
+  </div>
+  <div class="form-group row">
+    <label for="start-date-picker" class="col-sm-2 col-form-label">Start Date</label>
     <div class="col-sm-2">
       <input class="form-control" type="text" id="start-date-picker" name="StartDate" value="{{startdate}}">
     </div>
+   </div>
+  <div class="form-group row">
     <label for="end-date-picker" class="col-sm-2 col-form-label">End Date</label>
     <div class="col-sm-2">
       <input class="form-control" type="text" id="end-date-picker" name="EndDate" value="{{enddate}}">
     </div>
-    <div class="col-sm-2 text-xs-right">
+  </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-sm-2 col-sm-2 text-xs-left">
       <button type="submit" class="btn btn-primary">Search</button>
     </div>
   </div>
