@@ -5,24 +5,23 @@
   <meta charset="utf-8">
   <title>Meta - PACS</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/pikaday.css') }}">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-  <div class="container-fluid p-a-2" style="background-color:#edf4f7">
-    <div class="row p-x-2">
-      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="pull-xs-right" style="height:44px">
+  <div class="container-fluid px-2 pt-2" style="background-color:#edf4f7">
+    <div class="row px-2">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="float-xs-right" style="height:44px">
       <h1><a href="/">Meta</a></h1>
       <small>&mdash; Search the PACS &mdash;</small>
     </div>
-    <div class="row p-x-2">
+    <div class="row px-2">
       {% block search %}
       {% endblock %}
     </div>
   </div>
-  <div class="container-fluid p-a-2">
+  <div class="container-fluid p-2">
     <div class="row">
       <div class="col-sm-12">
         {% block table %}

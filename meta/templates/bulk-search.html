@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block search %}
+<form id="search-form" action="/search">
+  <div class="form-group row">
+    <label for="bulksearch-input" class="col-sm-2 col-form-label">Select field to search for</label>
+     <div class="form-group col-sm-3">
+       <select class="form-control" id="exampleSelect1">
+         <option>Patient Name</option>
+         <option>Patient Id</option>
+         <option>Accession Number</option>
+       </select>
+     </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <textarea id="bulksearch-input" class="form-control" type="text" id="search-input" name="bulk-data" value="{{bulkdata}}" rows="5"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-sm-2 col-sm-2 text-xs-left">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+  <div class="alert alert-danger small {% if not error %} hidden-xs-up {% endif %}" role="alert">
+    <strong>Error:</strong>{{error}}
+  </div>
+</form>
+{% endblock %}

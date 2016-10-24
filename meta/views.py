@@ -13,6 +13,11 @@ def main():
     return render_template('search.html')
 
 
+@app.route('/bulksearch')
+def bulk_search():
+    return render_template('bulk-search.html')
+
+
 @app.route('/search')
 def search():
     search_term, start_date, end_date, study_desc, series_desc = get_params(request.args)
@@ -21,6 +26,11 @@ def search():
     r = requests.get(SOLR_URL, params=payload)
     app.logger.debug('Calling Solr with url %s', r.url)
     try:
+        print("running inside try")
+        if 400 == r.status_code:
+            result = r.json()
+            msg = result['error']['msg']
+            return render_template('search.html', error=' Call to Solr failed with error: ' + msg)
         data = r.json()
         docs = data['response']['docs']
         facets = data['facets']

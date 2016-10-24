@@ -3,58 +3,124 @@
 {% block search %}
 <form id="search-form" action="/search">
   <div class="form-group row">
-    <label for="studydescription-input" class="col-sm-2 col-form-label">Study Description</label>
-    <div class="col-sm-3">
-      <input class="form-control" type="text" placeholder="E.g. '*' or CT Schaedel" id="studydescription-input" name="StudyDescription" value="{{studydescription}}" autofocus>
+    <label for="search-input" class="col-sm-2 col-form-label">Search for</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="q" value="{{searchterm}}" autofocus>
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button">Search</button>
+        </span>
+      </div>
     </div>
+    <a class="btn" data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
+    <a class="btn" data-toggle="collapse" data-target="#help-details" href="#">Show me some examples</a>
   </div>
-  <div class="form-group row">
-    <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
-    <div class="col-sm-3">
-      <input class="form-control" type="text" placeholder="E.g. '*' or CT Schaedel" id="seriesdescription-input" name="SeriesDescription" value="{{seriesdescription}}">
-    </div>
-    <a class="btn" data-toggle="collapse" href="#search-details" aria-expanded="false" aria-controls="collapseExample">Show more inputs</a>
+  <div id="help-details" class="offset-xs-2 collapse">
+    <p>The general search allows you to define your search. </p>
+    <p>To search in a specific field use <em>fieldname:value</em></p>
+    <p>You can combine multiple search parameters with the boolean operators <em>AND</em> and <em>OR</em>. Those needs to be capitalized.</p>
+    <p>An example could be <a href='search?q=StudyDescription:"CT Schaedel" AND SeriesDescription:"Schädel axial Weichteil"'>StudyDescription:"CT Schaedel" AND SeriesDescription:"Schädel axial Weichteil"</a></p>
   </div>
   <div id="search-details" class="collapse">
-  <div class="form-group row ">
-    <label for="seriesdescription-input" class="col-sm-2 col-form-label">Modality</label>
-    <div class="col-sm-10">
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality1" value="CT"> CT</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality2" value="MR"> MR</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality3" value="CR"> CR</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality4" value="XA"> XA</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality5" value="SR"> SR</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality6" value="NM"> NM</label>
-    <label class="form-check-inline">
-    <input class="form-check-input" type="checkbox" id="modality7" value="BG"> BG</label>
+
+    <div class="form-group row">
+      <label for="studydescription-input" class="col-sm-2 col-form-label">Study Description</label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="studydescription-input" name="StudyDescription" value="{{studydescription}}">
       </div>
-  </div>
-  <div class="form-group row">
-    <label for="start-date-picker" class="col-sm-2 col-form-label">Start Date</label>
-    <div class="col-sm-2">
-      <input class="form-control" type="text" id="start-date-picker" name="StartDate" value="{{startdate}}">
+      <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" placeholder="E.g. Schädel axial Weichteil" id="seriesdescription-input" name="SeriesDescription" value="{{seriesdescription}}">
+      </div>
     </div>
-   </div>
-  <div class="form-group row">
-    <label for="end-date-picker" class="col-sm-2 col-form-label">End Date</label>
-    <div class="col-sm-2">
-      <input class="form-control" type="text" id="end-date-picker" name="EndDate" value="{{enddate}}">
+    <div class="form-group row">
+      <label for="patientname-input" class="col-sm-2 col-form-label">Patient Name</label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" id="patientname-input" name="PatientName" value="{{patientname}}">
+      </div>
+      <label for="patientid-input" class="col-sm-2 col-form-label">Patient Id</label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" id="patientid-input" name="PatientId" value="{{patientid}}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="accessionnumber-input" class="col-sm-2 col-form-label">Accession Number</label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" id="accessionnumber-input" name="AccessionNumber" value="{{accessionnumber}}">
+      </div>
+    </div>
+
+    <div class="form-group row ">
+      <label for="seriesdescription-input" class="col-sm-2 col-form-label">Modality</label>
+      <div class="col-sm-5">
+        <label class="form-check-inline">
+        <input class="form-check-input" type="checkbox" id="modality1" value="CT"> CT</label>
+        <label class="form-check-inline">
+        <input class="form-check-input" type="checkbox" id="modality2" value="MR"> MR</label>
+        <label class="form-check-inline">
+        <input class="form-check-input" type="checkbox" id="modality11" value="PT"> PT</label>
+        <label class="form-check-inline">
+        <input class="form-check-input" type="checkbox" id="modality3" value="CR"> CR</label>
+        <a class="btn" data-toggle="collapse" data-target="#modality-details" href="#">Show all modalities</a>
+        <div id="modality-details" class="collapse">
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality4" value="XA"> XA</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality5" value="SR"> SR</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality6" value="NM"> NM</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality7" value="MG"> MG</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality8" value="US"> US</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality9" value="DX"> DX</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality10" value="RF"> RF</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality12" value="OT"> OT</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality13" value="PR"> PR</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality14" value="KO"> KO</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality15" value="SC"> SC</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality16" value="SD"> SD</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality17" value="PX"> PX</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality18" value="GEMS PET RAW"> GEMS PET RAW</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality19" value="xa"> xa</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality20" value="DR"> DR</label>
+          <label class="form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality21" value="CR/DX"> CR/DX</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="start-date-picker" class="col-sm-2 col-form-label">Start Date</label>
+      <div class="col-sm-2">
+        <input class="form-control" type="text" id="start-date-picker" name="StartDate" value="{{startdate}}">
+      </div>
+     </div>
+    <div class="form-group row">
+      <label for="end-date-picker" class="col-sm-2 col-form-label">End Date</label>
+      <div class="col-sm-2">
+        <input class="form-control" type="text" id="end-date-picker" name="EndDate" value="{{enddate}}">
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-2 col-sm-2 text-xs-left">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
     </div>
   </div>
+
+  <div class="alert alert-danger small {% if not error %} hidden-xs-up {% endif %}" role="alert">
+    <strong>Error:</strong>{{error}}
   </div>
-  <div class="form-group row">
-    <div class="offset-sm-2 col-sm-2 text-xs-left">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-  </div>
-  <div class="alert alert-danger small {% if not error %} hidden-xs-up" {% endif %}role="alert">
-      <strong>Error:</strong>{{error}}
-    </div>
 </form>
 {% endblock %}

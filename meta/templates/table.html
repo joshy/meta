@@ -1,27 +1,8 @@
 {% extends "search.html" %}
 
 {% block table %}
-<div class="row p-x-2">
-  <form class="form-inline pull-xs-right">
-    <div class="form-group">
-      <div class="form">
-        <button id="transfer-button" class="btn btn-primary btn-sm pull-xs-right m-l-2">Transfer</button>
-        <div class="pull-xs-right">
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="syngoid" value="syngo" checked > Syngo
-          </label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="teamplayid" value="teamplay"> Teamplay
-          </label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="teamplayshareid" value="teamplayshare"> Teamplay-Share
-          </label>
-        </div>
-        <label class="form-check-inline">Choose transfer target:</label>
-      </div>
-    </div>
-  </form>
-</div>
+{% include 'transfer-options.html' %}
+{% include 'download-options.html' %}
 
 <div class="row">
   <div id="table-view">
@@ -74,12 +55,9 @@
       {% endif %}
     </div>
 
-
-
     <div class="col-xs-9 col-sm-10">
       <div id="table">
-              Results found: {{ results }}
-
+        Results found: {{ results }}
         <table class="table table-sm table-hover m-t-2">
           <thead>
             <tr>
