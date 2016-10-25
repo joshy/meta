@@ -120,7 +120,8 @@
   </div>
 
   <div class="alert alert-danger small {% if not error %} hidden-xs-up {% endif %}" role="alert">
-    <strong>Error:</strong>{{error}}
+    <p><strong>Error:</strong> {{error}}</p>
+    <small>{{trace}}</small>
   </div>
 </form>
 {% endblock %}
