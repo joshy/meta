@@ -6,6 +6,7 @@ from flask import render_template, request
 import meta.query
 from meta import app
 from meta.pull import *
+from meta.paging import calc
 
 
 @app.route('/')
@@ -51,6 +52,7 @@ def search():
                                facet_url=request.url,
                                disable_links=disable_links,
                                params=params,
+                               paging=calc(results, request.url, params.get('offset', '1')),
                                modalities=params.getlist('Modality'))
     except json.JSONDecodeError:
         return render_template('search.html', error='Can\'t decode JSON, is '

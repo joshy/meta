@@ -1,6 +1,8 @@
 # Solr settings
 SOLR_URL = 'http://localhost:8983/solr/pacs/query'
 
+RESULT_LIMIT = 500
+
 
 from string import Template
 

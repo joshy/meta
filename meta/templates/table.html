@@ -3,13 +3,12 @@
 {% block table %}
 {% include 'transfer-options.html' %}
 {% include 'download-options.html' %}
+{% include 'paging.html' %}
 
 <div class="row">
   <div id="table-view">
     <div class="col-xs-3 col-sm-2">
-      <p class="important">
-        Facets
-      </p>
+
       {% if facets.StudyDescription %}
       <ul class="list-group small">
         <a href="#" class="list-group-item active">
@@ -18,11 +17,11 @@
         {% for facet in facets.StudyDescription.buckets %}
         <li class="list-group-item">
           {% if disable_links %}
-            <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
             {{facet.val}}
           {% else %}
-          <a href="{{ facet_url ~ "&StudyDescription=" ~ facet.val }}">
-            <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+          <a href="{{ facet_url ~ "&StudyDescription=" ~ facet.val|e }}">
+            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
             {{facet.val}}
           </a>
           {% endif %}
@@ -41,11 +40,11 @@
         {% for facet in facets.SeriesDescription.buckets %}
         <li class="list-group-item">
           {% if disable_links %}
-          <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+          <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
             {{facet.val}}
           {% else %}
           <a href="{{ facet_url ~ "&SeriesDescription=" ~ facet.val|e }}">
-            <span class="tag tag-default tag-pill pull-xs-right">{{facet.count}}</span>
+            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
             {{facet.val}}
           </a>
           {% endif %}

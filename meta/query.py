@@ -1,8 +1,9 @@
 import logging
 import json
 from datetime import datetime
+import meta.settings
 
-default_payload = {'offset': 0, 'limit': 500, 'query': '*:*',
+default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT, 'query': '*:*',
                    'facet':
                        {'SeriesDescription':
                         {'type': 'terms', 'field': 'SeriesDescription'},
@@ -37,7 +38,6 @@ def _create_filter_query(args):
 
 
 def _filter(element, args):
-
     if args.get(element):
         return '{0}:{1}'.format(element, args.get(element))
 
