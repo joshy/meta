@@ -19,7 +19,7 @@ class TestQueryStuff(unittest.TestCase):
         result = meta.query.query_body(args)
 
         self.assertEqual(result['filter'],
-                         ['StudyDescription:"lorem ipsum"'])
+                         ['StudyDescription:lorem ipsum'])
 
     def test_filter_multiple(self):
         args = {'query': 'foo',
@@ -29,8 +29,8 @@ class TestQueryStuff(unittest.TestCase):
         result = meta.query.query_body(args)
 
         self.assertEqual(result['filter'],
-                         ['StudyDescription:"lorem ipsum"',
-                          'SeriesDescription:"dolor sit amet"'])
+                         ['StudyDescription:lorem ipsum',
+                          'SeriesDescription:dolor sit amet'])
 
     def test_filter_all(self):
         args = {'query': 'foo',
@@ -43,11 +43,11 @@ class TestQueryStuff(unittest.TestCase):
         result = meta.query.query_body(args)
 
         self.assertEqual(result['filter'],
-                         ['StudyDescription:"lorem ipsum"',
-                          'SeriesDescription:"dolor sit amet"',
-                          'PatientID:"123"',
-                          'PatientName:"Hans Mueller"',
-                          'AccessionNumber:"A123456789"'])
+                         ['StudyDescription:lorem ipsum',
+                          'SeriesDescription:dolor sit amet',
+                          'PatientID:123',
+                          'PatientName:Hans Mueller',
+                          'AccessionNumber:A123456789'])
 
     def test_filter_single_modality(self):
         args = {'query': 'foo', 'StartDate': '1.1.2016',
@@ -56,7 +56,7 @@ class TestQueryStuff(unittest.TestCase):
         result = meta.query.query_body(args)
 
         self.assertEqual(result['filter'],
-                         ['Modality:"CT"'])
+                         ['Modality:CT'])
 
     def test_filter_multiple_modality(self):
         args = {'query': 'foo', 'StartDate': '1.1.2016',
@@ -65,7 +65,7 @@ class TestQueryStuff(unittest.TestCase):
         result = meta.query.query_body(args)
 
         self.assertEqual(result['filter'],
-                         ['Modality:"[\'CT\', \'MR\']"'])
+                         ["Modality:['CT', 'MR']"])
 
 if __name__ == '__main__':
     unittest.main()

@@ -37,6 +37,7 @@ def search():
             trace = error.get('trace', '')
 
             return render_template('search.html',
+                                   params={},
                                    error=' Call to Solr failed: ' + msg,
                                    trace=trace)
         data = r.json()

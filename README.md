@@ -29,3 +29,7 @@ python runserver.python
 this will also automatically reload on changes made.
 The application will the accessible on port 5000 with default settings.
 
+### Run tests
+```
+python -m unittest
+```

@@ -37,8 +37,9 @@ def _create_filter_query(args):
 
 
 def _filter(element, args):
+
     if args.get(element):
-        return '{0}:"{1}"'.format(element, args.get(element))
+        return '{0}:{1}'.format(element, args.get(element))
 
 
 def _create_date_range(start_date, end_date):
