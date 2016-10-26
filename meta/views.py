@@ -10,7 +10,7 @@ from meta.pull import *
 
 @app.route('/')
 def main():
-    return render_template('search.html')
+    return render_template('search.html', params={'query': '*'})
 
 
 @app.route('/bulksearch')
@@ -18,56 +18,17 @@ def bulk_search():
     return render_template('bulk-search.html')
 
 
-@app.route('/foo')
-def foo():
-    payload = {'query': 'lorem'}
-    j = json.dumps(payload)
-    print(j)
-    headers = {'content-type': "application/json"}
-    req = requests.Request('GET', SOLR_URL, data=j, headers=headers, params={'debug': 'true'})
-    prepared = req.prepare()
-
-    def pretty_print_POST(req):
-        """
-        At this point it is completely built and ready
-        to be fired; it is "prepared".
-
-        However pay attention at the formatting used in
-        this function because it is programmed to be pretty
-        printed and may differ from the actual request.
-        """
-        print('{}\n{}\n{}\n\n{}'.format(
-            '-----------START-----------',
-            req.method + ' ' + req.url,
-            '\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-            req.body,
-        ))
-
-    pretty_print_POST(prepared)
-
-    s = requests.Session()
-    res = s.send(prepared)
-
-    data = res.json()
-    print(data)
-    docs = data['response']['docs']
-    facets = data.get('facets', [])
-    results = data['response']['numFound']
-    disable_links = True
-    return render_template('table.html', docs=docs, results=results,
-                           facets=facets, searchterm='',
-                           startdate='', enddate='',
-                           payload=payload, facet_url=request.url,
-                           disable_links=disable_links)
-
-
 @app.route('/search')
 def search():
-    search_term, start_date, end_date, study_desc, series_desc = get_params(request.args)
-    payload = meta.query.json_body(request.args)
+    params = request.args
+    print(params.getlist('Modality'))
+
+    study_desc, series_desc = get_params(params)
+    payload = meta.query.query_body(params)
     headers = {'content-type': "application/json"}
-    r = requests.get(SOLR_URL, data=payload, headers=headers)
+    r = requests.get(SOLR_URL, data=json.dumps(payload), headers=headers)
     app.logger.debug('Calling Solr with url %s', r.url)
+    app.logger.debug('Request body %s', json.dumps(payload))
     try:
         if 400 == r.status_code or 500 == r.status_code:
             result = r.json()
@@ -84,10 +45,12 @@ def search():
         results = data['response']['numFound']
         disable_links = (True if study_desc or series_desc else False)
         return render_template('table.html', docs=docs, results=results,
-                               facets=facets, searchterm=search_term,
-                               startdate=start_date, enddate=end_date,
-                               payload=payload, facet_url=request.url,
-                               disable_links=disable_links)
+                               facets=facets,
+                               payload=payload,
+                               facet_url=request.url,
+                               disable_links=disable_links,
+                               params=params,
+                               modalities=params.getlist('Modality'))
     except json.JSONDecodeError:
         return render_template('search.html', error='Can\'t decode JSON, is '
                                                     'Solr running?')
@@ -109,6 +72,5 @@ def transfer(target):
 
 
 def get_params(args):
-    return args.get('q'), args.get('StartDate'), \
-           args.get('EndDate'), args.get('StudyDescription'), \
+    return args.get('StudyDescription'), \
            args.get('SeriesDescription')

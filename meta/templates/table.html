@@ -62,20 +62,23 @@
           <thead>
             <tr>
               <th><input type="checkbox" id='select-all'></th>
-              <th>PatientID</th>
-              <th>AccessionNumber</th>
-              <th>SeriesNumber</th>
+              <th>Patient Name</th>
+              <th>Patient ID</th>
+              <th>Accession Number</th>
+              <th>Series Number</th>
               <th>Modality</th>
               <th>Date</th>
               <th>Study Description</th>
               <th>Series Description</th>
               <th>Referring Physician</th>
+              <th>Institution Name</th>
             </tr>
           </thead>
           <tbody>
             {% for doc in docs %}
             <tr>
-                <td><input type="checkbox" data-study-id="{{ doc['StudyInstanceUID'][0] }}" data-series-id="{{ doc['StudyInstanceUID'][0] }}"></td>
+              <td><input type="checkbox" data-study-id="{{ doc['StudyInstanceUID'][0] }}" data-series-id="{{ doc['StudyInstanceUID'][0] }}"></td>
+              <td>{% if doc['PatientName'] is defined %} {{ doc['PatientName'][0] }} {% endif %}</td>
               <td>{% if doc['PatientID'] is defined %} {{ doc['PatientID'][0] }} {% endif %}</td>
               <td>{% if doc['AccessionNumber'] is defined %} {{ doc['AccessionNumber'][0] }} {% endif %}</td>
               <td>{% if doc['SeriesNumber'] is defined %} {{ doc['SeriesNumber'][0] }} {% endif %}</td>
@@ -84,6 +87,7 @@
               <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
               <td>{% if doc['SeriesDescription'] is defined %} {{ doc['SeriesDescription'][0] }} {% endif %}</td>
               <td>{% if doc['ReferringPhysicianName'] is defined %} {{ doc['ReferringPhysicianName'][0] }} {% endif %}</td>
+              <td>{% if doc['InstitutionName'] is defined %} {{ doc['InstitutionName'][0] }} {% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>

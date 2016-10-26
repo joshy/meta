@@ -12,24 +12,33 @@ default_payload = {'offset': 0, 'limit': 500, 'query': '*:*',
                    }
 
 
-def json_body(args):
-    body = default_payload
-    body['query'] = args.get('q', '*')
+def query_body(args):
+    body = default_payload.copy()
+    body['query'] = args.get('query', '*')
     body['offset'] = args.get('offset', '0')
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
-    if not date_range:
+    if date_range is not None:
         body['query'] = body['query'] + ' AND ' + date_range
-    r = json.dumps(body)
-    print(r)
-    return r, body
+    body['filter'] = _create_filter_query(args)
+
+    return body
 
 
 def _create_filter_query(args):
-    result = []
-    if args.get('StudyDescription'):
-        result.append('StudyDescription:"' + args.get('StudyDescription') + "'")
-    return result
+    result = [_filter('StudyDescription', args),
+              _filter('SeriesDescription', args),
+              _filter('PatientID', args),
+              _filter('PatientName', args),
+              _filter('AccessionNumber', args),
+              _filter('Modality', args)]
+
+    return [x for x in result if x is not None]
+
+
+def _filter(element, args):
+    if args.get(element):
+        return '{0}:"{1}"'.format(element, args.get(element))
 
 
 def _create_date_range(start_date, end_date):
