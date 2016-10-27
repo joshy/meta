@@ -5,6 +5,9 @@ from meta.query_param import set_query_parameter
 def calc(results, url, current):
     limit = meta.settings.RESULT_LIMIT
     pages = results // limit
+    if results % limit > 0:
+        pages += 1
+
     r = []
     current_page = max(int(current) // limit, 0)
 
