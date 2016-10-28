@@ -7,6 +7,7 @@ import meta.query
 from meta import app
 from meta.pull import *
 from meta.paging import calc
+from meta.facets import prepare_facets
 
 
 @app.route('/')
@@ -14,17 +15,9 @@ def main():
     return render_template('search.html', params={'query': '*'})
 
 
-@app.route('/bulksearch')
-def bulk_search():
-    return render_template('bulk-search.html')
-
-
 @app.route('/search')
 def search():
     params = request.args
-    print(params.getlist('Modality'))
-
-    study_desc, series_desc = get_params(params)
     payload = meta.query.query_body(params)
     headers = {'content-type': "application/json"}
     r = requests.get(SOLR_URL, data=json.dumps(payload), headers=headers)
@@ -43,20 +36,19 @@ def search():
                                    trace=trace)
         data = r.json()
         docs = data['response']['docs']
-        facets = data.get('facets', [])
+        facets = prepare_facets(data.get('facets', []), request.url)
         results = data['response']['numFound']
-        disable_links = (True if study_desc or series_desc else False)
+        paging = calc(results, request.url, params.get('offset', '1'))
         return render_template('table.html', docs=docs, results=results,
                                facets=facets,
                                payload=payload,
                                facet_url=request.url,
-                               disable_links=disable_links,
                                params=params,
-                               paging=calc(results, request.url, params.get('offset', '1')),
+                               paging=paging,
                                modalities=params.getlist('Modality'))
     except json.JSONDecodeError:
-        return render_template('search.html', error='Can\'t decode JSON, is '
-                                                    'Solr running?')
+        return render_template('search.html',
+                               error='Can\'t decode JSON, is Solr running?')
 
 
 @app.route('/download', methods=['POST'])
@@ -72,8 +64,3 @@ def transfer(target):
     series_list = request.get_json(force=True)
     meta.pull.transfer(series_list, target)
     return 'OK'
-
-
-def get_params(args):
-    return args.get('StudyDescription'), \
-           args.get('SeriesDescription')

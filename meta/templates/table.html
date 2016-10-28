@@ -16,15 +16,13 @@
         </a>
         {% for facet in facets.StudyDescription.buckets %}
         <li class="list-group-item">
-          {% if disable_links %}
+          <a href="{{ facet['url'] }}">
             <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
-            {{facet.val}}
-          {% else %}
-          <a href="{{ facet_url ~ "&StudyDescription=" ~ facet.val|e }}">
-            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
+             {% if facet.clear %}
+              <i class="fa fa-times" aria-hidden="true"></i>
+            {% endif %}
             {{facet.val}}
           </a>
-          {% endif %}
         </li>
       {% endfor %}
       <br>
@@ -39,15 +37,13 @@
         </a>
         {% for facet in facets.SeriesDescription.buckets %}
         <li class="list-group-item">
-          {% if disable_links %}
-          <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
-            {{facet.val}}
-          {% else %}
-          <a href="{{ facet_url ~ "&SeriesDescription=" ~ facet.val|e }}">
+          <a href="{{ facet['url'] }}">
             <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
+            {% if facet.clear %}
+              <i class="fa fa-times" aria-hidden="true"></i>
+            {% endif %}
             {{facet.val}}
           </a>
-          {% endif %}
         </li>
         {% endfor %}
       </ul>

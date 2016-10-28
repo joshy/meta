@@ -2,14 +2,18 @@
   <ul class="pagination pagination-sm offset-xs-2">
     {% for page in paging %}
       <li class="page-item  {% if page[2] %} active {% endif %}">
-        <a class="page-link" href="{{ page[1] }}">{{ page[0] }}</a>
+        <a class="page-link" href="{{ page[1] }}">
+            {% if page[3] and loop.first %}
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Next</span>
+            {% elif loop.last %}
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            {% else %}
+              {{ page[0] }}
+            {% endif %}
+        </a>
       </li>
     {% endfor %}
-      <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
   </ul>
 </nav>
