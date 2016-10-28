@@ -25,5 +25,4 @@ def calc(results, url, current):
                   True if min_page >= 1 else False))
     if len(r) == 1:
         return []
-    print(r)
     return r

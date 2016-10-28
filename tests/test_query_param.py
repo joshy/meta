@@ -12,13 +12,7 @@ class TestQueryParam(unittest.TestCase):
         url = 'http://localhost?StudyDescription=foo&SeriesDescription=a'
         new_url = set_query_parameter(url, 'StudyDescription', 'foo')
         self.assertEqual(
-            ('http://localhost?SeriesDescription=a', False), new_url)
-
-    def test_clearing_2(self):
-        url = 'http://localhost:5000/search?query=%2A&SeriesDescription=%22t2_haste_fs_thick_slab%22'
-        new_url = set_query_parameter(url, 'SeriesDescription', 't2_haste_fs_thick_slab')
-        self.assertEqual(
-            ('http://localhost?SeriesDescription=a', False), new_url)
+            ('http://localhost?SeriesDescription=a', True), new_url)
 
     def test_setting(self):
         url = 'http://localhost?StudyDescription=foo'

@@ -10,7 +10,6 @@ def prepare_facets(facets, url):
                 for bucket_key, bucket_value in value.items():
                     for e in bucket_value:
                         value = '"{0}"'.format(e['val'])
-                        print("{0} - {1}".format(key, value))
                         new_url, clear = set_query_parameter(url, key, value)
                         e['url'] = new_url
                         e['clear'] = clear
