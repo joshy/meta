@@ -53,14 +53,18 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
-    series_list = request.get_json(force=True)
-    meta.pull.download(series_list)
+    request.args.get('')
+    app.logger.info("download called")
+    data = request.get_json(force=True)
+    series_list = data.get('series_list', '')
+    dir_name = data.get('dir', '')
+    meta.pull.download(dir_name, series_list)
     return 'OK'
 
 
 @app.route('/transfer/<target>', methods=['POST'])
 def transfer(target):
-    app.logger.debug("transfer called and sending to %s", target)
+    app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
     meta.pull.transfer(series_list, target)
     return 'OK'

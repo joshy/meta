@@ -17,7 +17,7 @@ $(function () {
     yearRange: [2010, 2016]
   });
 
-  var getCheckedData(): function() {
+  var getCheckedData = function() {
     return $('input:checked[name=series]')
       .map(function() {
         var study_id = $(this).attr('data-study-id');
@@ -44,16 +44,38 @@ $(function () {
 
   $('#download-button').on('click', function(e) {
     e.preventDefault();
+    dirName = $('input[name=download-dir]').val();
+    if (!dirName) {
+      setError();
+    } else {
+      clearError();
+    }
     var data = getCheckedData();
-    var jsonData = JSON.stringify(data);
+    var data = {
+     'jsonData':  JSON.stringify(data),
+     'dir' : dirName
+    }
+
     $.ajax({
       type: 'POST',
       url: 'download',
-      data: jsonData,
+      data: data,
       dataType: 'application/json',
       success: function() { console.log('successfully posted')}
-    })
+    });
   })
+
+  setError = function() {
+    $('#download-form').addClass('has-danger');
+    $('#download-error-text').text('Please enter a directory name');
+    dirName = $('input[name=download-dir]').addClass("form-control-danger");
+  }
+
+  clearError = function() {
+    $('#download-form').removeClass('has-danger');
+    $('#download-error-text').text('');
+    dirName = $('input[name=download-dir]').removeClass("form-control-danger");
+  }
 
   $('#select-all').on('click', function(e) {
     $("input:checkbox").prop('checked', $(this).prop("checked"));

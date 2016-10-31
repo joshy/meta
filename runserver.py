@@ -1,6 +1,6 @@
 import os
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 
 from meta import app
 
@@ -9,9 +9,9 @@ LOG_DIR = 'logs'
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
-handler = RotatingFileHandler('logs/server.log', maxBytes=10000, backupCount=10)
-handler.setLevel(logging.INFO)
-
+handler = TimedRotatingFileHandler('logs/server.log', when='midnight',
+                                   backupCount=10)
+handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
