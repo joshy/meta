@@ -17,9 +17,8 @@ $(function () {
     yearRange: [2010, 2016]
   });
 
-  $('#transfer-button').on('click', function(e) {
-    e.preventDefault();
-    var data = $('input:checkbox:checked')
+  var getCheckedData(): function() {
+    return $('input:checked[name=series]')
       .map(function() {
         var study_id = $(this).attr('data-study-id');
         var series_id =  $(this).attr('data-series-id');
@@ -27,6 +26,11 @@ $(function () {
         return result;
        })
       .get();
+  }
+
+  $('#transfer-button').on('click', function(e) {
+    e.preventDefault();
+    var data = getCheckedData();
     var jsonData = JSON.stringify(data);
     var target = $("input[type='radio']:checked").val();
     $.ajax({
@@ -37,6 +41,19 @@ $(function () {
       success: function() { console.log('successfully posted')}
     });
   });
+
+  $('#download-button').on('click', function(e) {
+    e.preventDefault();
+    var data = getCheckedData();
+    var jsonData = JSON.stringify(data);
+    $.ajax({
+      type: 'POST',
+      url: 'download',
+      data: jsonData,
+      dataType: 'application/json',
+      success: function() { console.log('successfully posted')}
+    })
+  })
 
   $('#select-all').on('click', function(e) {
     $("input:checkbox").prop('checked', $(this).prop("checked"));
