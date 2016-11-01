@@ -26,7 +26,7 @@ $(function () {
         return result;
        })
       .get();
-  }
+  };
 
   $('#transfer-button').on('click', function(e) {
     e.preventDefault();
@@ -44,37 +44,38 @@ $(function () {
 
   $('#download-button').on('click', function(e) {
     e.preventDefault();
-    dirName = $('input[name=download-dir]').val();
+    dirName = $('#download-dir').val();
     if (!dirName) {
       setError();
+      return
     } else {
       clearError();
     }
-    var data = getCheckedData();
+    var checkedData = getCheckedData();
     var data = {
-     'jsonData':  JSON.stringify(data),
+     'data':  checkedData,
      'dir' : dirName
     }
 
     $.ajax({
       type: 'POST',
       url: 'download',
-      data: data,
+      data: JSON.stringify(data),
       dataType: 'application/json',
       success: function() { console.log('successfully posted')}
     });
-  })
+  });
 
   setError = function() {
     $('#download-form').addClass('has-danger');
     $('#download-error-text').text('Please enter a directory name');
-    dirName = $('input[name=download-dir]').addClass("form-control-danger");
+    $('input[name=download-dir]').addClass("form-control-danger");
   }
 
   clearError = function() {
     $('#download-form').removeClass('has-danger');
     $('#download-error-text').text('');
-    dirName = $('input[name=download-dir]').removeClass("form-control-danger");
+    $('input[name=download-dir]').removeClass("form-control-danger");
   }
 
   $('#select-all').on('click', function(e) {

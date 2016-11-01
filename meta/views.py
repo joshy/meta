@@ -56,9 +56,10 @@ def download():
     request.args.get('')
     app.logger.info("download called")
     data = request.get_json(force=True)
-    series_list = data.get('series_list', '')
+    series_list = data.get('data', '')
     dir_name = data.get('dir', '')
-    meta.pull.download(dir_name, series_list)
+    meta.pull.download(series_list, dir_name)
+
     return 'OK'
 
 
@@ -67,4 +68,5 @@ def transfer(target):
     app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
     meta.pull.transfer(series_list, target)
+
     return 'OK'
