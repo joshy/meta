@@ -1,0 +1,50 @@
+<div class="col-xs-9 col-sm-10">
+  Results found: {{ results }}
+  <ul class="list-group">
+    {% for doc in docs['groups'] %}
+      <li class="list-group-item">
+        <a href="#" data-toggle="collapse" data-target="#{{ doc['groupValue'] }}">
+          PatientID: {{ doc['groupValue'] }} 
+        </a>
+      </li>
+      <ul class="list-group small collapse" id="{{ doc['groupValue'] }}">
+        {% for accessionNumber in doc['by_AccessionNumber'] %}
+          <li class="list-group-item">Accession Number: {{ accessionNumber }}
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id='select-all'></th>
+                  <th>Patient Name</th>
+                  <th>Modality</th>
+                  <th>Study Description</th>
+                  <th>Date</th>
+                  <th>Series Description</th>
+                  <th>Series Number</th>
+                  <th>Referring Physician</th>
+                  <th>Institution Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in doc['by_AccessionNumber'][accessionNumber] %}
+                <tr>
+                  <td><input type="checkbox" name="series" data-study-id="{{ doc['StudyInstanceUID'] }}" data-series-id="{{ doc['StudyInstanceUID'] }}"></td>
+                  <td>{{ entry['PatientName'] }} </td>
+                  <td>{{ entry['Modality'] }} </td>
+                  <td>{{ entry['StudyDescription'] }} </td>
+                  <td>{{ entry['StudyDate'] }} </td>
+                  <td>{{ entry['SeriesDescription'] }} </td>
+                  <td>{{ entry['SeriesNumber'] }} </td>
+                  <td>{{ entry['ReferringPhysicianName'] }} </td>
+                  <td>{{ entry['InstitutionName'] }} </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </ul>
+
+
+

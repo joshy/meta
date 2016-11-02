@@ -8,6 +8,7 @@ from meta import app
 from meta.pull import *
 from meta.paging import calc
 from meta.facets import prepare_facets
+from meta.grouping import group
 
 
 @app.route('/')
@@ -35,9 +36,10 @@ def search():
                                    error=' Call to Solr failed: ' + msg,
                                    trace=trace)
         data = r.json()
-        docs = data['response']['docs']
+        docs = data['grouped']['PatientID']
+        docs = group(docs)
         facets = prepare_facets(data.get('facets', []), request.url)
-        results = data['response']['numFound']
+        results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, request.url, params.get('offset', '1'))
         return render_template('table.html', docs=docs, results=results,
                                facets=facets,

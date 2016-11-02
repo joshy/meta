@@ -1,14 +1,28 @@
 import logging
-import json
-from datetime import datetime
 import meta.settings
 
-default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT, 'query': '*:*',
+from datetime import datetime
+
+
+default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT,
+                   'query': '*:*',
+                   'params': {'group': 'true', 'group.field': 'PatientID',
+                              'group.limit': 10, 'group.ngroups': 'true'},
                    'facet':
                        {'SeriesDescription':
                         {'type': 'terms', 'field': 'SeriesDescription'},
                         'StudyDescription':
-                            {'type': 'terms', 'field': 'StudyDescription'}
+                            {'type': 'terms', 'field': 'StudyDescription'},
+                        'Pivot':
+                            {'type': 'terms', 'field': 'PatientID',
+                             'limit': 100,
+                             'facet': {
+                                 'Studies': {
+                                    'type': 'terms',
+                                    'field': 'AccessionNumber'
+                                    }
+                                }
+                             }
                         }
                    }
 

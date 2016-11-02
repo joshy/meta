@@ -3,92 +3,14 @@
 {% block table %}
 {% include 'transfer-options.html' %}
 {% include 'download-options.html' %}
+
 {% include 'paging.html' %}
 
 <div class="row">
   <div id="table-view">
-    <div class="col-xs-3 col-sm-2">
 
-      {% if facets.StudyDescription %}
-      <ul class="list-group small">
-        <a href="#" class="list-group-item active">
-          Study Descriptions
-        </a>
-        {% for facet in facets.StudyDescription.buckets %}
-        <li class="list-group-item">
-          <a href="{{ facet['url'] }}">
-            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
-             {% if facet.clear %}
-              <i class="fa fa-times" aria-hidden="true"></i>
-            {% endif %}
-            {{facet.val}}
-          </a>
-        </li>
-      {% endfor %}
-      <br>
-      </ul>
-      {% endif %}
-
-
-      {% if facets.SeriesDescription %}
-      <ul class="list-group small">
-        <a href="#" class="list-group-item active">
-          Series Descriptions
-        </a>
-        {% for facet in facets.SeriesDescription.buckets %}
-        <li class="list-group-item">
-          <a href="{{ facet['url'] }}">
-            <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
-            {% if facet.clear %}
-              <i class="fa fa-times" aria-hidden="true"></i>
-            {% endif %}
-            {{facet.val}}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-    </div>
-
-    <div class="col-xs-9 col-sm-10">
-      <div id="table">
-        Results found: {{ results }}
-        <table class="table table-sm table-hover m-t-2">
-          <thead>
-            <tr>
-              <th><input type="checkbox" id='select-all'></th>
-              <th>Patient Name</th>
-              <th>Patient ID</th>
-              <th>Accession Number</th>
-              <th>Modality</th>
-              <th>Study Description</th>
-              <th>Date</th>
-              <th>Series Description</th>
-              <th>Series Number</th>
-              <th>Referring Physician</th>
-              <th>Institution Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for doc in docs %}
-            <tr>
-              <td><input type="checkbox" name="series" data-study-id="{{ doc['StudyInstanceUID'][0] }}" data-series-id="{{ doc['StudyInstanceUID'][0] }}"></td>
-              <td>{% if doc['PatientName'] is defined %} {{ doc['PatientName'][0] }} {% endif %}</td>
-              <td>{% if doc['PatientID'] is defined %} {{ doc['PatientID'][0] }} {% endif %}</td>
-              <td>{% if doc['AccessionNumber'] is defined %} {{ doc['AccessionNumber'][0] }} {% endif %}</td>
-              <td>{% if doc['Modality'] is defined %} {{ doc['Modality'][0] }} {% endif %}</td>
-              <td>{% if doc['StudyDescription'] is defined %} {{ doc['StudyDescription'][0] }} {% endif %}</td>
-              <td>{% if doc['StudyDate'] is defined %} {{ doc['StudyDate'][0] }} {% endif %}</td>
-              <td>{% if doc['SeriesDescription'] is defined %} {{ doc['SeriesDescription'][0] }} {% endif %}</td>
-              <td>{% if doc['SeriesNumber'] is defined %} {{ doc['SeriesNumber'][0] }} {% endif %}</td>
-              <td>{% if doc['ReferringPhysicianName'] is defined %} {{ doc['ReferringPhysicianName'][0] }} {% endif %}</td>
-              <td>{% if doc['InstitutionName'] is defined %} {{ doc['InstitutionName'][0] }} {% endif %}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    {% include 'facets.html' %}
+    {% include 'grouping.html' %}
   </div>
 </div>
 {% endblock %}
