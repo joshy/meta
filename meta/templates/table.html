@@ -1,16 +1,33 @@
-{% extends "search.html" %}
-
-{% block table %}
-{% include 'transfer-options.html' %}
-{% include 'download-options.html' %}
-
-{% include 'paging.html' %}
-
-<div class="row">
-  <div id="table-view">
-
-    {% include 'facets.html' %}
-    {% include 'grouping.html' %}
-  </div>
-</div>
-{% endblock %}
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th><input type="checkbox" id='select-all'></th>
+      <th>Patient Name</th>
+      <th>Modality</th>
+      <th>Study Description</th>
+      <th>Date</th>
+      <th>Series Description</th>
+      <th>Series Number</th>
+      <th>Referring Physician</th>
+      <th>Institution Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in doc['by_AccessionNumber'][accessionNumber] %}
+    <tr>
+      <td><input type="checkbox" name="series"
+                 data-study-id="{{ doc['StudyInstanceUID'] }}"
+                 data-series-id="{{ doc['StudyInstanceUID'] }}">
+      </td>
+      <td>{{ entry['PatientName'] }} </td>
+      <td>{{ entry['Modality'] }} </td>
+      <td>{{ entry['StudyDescription'] }} </td>
+      <td>{{ entry['StudyDate'] }} </td>
+      <td>{{ entry['SeriesDescription'] }} </td>
+      <td>{{ entry['SeriesNumber'] }} </td>
+      <td>{{ entry['ReferringPhysicianName'] }} </td>
+      <td>{{ entry['InstitutionName'] }} </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

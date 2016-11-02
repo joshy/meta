@@ -41,7 +41,7 @@ def search():
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, request.url, params.get('offset', '1'))
-        return render_template('table.html', docs=docs, results=results,
+        return render_template('result.html', docs=docs, results=results,
                                facets=facets,
                                payload=payload,
                                facet_url=request.url,

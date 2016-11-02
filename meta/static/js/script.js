@@ -81,4 +81,8 @@ $(function () {
   $('#select-all').on('click', function(e) {
     $("input:checkbox").prop('checked', $(this).prop("checked"));
   });
+
+  $('li.list-group-item a').on('click', function(e) {
+    $(e.target).find('span').toggleClass('oi-chevron-right oi-chevron-top')
+  });
 });

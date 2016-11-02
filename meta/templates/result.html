@@ -1,0 +1,15 @@
+{% extends "search.html" %}
+
+{% block table %}
+{% include 'transfer-options.html' %}
+{% include 'download-options.html' %}
+
+{% include 'paging.html' %}
+
+<div class="row">
+  <div id="table-view">
+    {% include 'facets.html' %}
+    {% include 'grouping.html' %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+ul.result li {
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: transparent;
+    padding-left: 0;
+}
