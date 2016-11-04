@@ -5,8 +5,9 @@
       <li class="list-group-item">
         <a href="#" data-toggle="collapse" data-target="#{{ doc['groupValue'] }}">
           <span class="oi oi-chevron-right small"></span>
-          PatientID: {{ doc['groupValue'] }} 
-          <span class="tag tag-info tag-pill">{{ doc['by_AccessionNumber'] | length }}</span>
+          PatientID: {{ doc['groupValue'] }}, Studies
+          <span class="tag tag-default tag-pill">{{ doc['by_AccessionNumber'] | length }}</span>
+
         </a>
       </li>
       <ul class="list-group small collapse" id="{{ doc['groupValue'] }}">
