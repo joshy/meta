@@ -28,7 +28,8 @@ RUN wget --quiet \
     chmod -R a+rx $CONDA_ENV_PATH
 ENV PATH $CONDA_ENV_PATH/bin:$PATH
 
-RUN conda create -y -n $CONDA_PY_ENV python=3.5 flask requests
+RUN conda create -y -n $CONDA_PY_ENV python=3.5
+RUN conda install flask requests
 RUN conda install -c conda-forge uwsgi=2.0.12
 RUN conda update --quiet --yes conda
 RUN conda clean -y -t
@@ -51,8 +52,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 EXPOSE 80 443
 
-CMD ["nginx", "-g", "daemon off;"]
-
 # END :: nginx conf
 ##############################################################
 
@@ -74,7 +73,9 @@ RUN mkdir /home/pacs/.ssh
 RUN ssh-keyscan -t rsa github.com > /home/pacs/.ssh/known_hosts
 RUN git clone https://github.com/irrwitz/meta.git
 WORKDIR /home/pacs/meta
-RUN uwsgi --ini meta.ini
+
+ADD ./scripts/start.sh /home/pacs/start.sh
+CMD ["/bin/bash", "/start.sh"]
 
 # END :: application
 ##############################################################
