@@ -16,8 +16,9 @@ RUN apt-get update && \
     apt-get install -y git vim wget build-essential python-dev ca-certificates bzip2 libsm6 nginx && \
     apt-get clean
 
-###############################
+##############################################################
 # START :: (mini)CONDA package manager
+##############################################################
 
 # Download and create
 RUN wget --quiet \
@@ -27,7 +28,7 @@ RUN wget --quiet \
     chmod -R a+rx $CONDA_ENV_PATH
 ENV PATH $CONDA_ENV_PATH/bin:$PATH
 
-RUN conda create -y -n $CONDA_PY_ENV python=3.5 pip flask requests
+RUN conda create -y -n $CONDA_PY_ENV python=3.5 flask requests
 RUN conda install -c conda-forge uwsgi=2.0.12
 RUN conda update --quiet --yes conda
 RUN conda clean -y -t
@@ -35,19 +36,17 @@ RUN conda clean -y -t
 RUN $CONDA_ACTIVATE
 
 # END :: (mini)CONDA package manager
-###############################
+##############################################################
 
 
-###############################
+##############################################################
 # START :: nginx conf
+##############################################################
 
-COPY nginx.conf /etc/nginx/nginx.con
+COPY scripts/nginx.conf /etc/nginx/sites-enabled
 
 # END :: nginx conf
-###############################
-
-
-
+##############################################################
 
 # Create a user named pacs which runs the app
 RUN useradd -m -s /bin/bash pacs
@@ -57,7 +56,19 @@ USER pacs
 ENV HOME /home/pacs
 ENV SHELL /bin/bash
 ENV USER pacs
-
 WORKDIR $HOME
+
+##############################################################
+# START :: application
+##############################################################
+
+RUN mkdir /home/pacs/.ssh
+RUN ssh-keyscan -t rsa github.com > /home/pacs/.ssh/known_hosts
+RUN git clone https://github.com/irrwitz/meta.git
+WORKDIR /home/pacs/meta
+RUN uwsgi --ini meta.ini
+
+# END :: application
+##############################################################
 
 
