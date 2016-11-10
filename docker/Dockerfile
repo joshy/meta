@@ -2,9 +2,9 @@ FROM  solr:6.2.1
 
 MAINTAINER irrwitz <j.cyriac@gmail.com>
 
-ENV CONDA_ENV_PATH /opt/miniconda
+ENV CONDA_DIR /opt/conda
 ENV CONDA_PY_ENV "python35"
-ENV CONDA_ACTIVATE "source $CONDA_ENV_PATH/bin/activate $CONDA_PY_ENV"
+
 
 USER root
 
@@ -23,18 +23,12 @@ RUN apt-get update && \
 # Download and create
 RUN wget --quiet \
     https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh && \
-    bash Miniconda-latest-Linux-x86_64.sh -b -p $CONDA_ENV_PATH && \
+    bash Miniconda-latest-Linux-x86_64.sh -b -p $CONDA_DIR && \
     rm Miniconda-latest-Linux-x86_64.sh && \
-    chmod -R a+rx $CONDA_ENV_PATH
-ENV PATH $CONDA_ENV_PATH/bin:$PATH
+    chmod -R a+rx $CONDA_DIR
 
+ENV PATH $CONDA_DIR/bin:$PATH
 RUN conda create -y -n $CONDA_PY_ENV python=3.5
-RUN conda install flask requests
-RUN conda install -c conda-forge uwsgi=2.0.12
-RUN conda update --quiet --yes conda
-RUN conda clean -y -t
-
-RUN $CONDA_ACTIVATE
 
 # END :: (mini)CONDA package manager
 ##############################################################
@@ -58,6 +52,8 @@ EXPOSE 80 443
 # Create a user named pacs which runs the app
 RUN useradd -m -s /bin/bash pacs
 
+RUN chown -R pacs:pacs $CONDA_DIR
+
 # Env vars
 USER pacs
 ENV HOME /home/pacs
@@ -68,14 +64,18 @@ WORKDIR $HOME
 ##############################################################
 # START :: application
 ##############################################################
+RUN pip install uwsgi
 
 RUN mkdir /home/pacs/.ssh
 RUN ssh-keyscan -t rsa github.com > /home/pacs/.ssh/known_hosts
 RUN git clone https://github.com/irrwitz/meta.git
 WORKDIR /home/pacs/meta
 
+RUN /bin/bash -c "source activate /opt/conda/envs/python35/ && pip install -r /home/pacs/meta/requirements.txt"
+
+
 ADD ./scripts/start.sh /home/pacs/start.sh
-CMD ["/bin/bash", "/start.sh"]
+CMD ["/bin/bash", "/home/pacs/start.sh"]
 
 # END :: application
 ##############################################################

@@ -1,4 +1,4 @@
 #!/bin/bash
-
-uwsgi --ini meta.ini
+source activate python35
+uwsgi --ini meta.ini &
 service nginx start
