@@ -78,11 +78,21 @@ $(function () {
     $('input[name=download-dir]').removeClass("form-control-danger");
   }
 
-  $('#select-all').on('click', function(e) {
-    $("input:checkbox").prop('checked', $(this).prop("checked"));
+  $('input[name=select-all-accession-number').on('click', function(e) {
+    console.log(e);
+    var table = $(e.target).closest('table')
+    $("td input:checkbox", table).prop('checked', $(this).prop("checked"));
+  });
+
+  $('input[name=select-all-patient').on('click', function(e) {
+    var patientId = $(e.target).attr('data-patient-id');
+    var selector = 'table[data-patient-id="' + patientId + '"]'
+    $(selector).find('thead tr th input').trigger('click')
   });
 
   $('li.list-group-item a').on('click', function(e) {
-    $(e.target).find('span').toggleClass('oi-chevron-right oi-chevron-top')
+    $(e.target).find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
+
+
 });

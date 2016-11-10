@@ -1,4 +1,5 @@
 from itertools import groupby
+from datetime import datetime
 
 
 def group(groups):
@@ -12,5 +13,13 @@ def group(groups):
                                   lambda x: x.get('AccessionNumber', '')):
             grouped[key] = list(value)
             g['by_AccessionNumber'] = grouped
+            patient = {}
+            first_entry = list(grouped.values())[0][0]
+            patient['name'] = first_entry.get('PatientName', None)
+            birthdate = first_entry.get('PatientBirthDate', None)
+            if birthdate is not None:
+                patient['birthdate'] = datetime.strptime(
+                    str(birthdate), '%Y%m%d').strftime('%d.%m.%Y')
+            g['patient'] = patient
 
     return groups
