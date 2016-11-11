@@ -6,3 +6,8 @@ ul.result li {
     background-color: transparent;
     padding-left: 0;
 }
+
+.vertical-align {
+    display: table-cell;
+    vertical-align: middle;
+}

@@ -90,7 +90,7 @@ $(function () {
     $(selector).find('thead tr th input').trigger('click')
   });
 
-  $('li.list-group-item a').on('click', function(e) {
+  $('li.list-group-item.patient a').on('click', function(e) {
     $(e.target).find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
 

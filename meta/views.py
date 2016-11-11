@@ -9,6 +9,7 @@ from meta.pull import *
 from meta.paging import calc
 from meta.facets import prepare_facets
 from meta.grouping import group
+from meta.settings import SOLR_URL
 
 
 @app.route('/')
@@ -55,7 +56,6 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
-    request.args.get('')
     app.logger.info("download called")
     data = request.get_json(force=True)
     series_list = data.get('data', '')

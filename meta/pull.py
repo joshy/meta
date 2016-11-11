@@ -2,7 +2,7 @@ import subprocess
 import os
 
 from meta.settings import OUTPUT_DIR
-from meta.command import *
+from meta.command import BASE_COMMAND, transfer_command
 from meta import app
 
 

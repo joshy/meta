@@ -2,7 +2,7 @@
   Patients found <em>{{ results }}</em>
   <ul class="list-group result">
     {% for doc in docs['groups'] %}
-      <li class="list-group-item">
+      <li class="list-group-item patients">
         <input type="checkbox" name="select-all-patient" data-patient-id="{{ doc['groupValue'] }}">
         <a href="#" data-toggle="collapse" data-target="#{{ doc['groupValue'] }}">
           <span class="oi oi-chevron-left small float-xs-right"></span>
