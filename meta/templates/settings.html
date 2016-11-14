@@ -11,20 +11,22 @@
 </head>
 
 <body>
-  <div class="container-fluid px-2 pt-2" style="background-color:#edf4f7">
-    <div class="row px-2">
-      {% block search %}
-      {% endblock %}
+  <div class="container-fluid px-2 pt-2">
+    <h6>Settings</h6>
+    <form id="core-form" action="/settings" method="post">
+      <div class="form-group row">
+        <label for="core-input" class="col-sm-2 col-form-label">Core name</label>
+        <div class="col-sm-4">
+        <div class="input-group">
+          <input class="form-control" type="text" id="core-input" name="core_name" value="{{ core_name }}" autofocus>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">Set</button>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="container-fluid p-2">
-    <div class="row">
-      <div class="col-sm-12">
-        {% block table %}
-        {% endblock %}
-    </div>
-    </div>
-  </div>
+
   <script type=text/javascript src="{{url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
   <script type=text/javascript src="{{url_for('static', filename='js/tether.min.js') }}"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
@@ -33,5 +35,4 @@
   <script type=text/javascript src="{{url_for('static', filename='js/pikaday.jquery.js') }}"></script>
   <script src="{{url_for('static', filename='js/script.js') }}"></script>
 </body>
-
 </html>

@@ -1,7 +1,7 @@
 import requests
 import json
 
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 
 import meta.query
 from meta import app
@@ -14,7 +14,7 @@ from meta.settings import SOLR_URL
 
 @app.route('/')
 def main():
-    return render_template('search.html', params={'query': '*'})
+    return render_template('search.html', params={'query': '*:*'})
 
 
 @app.route('/search')
@@ -73,3 +73,17 @@ def transfer(target):
     meta.pull.transfer(series_list, target)
 
     return 'OK'
+
+
+@app.route('/settings')
+def settings():
+    app.logger.info("Settings called")
+    return render_template('settings.html', core_name=app.config['CORE_NAME'])
+
+
+@app.route('/settings', methods=['POST'])
+def set_core():
+    core_name = request.form['core_name']
+    app.logger.info("Setting core to %s", core_name)
+    app.config['CORE_NAME'] = core_name
+    return redirect(url_for('main'))

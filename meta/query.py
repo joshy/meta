@@ -1,8 +1,7 @@
 import logging
-import meta.settings
-
 from datetime import datetime
 
+import meta.settings
 
 default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT,
                    'query': '*:*',

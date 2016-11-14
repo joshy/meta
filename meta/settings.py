@@ -1,5 +1,7 @@
+from meta import app
+
 # Solr settings
-SOLR_URL = 'http://localhost:8983/solr/grouping/query'
+SOLR_URL = 'http://localhost:8983/solr/{0}/query'.format(app.config.get('CORE_NAME', 'pacs'))
 
 RESULT_LIMIT = 500
 
