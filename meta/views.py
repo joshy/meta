@@ -51,6 +51,7 @@ def search():
                                modalities=params.getlist('Modality'))
     except json.JSONDecodeError:
         return render_template('search.html',
+                               params={},
                                error='Can\'t decode JSON, is Solr running?')
 
 
