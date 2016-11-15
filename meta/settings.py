@@ -1,10 +1,13 @@
 from meta import app
 
 # Solr settings
-SOLR_URL = 'http://localhost:8983/solr/{0}/query'.format(app.config.get('CORE_NAME', 'pacs'))
+
+def solr_url():
+    core_name = app.config['CORE_NAME']
+    return 'http://localhost:8983/solr/{0}/query'.format(core_name)
 
 RESULT_LIMIT = 500
-
+    
 # DCMTK settings
 DCMIN = '/Applications/dcmtk/dcm.in'
 DCMTK_BIN = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/'
