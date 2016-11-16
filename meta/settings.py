@@ -7,7 +7,7 @@ def solr_url():
     return 'http://localhost:8983/solr/{0}/query'.format(core_name)
 
 RESULT_LIMIT = 500
-    
+
 # DCMTK settings
 DCMIN = '/Applications/dcmtk/dcm.in'
 DCMTK_BIN = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/'

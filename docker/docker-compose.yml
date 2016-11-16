@@ -1,0 +1,16 @@
+version: '2'
+services:
+  web:
+    container_name: meta
+    build: .
+    depends_on:
+      - solr
+    ports:
+      - "80:80"
+    links:
+      - solr
+  solr:
+    container_name: solr
+    image: solr:6.2.1
+    ports:
+      - "8983:8983"
