@@ -94,5 +94,17 @@ $(function () {
     $(e.target).find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
 
+  $('#patientname-input').on('paste', function(e) {
+    // cancel paste
+    e.preventDefault();
+    var data = e.originalEvent.clipboardData.getData('Text');
+    var names = data.split(/(?:\r\n|\r|\n)/g);
+    names = names.map(function(x) { return x.trim(); });
+    names = names.filter(function(x) { return x !== '' } );
+    names = names.map(function(x) { return x.replace(/\s/g, "\\^"); });
+    names = names.map(function(x) { return '"' + x + '"' });
+    value = names.join(',');
+    $('#patientname-input').val(value);
+  });
 
 });
