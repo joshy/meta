@@ -41,12 +41,4 @@ RUN pip install -r requirements.txt
 RUN mkdir instance
 COPY scripts/config.cfg /meta/instance
 
-# Import schema
-COPY scripts/schema.json /meta
-RUN curl -X POST -H 'Content-type:application/json' -d @schema.json http://localhost:8983/solr/grouping/schema
-# Import data
-COPY scripts/solr_test_data_mr.csv /meta
-RUN curl "http://localhost:8983/solr/grouping/update/csv?stream.file=/meta/solr_test_data_mr.csv&separator=;&stream.contentType=text/plain;charset=utf-8"
-
-
 CMD ["/usr/bin/supervisord"]
