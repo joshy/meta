@@ -14,7 +14,8 @@ from meta.settings import solr_url
 
 @app.route('/')
 def main():
-    return render_template('search.html', params={'query': '*:*'})
+    return render_template('search.html', version=app.config['VERSION'],
+                                          params={'query': '*:*'})
 
 
 @app.route('/search')
@@ -42,12 +43,15 @@ def search():
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, request.url, params.get('offset', '1'))
-        return render_template('result.html', docs=docs, results=results,
+        return render_template('result.html',
+                               docs=docs,
+                               results=results,
                                facets=facets,
                                payload=payload,
                                facet_url=request.url,
                                params=params,
                                paging=paging,
+                               version=app.config['VERSION'],
                                modalities=params.getlist('Modality'))
     except json.JSONDecodeError:
         return render_template('search.html',
