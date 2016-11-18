@@ -5,7 +5,7 @@ from meta import app
 def solr_url():
     core_name = app.config['SOLR_CORE_NAME']
     hostname = app.config['SOLR_HOSTNAME']
-    return 'http://${0}:8983/solr/{1}/query'.format(hostname, core_name)
+    return 'http://{0}:8983/solr/{1}/query'.format(hostname, core_name)
 
 RESULT_LIMIT = 500
 
