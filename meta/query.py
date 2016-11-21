@@ -1,9 +1,9 @@
 import logging
 from datetime import datetime
 
-import meta.settings
+from meta.settings import RESULT_LIMIT
 
-default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT,
+default_payload = {'offset': 0, 'limit': RESULT_LIMIT,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 10, 'group.ngroups': 'true'},

@@ -9,13 +9,14 @@ from meta.pull import download_series, transfer_series
 from meta.paging import calc
 from meta.facets import prepare_facets
 from meta.grouping import group
-from meta.settings import solr_url
+from meta.solr import solr_url
+from meta.terms import get_data
 
 
 @app.route('/')
 def main():
     return render_template('search.html', version=app.config['VERSION'],
-                                          params={'query': '*:*'})
+                           params={'query': '*:*'})
 
 
 @app.route('/search')
@@ -27,7 +28,7 @@ def search():
     app.logger.debug('Calling Solr with url %s', response.url)
     app.logger.debug('Request body %s', json.dumps(payload))
     try:
-        if 400 == response.status_code or 500 == response.status_code:
+        if response.status_code == 400 or response.status_code == 500:
             result = response.json()
             error = result['error']
             msg = result['error']['msg']
@@ -66,7 +67,6 @@ def download():
     series_list = data.get('data', '')
     dir_name = data.get('dir', '')
     download_series(series_list, dir_name)
-
     return 'OK'
 
 
@@ -75,8 +75,14 @@ def transfer(target):
     app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
     transfer_series(series_list, target)
-
     return 'OK'
+
+
+@app.route('/dashboard')
+def dashboard():
+    app.logger.info("Dashboard called")
+    data = get_data()
+    return render_template('dashboard.html', terms=data.get('terms', ''))
 
 
 @app.route('/settings')
