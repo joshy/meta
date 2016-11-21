@@ -5,11 +5,10 @@
   <h3><a href="/">Pacs Crawler </a></h3>
    <small>&mdash; Search the PACS v{{ version }} &mdash;</small><br>
 </div>
-<div class="col-sm-8">
+<div class="col-sm-7">
 <form id="search-form" action="/search">
   <div class="form-group row">
-    <label for="search-input" class="col-sm-2 col-form-label">Search for</label>
-    <div class="col-sm-8">
+    <div class="col-sm-10">
       <div class="input-group">
         <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="query" value="{{ params.query }}" autofocus>
         <span class="input-group-btn">
@@ -19,10 +18,10 @@
     </div>
   </div>
   <div class="form-group row">
-    <div class="offset-sm-2">
-    <a class="btn" data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
-    <a class="btn" data-toggle="collapse" data-target="#help-details" href="#">Show me some examples</a>
-      </div>
+    <div>
+      <a class="btn" data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
+      <a class="btn" data-toggle="collapse" data-target="#help-details" href="#">Show some examples</a>
+    </div>
   </div>
   {% include 'partials/help.html' %}
   <div id="search-details" class="collapse">
@@ -128,8 +127,11 @@
   </div>
 </form>
 </div>
-<div class="col-sm-2">
-  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="float-xs-right" style="height:44px">
+<div class="col-sm-3">
+  <div class="row">
+  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Universitätsspital Basel"  style="height:44px">
+  <p class="pt-1 mb-0">Klinik für Radiologie und Nuklearmedizin</p>
+  </div>
 </div>
 
 {% endblock %}
