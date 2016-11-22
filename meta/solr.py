@@ -1,4 +1,4 @@
-from meta import app
+from meta.app import app
 
 def solr_url():
     """ Returns the solr url.
