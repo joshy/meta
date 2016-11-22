@@ -5,7 +5,7 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from meta import app
+from meta.app import app
 
 
 LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')

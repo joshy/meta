@@ -1,2 +1,6 @@
 flask
 requests
+pandas
+numpy
+matplotlib
+seaborn

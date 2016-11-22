@@ -4,7 +4,7 @@ import json
 from flask import render_template, request, redirect, url_for
 
 import meta.query
-from meta import app
+from meta.app import app
 from meta.pull import download_series, transfer_series
 from meta.paging import calc
 from meta.facets import prepare_facets
