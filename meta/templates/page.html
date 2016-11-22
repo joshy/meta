@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>PACS Crawler</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/pikaday.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  {% block content %}
+  {% endblock %}
+  <script type=text/javascript src="{{url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/tether.min.js') }}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/moment.min.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/pikaday.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/pikaday.jquery.js') }}"></script>
+  <script src="{{url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

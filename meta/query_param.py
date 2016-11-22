@@ -13,8 +13,8 @@ def set_query_parameter(url, param_name, param_value):
     query_params = parse_qs(query_string)
 
     deleted = False
-    for k, v in query_params.items():
-        if param_value in v:
+    for _, value in query_params.items():
+        if param_value in value:
             deleted = True
 
     if deleted:

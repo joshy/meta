@@ -1,9 +1,9 @@
 import logging
 from datetime import datetime
 
-import meta.settings
+from meta.settings import RESULT_LIMIT
 
-default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT,
+default_payload = {'offset': 0, 'limit': RESULT_LIMIT,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 10, 'group.ngroups': 'true'},
@@ -17,13 +17,13 @@ default_payload = {'offset': 0, 'limit': meta.settings.RESULT_LIMIT,
                              'limit': 100,
                              'facet': {
                                  'Studies': {
-                                    'type': 'terms',
-                                    'field': 'AccessionNumber'
-                                    }
-                                }
+                                     'type': 'terms',
+                                     'field': 'AccessionNumber'
+                                     }
                              }
-                        }
-                   }
+                            }
+                       }
+                  }
 
 
 def query_body(args):
@@ -45,7 +45,8 @@ def _create_filter_query(args):
               _filter('PatientID', args),
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
-              _filter('Modality', args)]
+              _filter('Modality', args),
+              _filter('InstitutionName', args)]
 
     return [x for x in result if x is not None]
 
