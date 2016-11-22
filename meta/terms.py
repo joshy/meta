@@ -1,7 +1,6 @@
-import logging
-import requests
+from operator import itemgetter
+from requests import get
 
-from datetime import datetime
 from meta.solr import solr_terms_url
 
 
@@ -12,5 +11,16 @@ def get_data():
               ('terms.limit', 1000),
               ('wt', 'json')]
 
-    response = requests.get(solr_terms_url(), params=params)
-    return response.json()
+    response = get(solr_terms_url(), params=params)
+    data = response.json()
+    terms = data.get('terms', '')
+    result = []
+    for key, value in terms.items():
+        result.append((key, _to_tuple(value)))
+    sorted(data, key=itemgetter(0))
+
+    return result
+
+
+def _to_tuple(data):
+    return list((data[pos], data[pos+1]) for pos in range(0, len(data) - 2, 2))

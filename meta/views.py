@@ -78,11 +78,11 @@ def transfer(target):
     return 'OK'
 
 
-@app.route('/dashboard')
-def dashboard():
-    app.logger.info("Dashboard called")
+@app.route('/terms')
+def terms():
+    app.logger.info("Terms called")
     data = get_data()
-    return render_template('dashboard.html', terms=data.get('terms', ''))
+    return render_template('terms.html', terms=data)
 
 
 @app.route('/settings')
