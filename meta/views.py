@@ -82,12 +82,12 @@ def transfer(target):
 @app.route('/settings')
 def settings():
     app.logger.info("Settings called")
-    return render_template('settings.html', core_name=app.config['CORE_NAME'])
+    return render_template('settings.html', core_name=app.config['SOLR_CORE_NAME'])
 
 
 @app.route('/settings', methods=['POST'])
 def set_core():
     core_name = request.form['core_name']
     app.logger.info("Setting core to %s", core_name)
-    app.config.update(CORE_NAME=core_name)
+    app.config.update(SOLR_CORE_NAME=core_name)
     return redirect(url_for('main'))
