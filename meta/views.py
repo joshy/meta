@@ -1,5 +1,5 @@
-import requests
 import json
+from requests import get
 
 from flask import render_template, request, redirect, url_for
 
@@ -15,16 +15,18 @@ from meta.terms import get_data
 
 @app.route('/')
 def main():
+    """ Renders the initial page. """
     return render_template('search.html', version=app.config['VERSION'],
                            params={'query': '*:*'})
 
 
 @app.route('/search')
 def search():
+    """ Renders the search results. """
     params = request.args
     payload = meta.query.query_body(params)
     headers = {'content-type': "application/json"}
-    response = requests.get(solr_url(), data=json.dumps(payload), headers=headers)
+    response = get(solr_url(), data=json.dumps(payload), headers=headers)
     app.logger.debug('Calling Solr with url %s', response.url)
     app.logger.debug('Request body %s', json.dumps(payload))
     try:
@@ -44,6 +46,8 @@ def search():
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, request.url, params.get('offset', '1'))
+        demo = app.config['DEMO']
+        print(demo)
         return render_template('result.html',
                                docs=docs,
                                results=results,
@@ -53,7 +57,8 @@ def search():
                                params=params,
                                paging=paging,
                                version=app.config['VERSION'],
-                               modalities=params.getlist('Modality'))
+                               modalities=params.getlist('Modality'),
+                               demo=demo)
     except json.JSONDecodeError:
         return render_template('search.html',
                                params={},
@@ -62,6 +67,7 @@ def search():
 
 @app.route('/download', methods=['POST'])
 def download():
+    """ Ajax post to download series of images. """
     app.logger.info("download called")
     data = request.get_json(force=True)
     series_list = data.get('data', '')
@@ -72,6 +78,7 @@ def download():
 
 @app.route('/transfer/<target>', methods=['POST'])
 def transfer(target):
+    """ Ajax post to transfer series of images to another PACS node. """
     app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
     transfer_series(series_list, target)
@@ -80,6 +87,7 @@ def transfer(target):
 
 @app.route('/terms')
 def terms():
+    """ Renders a page about term information. Only internal use. """
     app.logger.info("Terms called")
     data = get_data()
     return render_template('terms.html', terms=data)
@@ -87,12 +95,14 @@ def terms():
 
 @app.route('/settings')
 def settings():
+    """ Renders a page where the user can change the core to connect to. """
     app.logger.info("Settings called")
     return render_template('settings.html', core_name=app.config['SOLR_CORE_NAME'])
 
 
 @app.route('/settings', methods=['POST'])
 def set_core():
+    """ Changes the core to connect to. """
     core_name = request.form['core_name']
     app.logger.info("Setting core to %s", core_name)
     app.config.update(SOLR_CORE_NAME=core_name)

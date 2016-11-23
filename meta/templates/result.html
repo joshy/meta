@@ -1,8 +1,11 @@
 {% extends "search.html" %}
 
 {% block table %}
-{% include 'partials/transfer-options.html' %}
-{% include 'partials/download-options.html' %}
+
+{% if not demo %}
+  {% include 'partials/transfer-options.html' %}
+  {% include 'partials/download-options.html' %}
+{% endif %}
 
 {% include 'paging.html' %}
 

@@ -20,6 +20,19 @@ There is a `settings.py` file which holds all configuration options to setup
  * Solr Url (default: http://localhost:8983/solr/pacs/query)
  * DCMTK settings (only needed for Download/Transfer)
 
+On the same level as meta, doc and so on directory called `instance` should be
+created with a file called config.cfg. This holds all instance specifig
+configuration options which should not be overwritten by updates.
+An example would be:
+```
+DEBUG=False
+# Don't show transfer and download options
+DEMO=True
+SOLR_HOSTNAME='solr'
+SOLR_CORE_NAME='grouping'
+
+```
+
 
 ### Run
 To run the application run
