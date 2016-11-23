@@ -1,5 +1,5 @@
 # A meta crawler for PACS
-
+[![Build Status](https://api.travis-ci.org/irrwitz/meta.svg?branch=master)](https://travis-ci.org/irrwitz/meta)
 ## Purpose
 This web application lets the user search through a PACS meta data. The data
 needs to be stored on a Apache Solr instance.
@@ -30,7 +30,6 @@ DEBUG=False
 DEMO=True
 SOLR_HOSTNAME='solr'
 SOLR_CORE_NAME='grouping'
-
 ```
 
 
@@ -41,8 +40,21 @@ python runserver.python
 ```
 this will also automatically reload on changes made.
 The application will the accessible on port 5000 with default settings.
+Another option is to use [nodemon](http://nodemon.io/) which also allows to
+reload on changes. The advantage is that even with compile errors the nodemon
+is still able to reload while the flask dev server crashes and needs to be
+manually restarted. To run with nodemon run
+```
+nodemon --exec "python" runserver.py
+```
 
-### Run tests
+
+### Run tests and coverage
 ```
 python -m unittest
+coverate -m unittest
+# generate console reports
+coverage report
+# generate html reports
+coverage html -d coverage
 ```
