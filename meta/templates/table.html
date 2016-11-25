@@ -16,8 +16,8 @@
     {% for entry in doc['by_AccessionNumber'][accessionNumber] %}
     <tr>
       <td><input type="checkbox" name="series"
-                 data-study-id="{{ doc['StudyInstanceUID'] }}"
-                 data-series-id="{{ doc['StudyInstanceUID'] }}">
+                 data-study-id="{{ entry['StudyInstanceUID'] }}"
+                 data-series-id="{{ entry['StudyInstanceUID'] }}">
       </td>
       <td>{{ entry['PatientName'] }} </td>
       <td>{{ entry['Modality'] }} </td>
