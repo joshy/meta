@@ -90,8 +90,9 @@ $(function () {
     $(selector).find('thead tr th input').trigger('click')
   });
 
-  $('li.list-group-item.patient a').on('click', function(e) {
-    $(e.target).find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
+  $('li.list-group-item.patients a').on('click', function(e) {
+    // parent is in because user can click also on icon
+    $(e.target).parent().find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
 
   $('#patientname-input').on('paste', function(e) {
