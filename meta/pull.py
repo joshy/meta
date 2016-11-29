@@ -39,7 +39,7 @@ def download_series(series_list, dir_name):
                   + ' -k StudyInstanceUID=' + study_instance_uid \
                   + ' -k SeriesInstanceUID=' + series_instance_uid
         app.logger.debug('Running command %s', command)
-        FUTURES.append(POOL.submit(command, ()))
+        FUTURES.append(POOL.submit(subprocess.call, command, shell=False))
 
 
 def transfer_series(series_list, target):
@@ -52,4 +52,4 @@ def transfer_series(series_list, target):
         command = transfer_command(target) \
                   + ' -k StudyInstanceUID=' + study_id
         app.logger.debug('Running command %s', command)
-        FUTURES.append(POOL.submit(command, ()))
+        FUTURES.append(POOL.submit(subprocess.call, command, shell=False))
