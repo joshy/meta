@@ -4,7 +4,7 @@ from requests import get
 from meta.solr import solr_terms_url
 
 
-def get_data():
+def get_terms_data():
     params = [('terms.fl', 'StudyDescription'),
               ('terms.fl', 'SeriesDescription'),
               ('terms.fl', 'InstitutionName'),

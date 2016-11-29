@@ -1,16 +1,16 @@
 import json
-from requests import get
+from requests import get, RequestException
 
 from flask import render_template, request, redirect, url_for
 
 import meta.query
 from meta.app import app
-from meta.pull import download_series, transfer_series
+from meta.pull import download_series, transfer_series, status
 from meta.paging import calc
 from meta.facets import prepare_facets
 from meta.grouping import group
 from meta.solr import solr_url
-from meta.terms import get_data
+from meta.terms import get_terms_data
 
 
 @app.route('/')
@@ -26,20 +26,20 @@ def search():
     params = request.args
     payload = meta.query.query_body(params)
     headers = {'content-type': "application/json"}
-    response = get(solr_url(), data=json.dumps(payload), headers=headers)
-    app.logger.debug('Calling Solr with url %s', response.url)
-    app.logger.debug('Request body %s', json.dumps(payload))
     try:
+        response = get(solr_url(), data=json.dumps(payload), headers=headers)
         if response.status_code == 400 or response.status_code == 500:
             result = response.json()
             error = result['error']
             msg = result['error']['msg']
             trace = error.get('trace', '')
-
             return render_template('search.html',
                                    params={},
-                                   error=' Call to Solr failed: ' + msg,
+                                   error='Solr failed: ' + msg,
                                    trace=trace)
+
+        app.logger.debug('Calling Solr with url %s', response.url)
+        app.logger.debug('Request body %s', json.dumps(payload))
         data = response.json()
         docs = data['grouped']['PatientID']
         docs = group(docs)
@@ -47,7 +47,6 @@ def search():
         results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, request.url, params.get('offset', '1'))
         demo = app.config['DEMO']
-        print(demo)
         return render_template('result.html',
                                docs=docs,
                                results=results,
@@ -59,10 +58,10 @@ def search():
                                version=app.config['VERSION'],
                                modalities=params.getlist('Modality'),
                                demo=demo)
-    except json.JSONDecodeError:
+    except RequestException:
         return render_template('search.html',
                                params={},
-                               error='Can\'t decode JSON, is Solr running?')
+                               error='No response from Solr, is it running?')
 
 
 @app.route('/download', methods=['POST'])
@@ -85,11 +84,19 @@ def transfer(target):
     return 'OK'
 
 
+@app.route('/tasks')
+def tasks():
+    """ Renders a status page on the current tasks. A tasks is either
+    to download or to transfer series.
+    """
+    data = status()
+    return render_template('tasks.html', tasks=data)
+
+
 @app.route('/terms')
 def terms():
     """ Renders a page about term information. Only internal use. """
-    app.logger.info("Terms called")
-    data = get_data()
+    data = get_terms_data()
     return render_template('terms.html', terms=data)
 
 
