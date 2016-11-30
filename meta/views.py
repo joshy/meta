@@ -1,9 +1,8 @@
 import json
 from requests import get, RequestException
-
 from flask import render_template, request, redirect, url_for
 
-import meta.query
+from meta.query import query_body
 from meta.app import app
 from meta.pull import download_series, transfer_series, status
 from meta.paging import calc
@@ -24,7 +23,7 @@ def main():
 def search():
     """ Renders the search results. """
     params = request.args
-    payload = meta.query.query_body(params)
+    payload = query_body(params)
     headers = {'content-type': "application/json"}
     try:
         response = get(solr_url(), data=json.dumps(payload), headers=headers)
@@ -77,7 +76,7 @@ def download():
 
 @app.route('/transfer/<target>', methods=['POST'])
 def transfer(target):
-    """ Ajax post to transfer series of images to another PACS node. """
+    """ Ajax post to transfer series of images to <target> PACS node. """
     app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
     transfer_series(series_list, target)
@@ -103,14 +102,15 @@ def terms():
 @app.route('/settings')
 def settings():
     """ Renders a page where the user can change the core to connect to. """
-    app.logger.info("Settings called")
-    return render_template('settings.html', core_name=app.config['SOLR_CORE_NAME'])
+    app.logger.info("settings called")
+    return render_template('settings.html',
+                           core_name=app.config['SOLR_CORE_NAME'])
 
 
 @app.route('/settings', methods=['POST'])
 def set_core():
     """ Changes the core to connect to. """
     core_name = request.form['core_name']
-    app.logger.info("Setting core to %s", core_name)
+    app.logger.info("setting core to %s", core_name)
     app.config.update(SOLR_CORE_NAME=core_name)
     return redirect(url_for('main'))

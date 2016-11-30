@@ -9,7 +9,7 @@
   <div class="dt center pa3">
   {% for (key, value) in terms %}
   <div class="cf fl pa2">
-    <ul class="list pl0 f4 fw6 ml0"><p class="bb mb0">{{ key }}</p>
+    <ul class="list pl0 f4 fw6 ml0"><p class="bb mb0 bw1">{{ key }}</p>
       {% for v in value %}
       <li class="f6 fw4 ml0">
         <a href='search?query=*:*&{{key}}="{{ v[0] }}"' class="link underline-hover navy">{{ v[0] }} <span class="f6 fw6">{{ v[1] }}</span></a>

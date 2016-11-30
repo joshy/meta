@@ -1,25 +1,32 @@
-import collections
 import subprocess
 import os
-import time
-import threading
-import random
 
+from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
 
 from meta.settings import OUTPUT_DIR
 from meta.command import BASE_COMMAND, transfer_command
 from meta.app import app
 
+Status = namedtuple('Status', ['total', 'running', 'done'])
+Task = namedtuple('Tasks', ['accession_number', 'series_number', 'status',
+                            'exception'])
+
 POOL = ThreadPoolExecutor(1)
 FUTURES = []
-Status = collections.namedtuple('Status', ['total', 'running', 'done'])
+DONE_TASKS = []
 
 def status():
-    """ Returns the status on all running tasks. """
-    running = [task for task in FUTURES if task.running()]
-    done = [task for task in FUTURES if task.done()]
-    return Status(total=len(FUTURES), running=len(running), done=len(done))
+    """ Returns all done tasks. """
+    return DONE_TASKS
+
+
+def download_done(future):
+    task = Task(accession_number=future.accession_number,
+                series_number=future.series_number,
+                exception=future.exception(),
+                status='Successful' if future.exception() is None else 'Error')
+    DONE_TASKS.append(task)
 
 
 def download_series(series_list, dir_name):
@@ -34,12 +41,18 @@ def download_series(series_list, dir_name):
     for entry in series_list:
         study_instance_uid = entry['study_id']
         series_instance_uid = entry['series_id']
+        accession_number = entry['accession_number']
+        series_number = entry['series_number']
         command = BASE_COMMAND \
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
                   + ' -k SeriesInstanceUID=' + series_instance_uid
         app.logger.debug('Running command %s', command)
-        FUTURES.append(POOL.submit(subprocess.call, command, shell=False))
+        future = POOL.submit(subprocess.call, command, shell=False)
+        future.accession_number = accession_number
+        future.series_number = series_number
+        future.add_done_callback(download_done)
+        FUTURES.append(future)
 
 
 def transfer_series(series_list, target):
@@ -52,4 +65,5 @@ def transfer_series(series_list, target):
         command = transfer_command(target) \
                   + ' -k StudyInstanceUID=' + study_id
         app.logger.debug('Running command %s', command)
-        FUTURES.append(POOL.submit(subprocess.call, command, shell=False))
+        future = POOL.submit(subprocess.call, command, shell=False)
+        FUTURES.append(future)

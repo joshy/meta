@@ -17,7 +17,9 @@
     <tr>
       <td><input type="checkbox" name="series"
                  data-study-id="{{ entry['StudyInstanceUID'] }}"
-                 data-series-id="{{ entry['SeriesInstanceUID'] }}">
+                 data-series-id="{{ entry['SeriesInstanceUID'] }}"
+                 data-accession-number="{{ entry['AccessionNumber'] }}"
+                 data-series-number="{{ entry['SeriesNumber'] }}">
       </td>
       <td>{{ entry['PatientName'] }} </td>
       <td>{{ entry['Modality'] }} </td>

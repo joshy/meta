@@ -5,10 +5,28 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/tachyons.min.css') }}">
 
 <body>
-  <h1 class="f2 pa2 tc">Tasks</h1>
   <div class="dt center pa3">
-    {{tasks}}
+    <h1 class="f2 pa2 tl">Tasks</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="pa1 bb b--navy bw1 tl">Accession Number</th>
+          <th class="pa1 bb b--navy bw1 tl">Series Number</th>
+          <th class="pa1 bb b--navy bw1 tl">Status</th>
+          <th class="pa1 bb b--navy bw1 tl mw8-ns">Exception</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+        <tr>
+          <td class="pa1 v-top">{{ task['accession_number'] }} </td>
+          <td class="pa1 v-top">{{ task['series_number'] }} </td>
+          <td class="pa1 v-top">{{ task['status'] }} </td>
+          <td class="pa1 mw8-ns v-top">{{ task['exception'] }} </td>
+        </tr>
+         {% endfor %}
+      </tbody>
+    </table>
   </div>
 </body>
-
 </html>

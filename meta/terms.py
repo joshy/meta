@@ -18,7 +18,6 @@ def get_terms_data():
     for key, value in terms.items():
         result.append((key, _to_tuple(value)))
     sorted(data, key=itemgetter(0))
-
     return result
 
 
