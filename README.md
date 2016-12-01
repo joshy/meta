@@ -52,9 +52,11 @@ nodemon --exec "python" runserver.py
 ### Run tests and coverage
 ```
 python -m unittest
-coverate -m unittest
+coverage run -m unittest
+
 # generate console reports
 coverage report
+
 # generate html reports
 coverage html -d coverage
 ```
