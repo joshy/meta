@@ -88,8 +88,13 @@ def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
     """
+    return render_template('tasks.html', version=app.config['VERSION'])
+
+
+@app.route('/tasks-data')
+def tasks_data():
     data = status()
-    return render_template('tasks.html', tasks=data)
+    return render_template('partials/tasks-status.html', tasks=data)
 
 
 @app.route('/terms')
