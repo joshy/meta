@@ -3,30 +3,31 @@ import os
 
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 
 from meta.settings import OUTPUT_DIR
-from meta.command import BASE_COMMAND, transfer_command
+from meta.command import base_command, transfer_command
 from meta.app import app
 
-Status = namedtuple('Status', ['total', 'running', 'done'])
-Task = namedtuple('Tasks', ['accession_number', 'series_number', 'status',
-                            'exception'])
+Task = namedtuple('Tasks', ['accession_number', 'series_number',
+                            'creation_time', 'status', 'exception'])
 
 POOL = ThreadPoolExecutor(1)
 FUTURES = []
-DONE_TASKS = []
 
 def status():
-    """ Returns all done tasks. """
-    return DONE_TASKS
+    """ Returns all done tasks and open tasks as lists.
+    A task is a named tuple.
+    """
+    done_tasks = [future.task for future in FUTURES if future.done()]
+    waiting_tasks = [future.task for future in FUTURES if not future.done()]
+    return (waiting_tasks, done_tasks)
 
 
-def download_done(future):
-    task = Task(accession_number=future.accession_number,
-                series_number=future.series_number,
-                exception=future.exception(),
-                status='Successful' if future.exception() is None else 'Error')
-    DONE_TASKS.append(task)
+def _download_done(future):
+    future.task = future.task._replace(
+        exception=future.exception(),
+        status='Successful' if future.exception() is None else 'Error')
 
 
 def download_series(series_list, dir_name):
@@ -43,15 +44,18 @@ def download_series(series_list, dir_name):
         series_instance_uid = entry['series_id']
         accession_number = entry['accession_number']
         series_number = entry['series_number']
-        command = BASE_COMMAND \
+        command = base_command() \
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
                   + ' -k SeriesInstanceUID=' + series_instance_uid
         app.logger.debug('Running command %s', command)
-        future = POOL.submit(subprocess.call, command, shell=False)
-        future.accession_number = accession_number
-        future.series_number = series_number
-        future.add_done_callback(download_done)
+        future = POOL.submit(subprocess.run, command, shell=False)
+        future.task = Task(accession_number=accession_number,
+                           series_number=series_number,
+                           creation_time=str(datetime.now()),
+                           status=None,
+                           exception=None)
+        future.add_done_callback(_download_done)
         FUTURES.append(future)
 
 
@@ -65,5 +69,5 @@ def transfer_series(series_list, target):
         command = transfer_command(target) \
                   + ' -k StudyInstanceUID=' + study_id
         app.logger.debug('Running command %s', command)
-        future = POOL.submit(subprocess.call, command, shell=False)
+        future = POOL.submit(subprocess.run, command, shell=False)
         FUTURES.append(future)

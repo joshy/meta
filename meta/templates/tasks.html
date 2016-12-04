@@ -6,27 +6,53 @@
 
 <body>
   <div class="dt center pa3">
-    <h1 class="f2 pa2 tl">Tasks</h1>
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="pa1 bb b--navy bw1 tl">Accession Number</th>
-          <th class="pa1 bb b--navy bw1 tl">Series Number</th>
-          <th class="pa1 bb b--navy bw1 tl">Status</th>
-          <th class="pa1 bb b--navy bw1 tl mw8-ns">Exception</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for task in tasks %}
-        <tr>
-          <td class="pa1 v-top">{{ task['accession_number'] }} </td>
-          <td class="pa1 v-top">{{ task['series_number'] }} </td>
-          <td class="pa1 v-top">{{ task['status'] }} </td>
-          <td class="pa1 mw8-ns v-top">{{ task['exception'] }} </td>
-        </tr>
-         {% endfor %}
-      </tbody>
-    </table>
+    <div class="fl pa2">
+      <h2 class="f3 pa2 tl">Waiting Tasks</h2>
+      <table class="table f6">
+        <thead>
+          <tr>
+            <th class="pa1 bb b--navy bw1 tl">Accession Number</th>
+            <th class="pa1 bb b--navy bw1 tl">Series Number</th>
+            <th class="pa1 bb b--navy bw1 tl">Creation time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks[0] %}
+          <tr>
+            <td class="pa1 v-top">{{ task['accession_number'] }} </td>
+            <td class="pa1 v-top">{{ task['series_number'] }} </td>
+            <td class="pa1 v-top">{{ task['creation_time'] }} </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="fl pa2">
+      <h2 class="f3 pa2 tl">Done Tasks</h2>
+      <table class="table f6">
+        <thead>
+          <tr>
+            <th class="pa1 bb b--navy bw1 tl">Accession Number</th>
+            <th class="pa1 bb b--navy bw1 tl">Series Number</th>
+            <th class="pa1 bb b--navy bw1 tl">Creation time</th>
+            <th class="pa1 bb b--navy bw1 tl">Status</th>
+            <th class="pa1 bb b--navy bw1 tl mw8-ns">Exception</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks[1] %}
+          <tr>
+            <td class="pa1 v-top">{{ task['accession_number'] }} </td>
+            <td class="pa1 v-top">{{ task['series_number'] }} </td>
+            <td class="pa1 v-top">{{ task['creation_time'] }} </td>
+            <td class="pa1 v-top">{{ task['status'] }} </td>
+            <td class="pa1 mw8-ns v-top">{{ task['exception'] }} </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
+
 </html>
