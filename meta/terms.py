@@ -4,7 +4,7 @@ from requests import get
 from meta.solr import solr_terms_url
 
 
-def get_data():
+def get_terms_data():
     params = [('terms.fl', 'StudyDescription'),
               ('terms.fl', 'SeriesDescription'),
               ('terms.fl', 'InstitutionName'),
@@ -18,7 +18,6 @@ def get_data():
     for key, value in terms.items():
         result.append((key, _to_tuple(value)))
     sorted(data, key=itemgetter(0))
-
     return result
 
 

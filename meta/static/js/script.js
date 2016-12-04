@@ -22,7 +22,14 @@ $(function () {
       .map(function() {
         var study_id = $(this).attr('data-study-id');
         var series_id =  $(this).attr('data-series-id');
-        result = { "study_id" : study_id, "series_id" : series_id};
+        var accession_number =  $(this).attr('data-accession-number');
+        var series_number =  $(this).attr('data-series-number');
+        result = {
+          "study_id" : study_id,
+          "series_id" : series_id,
+          "accession_number" : accession_number,
+          "series_number": series_number
+        };
         return result;
        })
       .get();
@@ -53,8 +60,8 @@ $(function () {
     }
     var checkedData = getCheckedData();
     var data = {
-     'data':  checkedData,
-     'dir' : dirName
+      'data':  checkedData,
+      'dir' : dirName
     }
 
     $.ajax({
@@ -79,7 +86,6 @@ $(function () {
   }
 
   $('input[name=select-all-accession-number').on('click', function(e) {
-    console.log(e);
     var table = $(e.target).closest('table')
     $("td input:checkbox", table).prop('checked', $(this).prop("checked"));
   });
