@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, shlex
 import os
 
 from collections import namedtuple
@@ -48,8 +48,9 @@ def download_series(series_list, dir_name):
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
                   + ' -k SeriesInstanceUID=' + series_instance_uid
-        app.logger.debug('Running command %s', command)
-        future = POOL.submit(subprocess.run, command, shell=False)
+        args = shlex.split(command)
+        app.logger.debug('Running args %s', args)
+        future = POOL.submit(subprocess.run, args, shell=False)
         future.task = Task(accession_number=accession_number,
                            series_number=series_number,
                            creation_time=str(datetime.now()),
@@ -68,6 +69,7 @@ def transfer_series(series_list, target):
     for study_id in study_ids:
         command = transfer_command(target) \
                   + ' -k StudyInstanceUID=' + study_id
-        app.logger.debug('Running command %s', command)
-        future = POOL.submit(subprocess.run, command, shell=False)
+        args = shlex.split(command)
+        app.logger.debug('Running args %s', args)
+        future = POOL.submit(subprocess.run, args, shell=False)
         FUTURES.append(future)
