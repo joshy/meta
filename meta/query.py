@@ -6,7 +6,7 @@ from meta.settings import RESULT_LIMIT
 default_payload = {'offset': 0, 'limit': RESULT_LIMIT,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
-                              'group.limit': 10, 'group.ngroups': 'true'},
+                              'group.limit': 100, 'group.ngroups': 'true'},
                    'facet':
                        {'SeriesDescription':
                         {'type': 'terms', 'field': 'SeriesDescription'},
