@@ -68,6 +68,10 @@ def download():
     """ Ajax post to download series of images. """
     app.logger.info("download called")
     data = request.get_json(force=True)
+    # list of objects with following keys
+    # "patient_id", "study_id", "series_id",
+    # "accession_number", "series_number"
+    # see script.js
     series_list = data.get('data', '')
     dir_name = data.get('dir', '')
     download_series(series_list, dir_name)

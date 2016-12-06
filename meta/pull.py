@@ -31,15 +31,13 @@ def _download_done(future):
 
 
 def download_series(series_list, dir_name):
-    """ Download the series. """
-    image_folder = os.path.join(os.getcwd(), OUTPUT_DIR, dir_name)
-
-    if not os.path.exists(image_folder):
-        app.logger.debug(
-            "Folder {} does not exists, creating it".format(image_folder))
-        os.makedirs(image_folder)
+    """ Download the series. The folder structure is as follows:
+        MAIN_DOWNLOAD_DIR / USER_DEFINED / PATIENTID / ACCESSION_NUMBER /
+          / SERIES_NUMER
+    """
 
     for entry in series_list:
+        image_folder = _create_image_dir(entry, dir_name)
         patient_id = entry['patient_id']
         study_instance_uid = entry['study_id']
         series_instance_uid = entry['series_id']
@@ -75,3 +73,14 @@ def transfer_series(series_list, target):
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
         FUTURES.append(future)
+
+
+def _create_image_dir(entry, dir_name):
+    patient_id = entry['patient_id']
+    accession_number = entry['accession_number']
+    series_number = entry['series_number']
+    image_folder = os.path.join(OUTPUT_DIR, dir_name, patient_id,
+                                accession_number, series_number)
+    if not os.path.exists(image_folder):
+        os.makedirs(image_folder, exist_ok=True)
+    return image_folder
