@@ -1,5 +1,5 @@
 import json
-from requests import get, RequestException
+from requests import get, post, RequestException
 from flask import render_template, request, redirect, url_for
 
 from meta.query import query_body

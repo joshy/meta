@@ -9,7 +9,7 @@ from meta.settings import OUTPUT_DIR
 from meta.command import base_command, transfer_command
 from meta.app import app
 
-Task = namedtuple('Tasks', ['accession_number', 'series_number',
+Task = namedtuple('Tasks', ['patient_id', 'accession_number', 'series_number',
                             'creation_time', 'status', 'exception'])
 
 POOL = ThreadPoolExecutor(1)
@@ -40,6 +40,7 @@ def download_series(series_list, dir_name):
         os.makedirs(image_folder)
 
     for entry in series_list:
+        patient_id = entry['patient_id']
         study_instance_uid = entry['study_id']
         series_instance_uid = entry['series_id']
         accession_number = entry['accession_number']
@@ -51,7 +52,8 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = Task(accession_number=accession_number,
+        future.task = Task(patient_id=patient_id,
+                           accession_number=accession_number,
                            series_number=series_number,
                            creation_time=str(datetime.now()),
                            status=None,
