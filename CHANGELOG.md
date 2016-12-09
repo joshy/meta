@@ -1,6 +1,9 @@
 # Changelog
 
-## v1.1.1 - 6.12.2016
+## v1.1.2 - 09.12.2016
+Download is now structured by patient_id, accession_number and series_number
+
+## v1.1.1 - 06.12.2016
 Increased group limit from 10 to 100
 
 ## v1.1.0 - 04.12.2016
