@@ -20,11 +20,13 @@ $(function () {
   var getCheckedData = function() {
     return $('input:checked[name=series]')
       .map(function() {
+        var patient_id = $(this).attr('data-patient-id');
         var study_id = $(this).attr('data-study-id');
         var series_id =  $(this).attr('data-series-id');
         var accession_number =  $(this).attr('data-accession-number');
         var series_number =  $(this).attr('data-series-number');
         result = {
+          "patient_id": patient_id,
           "study_id" : study_id,
           "series_id" : series_id,
           "accession_number" : accession_number,
