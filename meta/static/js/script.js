@@ -26,7 +26,7 @@ $(function () {
         var accession_number =  $(this).attr('data-accession-number');
         var series_number =  $(this).attr('data-series-number');
         result = {
-          "patient_id" : patient_id,
+          "patient_id": patient_id,
           "study_id" : study_id,
           "series_id" : series_id,
           "accession_number" : accession_number,

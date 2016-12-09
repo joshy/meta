@@ -5,6 +5,7 @@ PAGING_LINKS = 20
 
 
 def calc(results, url, current):
+    # Int -> String
     limit = RESULT_LIMIT
     pages = results // limit
     if results % limit > 0:

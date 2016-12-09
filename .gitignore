@@ -101,3 +101,6 @@ logs/
 
 # instance configuration
 instance
+
+# default image files
+image_data
