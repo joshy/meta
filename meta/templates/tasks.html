@@ -22,7 +22,7 @@
   });
   function startRefresh() {
     setTimeout(startRefresh, 10000);
-    $.get('/tasksdata',
+    $.get('/tasks/data',
       function(data) {
         $('#container').html(data);
     });

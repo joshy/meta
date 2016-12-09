@@ -95,7 +95,7 @@ def tasks():
     return render_template('tasks.html', version=app.config['VERSION'])
 
 
-@app.route('/tasksdata')
+@app.route('/tasks/data')
 def tasksdata():
     data = status()
     return render_template('partials/tasks-status.html', tasks=data)
