@@ -2,7 +2,7 @@ import subprocess
 import shlex
 import os
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, Future
 
 from meta.settings import OUTPUT_DIR
 from meta.command import base_command, transfer_command
@@ -11,8 +11,8 @@ from meta.app import app
 
 
 POOL = ThreadPoolExecutor(1)
-FUTURES_WAITING = []
-FUTURES_DONE = []
+FUTURES_WAITING = []  # type: List[Future]
+FUTURES_DONE = []  # type: List[Future]
 
 
 def status():

@@ -1,4 +1,4 @@
-from meta.settings import DCMTK_BIN, CONNECTION, TRANSFER_CONNECTION, DCMIN
+from meta.settings import DCMTK_BIN, CONNECTION, DCMIN
 
 
 def base_command():
