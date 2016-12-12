@@ -47,7 +47,7 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = create_download_task(entry)
+        future.task = create_download_task(entry, dir_name)
         future.add_done_callback(_download_done)
         FUTURES_WAITING.append(future)
 

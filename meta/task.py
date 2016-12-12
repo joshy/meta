@@ -5,10 +5,10 @@ from typing import Dict
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 Task = namedtuple('Tasks', ['patient_id', 'accession_number', 'series_number',
                             'creation_time', 'execution_time', 'running_time',
-                            'status', 'exception'])
+                            'dir_name', 'status', 'exception'])
 
 
-def create_download_task(entry: Dict[str, str]) -> Task:
+def create_download_task(entry: Dict[str, str], dir_name: str) -> Task:
     """
     Creates a new download task with all the necessary fields set.
     """
@@ -19,6 +19,7 @@ def create_download_task(entry: Dict[str, str]) -> Task:
     return Task(patient_id=patient_id,
                 accession_number=accession_number,
                 series_number=series_number,
+                dir_name=dir_name,
                 creation_time=str(datetime.now()),
                 execution_time=str(datetime.now()),
                 running_time="0",

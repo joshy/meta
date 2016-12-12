@@ -5,15 +5,17 @@
       <thead>
         <tr>
           <th class="pl0 pa1 bb b--navy bw1 tl">PatientID</th>
-          <th class="pa1 bb b--navy bw1 tl">Accession Nr / Series Nr</th>
-          <th class="pa1 bb b--navy bw1 tl">Creation time</th>
+          <th class="pa1 bb b--navy bw1 tr">Accession No. / Series No.</th>
+          <th class="pa1 bb b--navy bw1 tl">Download folder</th>
+          <th class="pa1 bb b--navy bw1 tr">Creation time</th>
         </tr>
       </thead>
       <tbody>
         {% for task in tasks[0] %}
         <tr>
           <td class="pl0 pa1 v-top">{{ task['patient_id'] }} </td>
-          <td class="pa1 v-top">{{ task['accession_number'] }} / {{ task['series_number'] }}</td>
+          <td class="pa1 v-top tr">{{ task['accession_number'] }} / {{ task['series_number'] }}</td>
+          <td class="pa1 v-top">{{ task['dir_name'] }}</td>
           <td class="pa1 v-top">{{ task['creation_time'] }} </td>
         </tr>
         {% endfor %}
@@ -26,10 +28,9 @@
       <thead>
         <tr>
           <th class="pl0 pa1 bb b--navy bw1 tl">PatientID</th>
-          <th class="pa1 bb b--navy bw1 tl">Accession Nr / Series Nr</th>
-          <th class="pa1 bb b--navy bw1 tl">Running time</th>
-          <th class="pa1 bb b--navy bw1 tl">Execution time</th>
-          <th class="pa1 bb b--navy bw1 tl">Creation time</th>
+          <th class="pa1 bb b--navy bw1 tr">Accession No. / Series No.</th>
+          <th class="pa1 bb b--navy bw1 tl">Download folder</th>
+          <th class="pa1 bb b--navy bw1 tr">Running time</th>
           <th class="pa1 bb b--navy bw1 tl">Status</th>
           <th class="pa1 bb b--navy bw1 tl ">Exception</th>
         </tr>
@@ -39,9 +40,8 @@
         <tr>
           <td class="pl0 pa1 v-top">{{ task['patient_id'] }} </td>
           <td class="pa1 v-top">{{ task['accession_number'] }} / {{ task['series_number'] }}</td>
+          <td class="pa1 v-top">{{ task['dir_name'] }}</td>
           <td class="pa1 v-top">{{ task['running_time'] }} </td>
-          <td class="pa1 v-top">{{ task['execution_time'] }} </td>
-          <td class="pa1 v-top">{{ task['creation_time'] }} </td>
           <td class="pa1 v-top">{{ task['status'] }} </td>
           <td class="pa1  v-top">{{ task['exception'] }} </td>
         </tr>
