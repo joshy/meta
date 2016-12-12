@@ -98,6 +98,10 @@ $(function () {
     $(selector).find('thead tr th input').trigger('click')
   });
 
+  $('input[name=select-all-page').on('click', function(e) {
+    $('input[name=select-all-patient]').trigger('click');
+  });
+
   $('li.list-group-item.patients a').on('click', function(e) {
     // parent is in because user can click also on icon
     $(e.target).parent().find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
@@ -115,5 +119,4 @@ $(function () {
     value = names.join(',');
     $('#patientname-input').val(value);
   });
-
 });

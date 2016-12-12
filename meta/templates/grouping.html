@@ -1,5 +1,8 @@
 <div class="col-xs-9 col-sm-10">
-  Patients found: <em>{{ results }}</em>
+  <div class="border-bottom py-1">
+    <input type="checkbox" name="select-all-page"> Select all
+    <span class="float-xs-right">Patients found: {{ results }}</span>
+  </div>
   <ul class="list-group result">
     {% for doc in docs['groups'] %}
       <li class="list-group-item patients">

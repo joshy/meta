@@ -1,4 +1,4 @@
-RESULT_LIMIT = 500
+RESULT_LIMIT = 100
 
 # DCMTK settings
 DCMIN = '/Applications/dcmtk/dcm.in'

@@ -11,3 +11,7 @@ ul.result li {
     display: table-cell;
     vertical-align: middle;
 }
+
+.border-bottom {
+    border-bottom: 2px solid #ddd;
+}

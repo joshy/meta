@@ -3,31 +3,21 @@ from datetime import datetime
 
 from meta.settings import RESULT_LIMIT
 
-default_payload = {'offset': 0, 'limit': RESULT_LIMIT,
+DEFAULT_PAYLOAD = {'offset': 0, 'limit': RESULT_LIMIT,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
-                              'group.limit': 100, 'group.ngroups': 'true'},
+                              'group.limit': 1000, 'group.ngroups': 'true'},
                    'facet':
                        {'SeriesDescription':
                         {'type': 'terms', 'field': 'SeriesDescription'},
                         'StudyDescription':
-                            {'type': 'terms', 'field': 'StudyDescription'},
-                        'Pivot':
-                            {'type': 'terms', 'field': 'PatientID',
-                             'limit': 100,
-                             'facet': {
-                                 'Studies': {
-                                     'type': 'terms',
-                                     'field': 'AccessionNumber'
-                                     }
-                             }
-                            }
+                            {'type': 'terms', 'field': 'StudyDescription'}
                        }
                   }
 
 
 def query_body(args):
-    body = default_payload.copy()
+    body = DEFAULT_PAYLOAD.copy()
     body['query'] = args.get('query', '*')
     body['offset'] = args.get('offset', '0')
 
