@@ -1,33 +1,33 @@
-import subprocess, shlex
+import subprocess
+import shlex
 import os
 
-from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
 
 from meta.settings import OUTPUT_DIR
 from meta.command import base_command, transfer_command
+from meta.task import create_download_task, finish_download_task
 from meta.app import app
 
-Task = namedtuple('Tasks', ['patient_id', 'accession_number', 'series_number',
-                            'creation_time', 'status', 'exception'])
 
 POOL = ThreadPoolExecutor(1)
-FUTURES = []
+FUTURES_WAITING = []
+FUTURES_DONE = []
+
 
 def status():
     """ Returns all done tasks and open tasks as lists.
     A task is a named tuple.
     """
-    done_tasks = [future.task for future in FUTURES if future.done()]
-    waiting_tasks = [future.task for future in FUTURES if not future.done()]
+    done_tasks = [future.task for future in FUTURES_WAITING]
+    waiting_tasks = [future.task for future in FUTURES_DONE]
     return (waiting_tasks, done_tasks)
 
 
 def _download_done(future):
-    future.task = future.task._replace(
-        exception=future.exception(),
-        status='Successful' if future.exception() is None else 'Error')
+    future.task = finish_download_task(future)
+    FUTURES_WAITING.pop(future)
+    FUTURES_DONE.append(future)
 
 
 def download_series(series_list, dir_name):
@@ -38,11 +38,8 @@ def download_series(series_list, dir_name):
 
     for entry in series_list:
         image_folder = _create_image_dir(entry, dir_name)
-        patient_id = entry['patient_id']
         study_instance_uid = entry['study_id']
         series_instance_uid = entry['series_id']
-        accession_number = entry['accession_number']
-        series_number = entry['series_number']
         command = base_command() \
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
@@ -50,14 +47,9 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = Task(patient_id=patient_id,
-                           accession_number=accession_number,
-                           series_number=series_number,
-                           creation_time=str(datetime.now()),
-                           status=None,
-                           exception=None)
+        future.task = create_download_task(entry)
         future.add_done_callback(_download_done)
-        FUTURES.append(future)
+        FUTURES_WAITING.append(future)
 
 
 def transfer_series(series_list, target):
@@ -72,7 +64,7 @@ def transfer_series(series_list, target):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        FUTURES.append(future)
+        FUTURES_WAITING.append(future)
 
 
 def _create_image_dir(entry, dir_name):
