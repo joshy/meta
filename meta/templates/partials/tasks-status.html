@@ -16,7 +16,7 @@
           <td class="pl0 pa1 v-top">{{ task['patient_id'] }} </td>
           <td class="pa1 v-top tl">{{ task['accession_number'] }} / {{ task['series_number'] }}</td>
           <td class="pa1 v-top">{{ task['dir_name'] }}</td>
-          <td class="pa1 v-top">{{ task['creation_time'] }} </td>
+          <td class="pa1 v-top tr">{{ task['creation_time'] }} </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -41,7 +41,7 @@
           <td class="pl0 pa1 v-top">{{ task['patient_id'] }} </td>
           <td class="pa1 v-top">{{ task['accession_number'] }} / {{ task['series_number'] }}</td>
           <td class="pa1 v-top">{{ task['dir_name'] }}</td>
-          <td class="pa1 v-top">{{ task['running_time'] }} </td>
+          <td class="pa1 v-top tr">{{ task['running_time'] }} </td>
           <td class="pa1 v-top">{{ task['status'] }} </td>
           <td class="pa1  v-top">{{ task['exception'] }} </td>
         </tr>
