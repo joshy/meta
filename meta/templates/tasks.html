@@ -16,12 +16,12 @@
     console.log(sec);
     setInterval(function() {
       sec = sec - 1;
-      if (sec === 0) sec = 10;
+      if (sec === 0) sec = 30;
       $('#timer').html(sec);
     }, 1000);
   });
   function startRefresh() {
-    setTimeout(startRefresh, 10000);
+    setTimeout(startRefresh, 30000);
     $.get('/tasks/data',
       function(data) {
         $('#container').html(data);

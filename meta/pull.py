@@ -11,23 +11,20 @@ from meta.app import app
 
 
 POOL = ThreadPoolExecutor(1)
-FUTURES_WAITING = []  # type: List[Future]
-FUTURES_DONE = []  # type: List[Future]
+FUTURES = []  # type: List[Future]
 
 
 def status():
     """ Returns all done tasks and open tasks as lists.
     A task is a named tuple.
     """
-    done_tasks = [future.task for future in FUTURES_WAITING]
-    waiting_tasks = [future.task for future in FUTURES_DONE]
+    done_tasks = [future.task for future in FUTURES if future.done()]
+    waiting_tasks = [future.task for future in FUTURES if not future.done()]
     return (waiting_tasks, done_tasks)
 
 
 def _download_done(future):
     future.task = finish_download_task(future)
-    FUTURES_WAITING.pop(future)
-    FUTURES_DONE.append(future)
 
 
 def download_series(series_list, dir_name):
@@ -49,7 +46,7 @@ def download_series(series_list, dir_name):
         future = POOL.submit(subprocess.run, args, shell=False)
         future.task = create_download_task(entry, dir_name)
         future.add_done_callback(_download_done)
-        FUTURES_WAITING.append(future)
+        FUTURES.append(future)
 
 
 def transfer_series(series_list, target):
@@ -64,7 +61,7 @@ def transfer_series(series_list, target):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        FUTURES_WAITING.append(future)
+        FUTURES.append(future)
 
 
 def _create_image_dir(entry, dir_name):
