@@ -47,6 +47,7 @@ def download_series(series_list, dir_name):
         future.task = create_download_task(entry, dir_name)
         future.add_done_callback(_download_done)
         FUTURES.append(future)
+    return len(series_list)
 
 
 def transfer_series(series_list, target):

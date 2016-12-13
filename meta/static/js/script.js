@@ -70,8 +70,19 @@ $(function () {
       type: 'POST',
       url: 'download',
       data: JSON.stringify(data),
-      dataType: 'application/json',
-      success: function() { console.log('successfully posted')}
+      dataType: 'json'
+    }).done(function(data) {
+        console.log(data);
+        noty({
+          text: 'Successfully added ' + data.series_length + ' series',
+          layout: 'centerRight',
+          timeout: '3000',
+          closeWith: ['click', 'hover'],
+          type: 'success'
+        });
+    }).fail(function(error) {
+      console.log(error);
+      console.error("Post failed");
     });
   });
 
