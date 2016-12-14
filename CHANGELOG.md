@@ -1,5 +1,10 @@
 # Changelog
 
+## v.1.1.3 - 14.12.2016
+ * Download notification
+ * Concat js files
+ * More informationen on download status
+
 ## v1.1.2 - 09.12.2016
 Download is now structured by patient_id, accession_number and series_number
 
