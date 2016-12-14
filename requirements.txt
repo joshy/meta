@@ -1,2 +1,4 @@
 flask
+Flask-Assets
+jsmin
 requests
