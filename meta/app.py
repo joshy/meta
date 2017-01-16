@@ -3,7 +3,7 @@ from flask_assets import Environment, Bundle
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('meta.default_config')
-app.config.from_pyfile('config.cfg')
+app.config.from_pyfile('config.cfg', silent=True)
 
 # Exposing constants to use
 DEMO = app.config['DEMO']
