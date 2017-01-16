@@ -4,10 +4,9 @@ import os
 
 from concurrent.futures import ThreadPoolExecutor, Future
 
-from meta.settings import OUTPUT_DIR
 from meta.command import base_command, transfer_command
 from meta.task import create_download_task, finish_download_task
-from meta.app import app
+from meta.app import app, OUTPUT_DIR
 
 
 POOL = ThreadPoolExecutor(1)

@@ -1,12 +1,10 @@
-from meta.settings import RESULT_LIMIT
 from meta.query_param import set_query_parameter
 
 PAGING_LINKS = 20
 
 
-def calc(results, url, current):
+def calc(results, url, current, limit=100):
     # Int -> String
-    limit = RESULT_LIMIT
     pages = results // limit
     if results % limit > 0:
         pages += 1

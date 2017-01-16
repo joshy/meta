@@ -1,22 +1,22 @@
-from meta.app import app
 
-def solr_url():
+def solr_url(config):
     """ Returns the solr url.
-    Core name and host are taking from configuration which is in the
-    instance/config.cfg
-    file.
+    Core name and host are taking from configuration which needs to be passed
+    in. Can be a simple dictionary.
     """
-    core_name = app.config['SOLR_CORE_NAME']
-    hostname = app.config['SOLR_HOSTNAME']
-    return 'http://{0}:8983/solr/{1}/query'.format(hostname, core_name)
+    return _solr_core_url(config) + 'query'
 
 
-def solr_terms_url():
+def solr_terms_url(config):
     """ Returns the solr base url.
-    Core name and host are taking from configuration which is in the
-    instance/config.cfg
-    file.
+    Core name and host are taking from configuration which needs to be passed
+    in. Can be a simple dictionary.
     """
-    core_name = app.config['SOLR_CORE_NAME']
-    hostname = app.config['SOLR_HOSTNAME']
-    return 'http://{0}:8983/solr/{1}/terms'.format(hostname, core_name)
+    return _solr_core_url(config) + 'terms'
+
+
+
+def _solr_core_url(config):
+    core_name = config['SOLR_CORE_NAME']
+    hostname = config['SOLR_HOSTNAME']
+    return 'http://{}:8983/solr/{}/'.format(hostname, core_name)

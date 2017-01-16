@@ -2,10 +2,10 @@ import json
 from requests import get, RequestException
 from flask import render_template, request, redirect, url_for
 
+from meta.app import app, VERSION, DEMO, RESULT_LIMIT
 from meta.query import query_body
-from meta.app import app
-from meta.pull import download_series, transfer_series, status
 from meta.paging import calc
+from meta.pull import download_series, transfer_series, status
 from meta.facets import prepare_facets
 from meta.grouping import group
 from meta.solr import solr_url
@@ -16,7 +16,7 @@ from meta.terms import get_terms_data
 def main():
     """ Renders the initial page. """
     return render_template('search.html',
-                           version=app.config['VERSION'],
+                           version=VERSION,
                            params={'query': '*:*'})
 
 
@@ -24,10 +24,10 @@ def main():
 def search():
     """ Renders the search results. """
     params = request.args
-    payload = query_body(params)
+    payload = query_body(params, RESULT_LIMIT)
     headers = {'content-type': "application/json"}
     try:
-        response = get(solr_url(), data=json.dumps(payload), headers=headers)
+        response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
         if response.status_code == 400 or response.status_code == 500:
             result = response.json()
             error = result['error']
@@ -45,7 +45,7 @@ def search():
         docs = group(docs)
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
-        paging = calc(results, request.url, params.get('offset', '1'))
+        paging = calc(results, request.url, params.get('offset', '1'), RESULT_LIMIT)
         demo = app.config['DEMO']
         return render_template('result.html',
                                docs=docs,
@@ -107,20 +107,3 @@ def terms():
     """ Renders a page about term information. Only internal use. """
     data = get_terms_data()
     return render_template('terms.html', terms=data)
-
-
-@app.route('/settings')
-def settings():
-    """ Renders a page where the user can change the core to connect to. """
-    app.logger.info("settings called")
-    return render_template('settings.html',
-                           core_name=app.config['SOLR_CORE_NAME'])
-
-
-@app.route('/settings', methods=['POST'])
-def set_core():
-    """ Changes the core to connect to. """
-    core_name = request.form['core_name']
-    app.logger.info("setting core to %s", core_name)
-    app.config.update(SOLR_CORE_NAME=core_name)
-    return redirect(url_for('main'))

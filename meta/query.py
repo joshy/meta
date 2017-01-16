@@ -1,9 +1,8 @@
 import logging
 from datetime import datetime
 
-from meta.settings import RESULT_LIMIT
 
-DEFAULT_PAYLOAD = {'offset': 0, 'limit': RESULT_LIMIT,
+DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 1000, 'group.ngroups': 'true'},
@@ -16,8 +15,9 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': RESULT_LIMIT,
                   }
 
 
-def query_body(args):
+def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
+    body['limit'] = limit
     body['query'] = args.get('query', '*')
     body['offset'] = args.get('offset', '0')
 

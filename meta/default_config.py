@@ -21,3 +21,9 @@ SOLR_CORE_NAME = 'grouping'
 # DCMTK settings
 DCMIN = '/Applications/dcmtk/dcm.in'
 DCMTK_BIN = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/'
+
+AE_TITLE = 'SNOWFOX'
+AE_CALLED = 'AE_ARCH2_4PR'
+PEER_ADDRESS = '10.5.66.74'
+PEER_PORT = 104
+INCOMING_PORT = 11110
