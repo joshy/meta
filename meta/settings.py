@@ -1,9 +1,12 @@
-RESULT_LIMIT = 100
+# Interface to configuration options
+from meta.app import app
+
+RESULT_LIMIT = app.config['RESULT_LIMIT']
 
 # DCMTK settings
-DCMIN = '/Applications/dcmtk/dcm.in'
-DCMTK_BIN = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/'
+DCMTK_BIN = app.config['DCMTK_BIN']
+DCMIN = app.config['DCMIN']
+AE_TITLE = app.config['AE_TITLE']
+CONNECTION = '-aet ' + AE_TITLE + ' -aec AE_ARCH2_4PR 10.5.66.74 104 +P 11112 ' + DCMIN
 
-CONNECTION = '-aet YETI  -aec AE_ARCH2_4PR 10.5.66.74 104 +P 11112 ' + DCMIN
-TRANSFER_CONNECTION = '-aem SRSYVMS01 -aet MC526512B -aec GEPACS 10.247.12.145 4100 +P 4101 ' + DCMIN
-OUTPUT_DIR = 'image_data'
+OUTPUT_DIR = app.config['image_data']

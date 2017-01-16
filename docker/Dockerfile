@@ -1,6 +1,6 @@
 FROM python:3.5
 
-MAINTAINER irrwitz <j.cyriac@gmail.com>
+MAINTAINER Joshy Cyriac <j.cyriac@gmail.com>
 
 # Install uWSGI
 RUN pip install uwsgi
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y supervisor \
 && rm -rf /var/lib/apt/lists/*
 
 # Clone latest from master
-RUN git clone  https://github.com/irrwitz/meta.git
+RUN git clone  https://github.com/joshy/meta.git
 WORKDIR /meta
 RUN pip install -r requirements.txt
 RUN pip install -r requirements-notebooks.txt
@@ -41,7 +41,7 @@ COPY scripts/config.cfg /meta/instance
 COPY scripts/nginx.conf /etc/nginx/conf.d/
 
 # Copy the base uWSGI ini file to enable default dynamic uwsgi process number
-COPY scripts/uwsgi.ini  /etc/uwsgi/
+COPY scripts/uwsgi.ini /etc/uwsgi/
 
 
 # Custom Supervisord config

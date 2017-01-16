@@ -15,7 +15,8 @@ from meta.terms import get_terms_data
 @app.route('/')
 def main():
     """ Renders the initial page. """
-    return render_template('search.html', version=app.config['VERSION'],
+    return render_template('search.html',
+                           version=app.config['VERSION'],
                            params={'query': '*:*'})
 
 

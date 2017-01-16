@@ -1,6 +1,6 @@
 FROM solr:6.2.1
 
-MAINTAINER irrwitz <j.cyriac@gmail.com>
+MAINTAINER Joshy Cyriac <j.cyriac@gmail.com>
 
 # Copy schema json and test data
 COPY scripts/schema.json /opt/solr

@@ -11,7 +11,8 @@ The application container runs nginx, uwsgi and the application. All of those
 is supervised with supervisord.
 
 ## Setup
-To use it, docker-compose needs to be installed. To run it use
+To use it, docker-compose (version needs to be > 1.4.0) needs to be installed.
+To run it use
 ```
 docker-compose up
 ```
@@ -32,7 +33,7 @@ curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose
 sudo mv ./docker-compose /usr/bin/docker-compose
 sudo chmod +x /usr/bin/docker-compose
 sudo yum install -y git
-git clone https://github.com/irrwitz/meta.git
+git clone https://github.com/joshy/meta.git
 cd meta/docker/
 docker-compose up -d
 ```
