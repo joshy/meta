@@ -1,5 +1,5 @@
 # A meta crawler for PACS
-[![Build Status](https://api.travis-ci.org/irrwitz/meta.svg?branch=master)](https://travis-ci.org/irrwitz/meta)
+[![Build Status](https://api.travis-ci.org/joshy/meta.svg?branch=master)](https://travis-ci.org/joshy/meta)
 ## Purpose
 This web application lets the user search through a PACS meta data. The data
 needs to be stored on a Apache Solr instance.
