@@ -104,3 +104,6 @@ instance
 
 # default image files
 image_data
+
+# csv data files
+csv-data
