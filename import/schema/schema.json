@@ -1,0 +1,85 @@
+{
+  "add-field":[{
+     "name":"AccessionNumber",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+  {
+     "name":"BodyPartExamined",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+  {
+     "name":"InstitutionName",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+  {
+     "name":"Modality",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"PatientBirthDate",
+     "multiValued":"false",
+     "type":"tlongs"},
+{
+     "name":"PatientID",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"PatientName",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"PatientSex",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"ReferringPhysicianName",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"SeriesDescription",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"SeriesInstanceUID",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+{
+     "name":"StudyDate",
+     "multiValued":"false",
+     "type":"tlongs" },
+{
+     "name":"StudyDescription",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+   {
+     "name":"StudyID",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+   {
+     "name":"InstanceAvailability",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+   {
+     "name":"SeriesNumber",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true },
+   {
+     "name":"StudyInstanceUID",
+     "type":"strings",
+     "multiValued":"false",
+     "docValues":true }]
+}

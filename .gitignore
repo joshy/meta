@@ -105,5 +105,6 @@ instance
 # default image files
 image_data
 
-# csv data files
-csv-data
+# data import folders
+import/data
+import/data-*/
