@@ -37,6 +37,24 @@ $(function () {
       .get();
   };
 
+  /**
+   * Whenever a user clicks on a facet links the field in the search
+   * form get populated by the clicked facet value. The form is then
+   * posted to the server. If there is only one facet, this means it is
+   * selected and with a click it will remove the facet.
+   */
+  $('.facet-link').on('click', function(e) {
+    input_name = $(this).data('name');
+    input_value = $(this).data('value');
+    selected = $(this).data('selected');
+    if (selected === 'True') {
+      $('input[name="' + input_name + '"]').val('')
+    } else {
+      $('input[name="' + input_name + '"]').val('"' + input_value + '"')
+    }
+    $('#search-form').submit();
+  });
+
   $('#transfer-button').on('click', function(e) {
     e.preventDefault();
     var data = getCheckedData();
@@ -118,6 +136,12 @@ $(function () {
     $(e.target).parent().find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
 
+  /**
+   * Pasting the names will escape them automatically. This means that a
+   * name like Jon Doe will be become "John\^Doe". In the PACS the whitespace
+   * is replace by a '^'. The usecase is that people are coming with lists of
+   * names and they don't need to remember how to escape it properly.
+   */
   $('#patientname-input').on('paste', function(e) {
     // cancel paste
     e.preventDefault();
