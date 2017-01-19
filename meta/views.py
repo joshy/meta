@@ -20,10 +20,10 @@ def main():
                            params={'query': '*:*'})
 
 
-@app.route('/search')
+@app.route('/search', methods=['POST', 'GET'])
 def search():
     """ Renders the search results. """
-    params = request.args
+    params = request.form
     payload = query_body(params, RESULT_LIMIT)
     headers = {'content-type': "application/json"}
     try:
