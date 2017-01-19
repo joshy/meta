@@ -5,7 +5,7 @@ from meta.app import app
 class TestCommand(unittest.TestCase):
 
     def test_base_command(self):
-        expected = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/movescu -v -S -k QueryRetrieveLevel=SERIES -aet YETI -aec AE_CALLED 127.0.0.1 104 +P 11110 /Applications/dcmtk/dcm.in'
+        expected = '/Applications/dcmtk/dcmtk-3.6.0-mac-i686-dynamic/bin/movescu -v -S -k QueryRetrieveLevel=SERIES -aet AE_TITLE -aec AE_CALLED 127.0.0.1 104 +P 11110 /Applications/dcmtk/dcm.in'
         self.assertEqual(expected, base_command())
 
     def test_tranfer(self):
