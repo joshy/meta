@@ -55,6 +55,12 @@ $(function () {
     $('#search-form').submit();
   });
 
+  $('.page-link').on('click', function(e) {
+    page = $(this).data('page');
+    $('input[name="offset"]').val(page);
+    $('#search-form').submit();
+  });
+
   $('#transfer-button').on('click', function(e) {
     e.preventDefault();
     var data = getCheckedData();

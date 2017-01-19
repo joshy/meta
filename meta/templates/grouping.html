@@ -15,7 +15,8 @@
       </li>
       <ul class="list-group small collapse" id="{{ doc['groupValue'] }}">
         {% for accessionNumber in doc['by_AccessionNumber'] %}
-          <li class="list-group-item">Accession Number: {{ accessionNumber }}
+          <li class="list-group-item">
+            <div class="accession_number" data-accession-number="{{ accessionNumber }}">Accession Number: {{ accessionNumber }}</div>
             {% include 'table.html' %}
           </li>
         {% endfor %}

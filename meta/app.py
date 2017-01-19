@@ -18,8 +18,8 @@ AE_CALLED = app.config['AE_CALLED']
 PEER_ADDRESS = app.config['PEER_ADDRESS']
 PEER_PORT = app.config['PEER_PORT']
 INCOMING_PORT = app.config['INCOMING_PORT']
-CONNECTION = '-aet {} -aec {} {} {} +P {} {}'.format(AE_TITLE, AE_CALLED, \
-             PEER_ADDRESS, PEER_PORT, INCOMING_PORT, DCMIN)
+CONNECTION = '-aet {} -aec {} {} {} +P {}'.format(AE_TITLE, AE_CALLED, \
+             PEER_ADDRESS, PEER_PORT, INCOMING_PORT)
 
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
 

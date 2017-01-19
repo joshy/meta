@@ -17,6 +17,7 @@ def main():
     """ Renders the initial page. """
     return render_template('search.html',
                            version=VERSION,
+                           offset=0,
                            params={'query': '*:*'})
 
 
@@ -35,6 +36,7 @@ def search():
             trace = error.get('trace', '')
             return render_template('search.html',
                                    params={},
+                                   offset=1,
                                    error='Solr failed: ' + msg,
                                    trace=trace)
 
@@ -45,7 +47,7 @@ def search():
         docs = group(docs)
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
-        paging = calc(results, request.url, params.get('offset', '1'), RESULT_LIMIT)
+        paging = calc(results, params.get('offset', '1'), RESULT_LIMIT)
         demo = app.config['DEMO']
         return render_template('result.html',
                                docs=docs,
@@ -57,6 +59,7 @@ def search():
                                paging=paging,
                                version=app.config['VERSION'],
                                modalities=params.getlist('Modality'),
+                               offset=params.get('offset', '0'),
                                demo=demo)
     except RequestException:
         return render_template('search.html',

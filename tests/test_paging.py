@@ -4,10 +4,15 @@ from meta.paging import calc
 
 class TestQueryStuff(unittest.TestCase):
     def test_update_url1(self):
-        result = calc(200, 'http://localhost', '1', 100)
+        result = calc(200, '1', 100)
         self.assertEqual(2, len(result))
+        self.assertEqual(True, result[0][1])
 
     def test_update_url2(self):
-        result = calc(1200, 'http://localhost', '1', 100)
-        self.assertEqual('http://localhost?offset=100', result[1][1])
+        result = calc(1200, '1', 100)
+        self.assertEqual(False, result[1][1])
         self.assertEqual(12, len(result))
+
+    def test_active(self):
+        result = calc(1200, '5', 100)
+        self.assertEqual(True, result[4][1])
