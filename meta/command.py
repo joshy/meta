@@ -23,4 +23,4 @@ def transfer_command(target):
 def _transfer_target(target):
     node = TARGET_MAPPING[target]
     return '-aem {} -aet MC526512B -aec GE ' \
-           '10.247.12.5 4100 +P 4101 {}'.format(node, DCMIN)
+           '10.247.12.5 4100 +P 4101'.format(node)

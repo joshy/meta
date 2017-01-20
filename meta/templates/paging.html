@@ -6,7 +6,7 @@
           {% if page[2] and loop.first %}
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Next</span>
-          {% elif loop.last %}
+          {% elif not page[3] and loop.last %}
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           {% else %}
