@@ -4,14 +4,14 @@ from requests import get
 from meta.solr import solr_terms_url
 
 
-def get_terms_data():
+def get_terms_data(config):
     params = [('terms.fl', 'StudyDescription'),
               ('terms.fl', 'SeriesDescription'),
               ('terms.fl', 'InstitutionName'),
               ('terms.limit', 1000),
               ('wt', 'json')]
 
-    response = get(solr_terms_url(), params=params)
+    response = get(solr_terms_url(config), params=params)
     data = response.json()
     terms = data.get('terms', '')
     result = []

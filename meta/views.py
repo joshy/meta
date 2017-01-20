@@ -108,5 +108,5 @@ def tasksdata():
 @app.route('/terms')
 def terms():
     """ Renders a page about term information. Only internal use. """
-    data = get_terms_data()
+    data = get_terms_data(app.config)
     return render_template('terms.html', terms=data)

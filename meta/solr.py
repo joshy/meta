@@ -15,7 +15,6 @@ def solr_terms_url(config):
     return _solr_core_url(config) + 'terms'
 
 
-
 def _solr_core_url(config):
     core_name = config['SOLR_CORE_NAME']
     hostname = config['SOLR_HOSTNAME']
