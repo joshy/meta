@@ -1,5 +1,11 @@
 # Changelog
 
+## v.1.2.0 - xx.01.2017
+ * Now a HTTP post is sent to the backend, HTTP get still works. This was
+   changed because a lot of the time, people come with lists of hundreds of
+   patients to search for. With a 'GET' the urls get too long. That's why
+   it was changed from 'GET' to 'POST'
+
 ## v.1.1.3 - 14.12.2016
  * Download notification
  * Concat js files
