@@ -18,7 +18,7 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    body['query'] = args.get('query', '*')
+    body['query'] = args.get('query', '*:*')
     body['offset'] = args.get('offset', '0')
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))

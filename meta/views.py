@@ -36,7 +36,7 @@ def search():
             trace = error.get('trace', '')
             return render_template('search.html',
                                    params={},
-                                   offset=1,
+                                   offset='0',
                                    error='Solr failed: ' + msg,
                                    trace=trace)
 
@@ -47,7 +47,7 @@ def search():
         docs = group(docs)
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
-        paging = calc(results, params.get('offset', '1'), RESULT_LIMIT)
+        paging = calc(results, params.get('offset', '0'), RESULT_LIMIT)
         demo = app.config['DEMO']
         return render_template('result.html',
                                docs=docs,
