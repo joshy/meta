@@ -56,8 +56,7 @@ def transfer_series(series_list, target):
     app.logger.debug('Transferring ids: %s', study_ids)
 
     for study_id in study_ids:
-        command = transfer_command(target) \
-                  + ' -k StudyInstanceUID=' + study_id
+        command = transfer_command(target, study_id)
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
