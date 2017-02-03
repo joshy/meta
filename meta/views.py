@@ -57,7 +57,7 @@ def search():
                                facet_url=request.url,
                                params=params,
                                paging=paging,
-                               version=app.config['VERSION'],
+                               version=VERSION,
                                modalities=params.getlist('Modality'),
                                offset=params.get('offset', '0'),
                                demo=demo)
@@ -91,12 +91,24 @@ def transfer(target):
     return 'OK'
 
 
+@app.route('/transfers')
+def transfers():
+    """ Renders the status of the transfers. """
+    return render_template('transfers.html', version=VERSION)
+
+
+@app.route('/transfers/data')
+def transfersdata():
+    data = status()
+    return render_template('partials/transfers-status.html', tasks=data)
+
+
 @app.route('/tasks')
 def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
     """
-    return render_template('tasks.html', version=app.config['VERSION'])
+    return render_template('tasks.html', version=VERSION)
 
 
 @app.route('/tasks/data')

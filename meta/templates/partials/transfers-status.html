@@ -1,0 +1,47 @@
+<div class="pa3 ph5-ns dt db dt-ns w-100">
+  <div class="w-40 fl db">
+    <h2 class="f3 tl">Waiting Transfers <span class="f3 fr">{{tasks[0]|length}}</span></h2>
+    <table class="w-100 table f6">
+      <thead>
+        <tr>
+          <th class="pa1 bb b--navy bw1 tl">StudyID</th>
+          <th class="pa1 bb b--navy bw1 tr">Creation time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks[0] %}
+        <tr>
+          <td class="pl0 pa1 v-top">{{ task['study_id'] }} </td>
+          <td class="pa1 v-top tr">{{ task['creation_time'] }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="pl4 w-60 fl db">
+    <h2 class="f3 tl">Done Transfers <span class="f3 fr">{{tasks[1]|length}}</span></h2>
+    <table class="w-100 table f6">
+      <thead>
+        <tr>
+          <th class="pl0 pa1 bb b--navy bw1 tl">StudyID</th>
+          <th class="pa1 bb b--navy bw1 tr">Running time</th>
+          <th class="pa1 bb b--navy bw1 tl">Status</th>
+          <th class="pa1 bb b--navy bw1 tl">Exception</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks[1] %}
+        <tr>
+          <td class="pl0 pa1 v-top">{{ task['study_id'] }} </td>
+          <td class="pa1 v-top tr">{{ task['running_time'] }} </td>
+          <td class="pa1 v-top">{{ task['status'] }} </td>
+          <td class="pa1  v-top">{{ task['exception'] }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="fixed bottom-0 right-0 fr f6 pa2">
+  Reloads in <span id="timer">10</span>s
+</div>

@@ -7,8 +7,12 @@ Task = namedtuple('Tasks', ['patient_id', 'accession_number', 'series_number',
                             'creation_time', 'execution_time', 'running_time',
                             'dir_name', 'status', 'exception'])
 
+TransferTask = namedtuple('TransferTask',
+                          ['study_id', 'creation_time', 'execution_time',
+                           'running_time', 'status', 'exception'])
 
-def create_download_task(entry: Dict[str, str], dir_name: str) -> Task:
+
+def download_task(entry: Dict[str, str], dir_name: str) -> Task:
     """
     Creates a new download task with all the necessary fields set.
     """
@@ -27,7 +31,7 @@ def create_download_task(entry: Dict[str, str], dir_name: str) -> Task:
                 exception=None)
 
 
-def finish_download_task(future):
+def finish_task(future):
     """
     Returns a new task with calculated execution times.
     """
@@ -36,6 +40,18 @@ def finish_download_task(future):
         running_time=_calculate_running_time(future.task),
         exception=future.exception(),
         status='Successful' if future.exception() is None else 'Error')
+
+
+def transfer_task(study_id) -> TransferTask:
+    """
+    Creates a new transfer task with all the necessary fields set.
+    """
+    return TransferTask(study_id=study_id,
+                        creation_time=str(datetime.now()),
+                        execution_time=str(datetime.now()),
+                        running_time="0",
+                        status=None,
+                        exception=None)
 
 
 def _calculate_running_time(task):

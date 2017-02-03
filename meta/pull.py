@@ -5,12 +5,19 @@ import os
 from concurrent.futures import ThreadPoolExecutor, Future
 
 from meta.command import base_command, transfer_command
-from meta.task import create_download_task, finish_download_task
+from meta.task import download_task, transfer_task, finish_task
 from meta.app import app, OUTPUT_DIR
 
 
 POOL = ThreadPoolExecutor(1)
 FUTURES = []  # type: List[Future]
+FUTURES_TRANSFER = []
+
+
+def transfer_status():
+    done_tasks = [future.task for future in FUTURES_TRANSFER if future.done()]
+    waiting_tasks = [future.task for future in FUTURES_TRANSFER if not future.done()]
+    return (waiting_tasks, done_tasks)
 
 
 def status():
@@ -23,7 +30,7 @@ def status():
 
 
 def _download_done(future):
-    future.task = finish_download_task(future)
+    future.task = finish_task(future)
 
 
 def download_series(series_list, dir_name):
@@ -43,7 +50,7 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = create_download_task(entry, dir_name)
+        future.task = download_task(entry, dir_name)
         future.add_done_callback(_download_done)
         FUTURES.append(future)
     return len(series_list)
@@ -60,7 +67,8 @@ def transfer_series(series_list, target):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        FUTURES.append(future)
+        future.task = transfer_task(study_id)
+        FUTURES_TRANSFER.append(future)
 
 
 def _create_image_dir(entry, dir_name):
