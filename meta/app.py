@@ -7,7 +7,7 @@ app.config.from_pyfile('config.cfg', silent=True)
 
 # Exposing constants to use
 DEMO = app.config['DEMO']
-VERSION = app.config['VERSION'] = '1.3.0'
+VERSION = app.config['VERSION'] = '1.3.1'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
 # DCMTK settings
@@ -18,8 +18,7 @@ AE_CALLED = app.config['AE_CALLED']
 PEER_ADDRESS = app.config['PEER_ADDRESS']
 PEER_PORT = app.config['PEER_PORT']
 INCOMING_PORT = app.config['INCOMING_PORT']
-CONNECTION = '-aet {} -aec {} {} {} +P {}'.format(AE_TITLE, AE_CALLED, \
-             PEER_ADDRESS, PEER_PORT, INCOMING_PORT)
+
 
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
 

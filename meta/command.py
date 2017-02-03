@@ -1,4 +1,9 @@
-from meta.app import DCMTK_BIN, CONNECTION, DCMIN, AE_TITLE
+from meta.app import DCMTK_BIN, DCMIN, AE_TITLE, AE_CALLED, \
+                     PEER_PORT, INCOMING_PORT, PEER_ADDRESS
+
+
+CONNECTION = '-aet {} -aec {} {} {} +P {}'.format(AE_TITLE, AE_CALLED, \
+             PEER_ADDRESS, PEER_PORT, INCOMING_PORT)
 
 
 def base_command():
@@ -14,6 +19,12 @@ TARGET_MAPPING = {
 }
 
 
+def _transfer_part(node, study_id):
+    return '-aem {} -aet {} -aec {} {} {} +P {} -k StudyInstanceUID={} {}' \
+                        .format(node, AE_TITLE, AE_CALLED, PEER_ADDRESS, \
+                        PEER_PORT, INCOMING_PORT, study_id, DCMIN)
+
+
 def transfer_command(target, study_id):
     """ Constructs the first part of the transfer command to a PACS node. """
     return DCMTK_BIN + 'movescu -v -S ' \
@@ -22,6 +33,4 @@ def transfer_command(target, study_id):
 
 def _transfer_target(target, study_id):
     node = TARGET_MAPPING[target]
-    return '-aem {} -aet {} -aec GE ' \
-           '10.247.12.5 4100 +P 4101' \
-           ' -k StudyInstanceUID={} {}'.format(node, AE_TITLE, study_id, DCMIN)
+    return _transfer_part(node, study_id)
