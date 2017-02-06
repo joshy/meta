@@ -61,7 +61,7 @@ $(function () {
     $('#search-form').submit();
   });
 
-  $('#transfer-button').on('click', function(e) {
+  $('#transfer-button').on('click', function (e) {
     e.preventDefault();
     var data = getCheckedData();
     var jsonData = JSON.stringify(data);
@@ -70,12 +70,22 @@ $(function () {
       type: 'POST',
       url: 'transfer/' + target,
       data: jsonData,
-      dataType: 'application/json',
-      success: function() { console.log('successfully posted')}
+      dataType: 'application/json'
+    }).done(function (data) {
+      noty({
+        text: 'Successfully added ' + data.series_length + ' series',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'success'
+      });
+    }).fail(function (error) {
+      console.log(error);
+      console.error("Post failed");
     });
   });
 
-  $('#download-button').on('click', function(e) {
+  $('#download-button').on('click', function (e) {
     e.preventDefault();
     dirName = $('#download-dir').val();
     if (!dirName) {
@@ -86,8 +96,8 @@ $(function () {
     }
     var checkedData = getCheckedData();
     var data = {
-      'data':  checkedData,
-      'dir' : dirName
+      'data': checkedData,
+      'dir': dirName
     }
 
     $.ajax({
@@ -95,16 +105,15 @@ $(function () {
       url: 'download',
       data: JSON.stringify(data),
       dataType: 'json'
-    }).done(function(data) {
-        console.log(data);
-        noty({
-          text: 'Successfully added ' + data.series_length + ' series',
-          layout: 'centerRight',
-          timeout: '3000',
-          closeWith: ['click', 'hover'],
-          type: 'success'
-        });
-    }).fail(function(error) {
+    }).done(function (data) {
+      noty({
+        text: 'Successfully added ' + data.series_length + ' series',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'success'
+      });
+    }).fail(function (error) {
       console.log(error);
       console.error("Post failed");
     });
