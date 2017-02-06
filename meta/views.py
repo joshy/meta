@@ -87,8 +87,8 @@ def transfer(target):
     """ Ajax post to transfer series of images to <target> PACS node. """
     app.logger.info("transfer called and sending to %s", target)
     series_list = request.get_json(force=True)
-    transfer_series(series_list, target)
-    return 'OK'
+    study_size = transfer_series(series_list, target)
+    return study_size
 
 
 @app.route('/transfers')

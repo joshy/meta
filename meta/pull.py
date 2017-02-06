@@ -69,6 +69,7 @@ def transfer_series(series_list, target):
         future = POOL.submit(subprocess.run, args, shell=False)
         future.task = transfer_task(study_id)
         FUTURES_TRANSFER.append(future)
+    return len(study_ids)
 
 
 def _create_image_dir(entry, dir_name):

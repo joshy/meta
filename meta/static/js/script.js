@@ -64,16 +64,15 @@ $(function () {
   $('#transfer-button').on('click', function (e) {
     e.preventDefault();
     var data = getCheckedData();
-    var jsonData = JSON.stringify(data);
     var target = $("input[type='radio']:checked").val();
     $.ajax({
       type: 'POST',
       url: 'transfer/' + target,
-      data: jsonData,
-      dataType: 'application/json'
+      data: JSON.stringify(data),
+      dataType: 'json'
     }).done(function (data) {
       noty({
-        text: 'Successfully added ' + data.series_length + ' series',
+        text: 'Successfully added ' + data + ' studies to transfer',
         layout: 'centerRight',
         timeout: '3000',
         closeWith: ['click', 'hover'],
