@@ -90,7 +90,7 @@ def transfer():
     series_list = data.get('data', '')
     app.logger.info("transfer called and sending to %s", target)
     study_size = transfer_series(series_list, target)
-    return study_size
+    return str(study_size)
 
 
 @app.route('/transfers')
