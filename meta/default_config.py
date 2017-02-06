@@ -13,6 +13,7 @@ DEMO = True
 
 ## Location of where the image data should be donwloaded to (Full path!)
 IMAGE_FOLDER = '/Users/joshy/github/meta/image_data'
+TASKS_DB = '/Users/joshy/github/meta/tasks.db'
 
 # Solr settings
 SOLR_HOSTNAME = 'localhost'

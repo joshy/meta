@@ -2,6 +2,8 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Dict
 
+from meta.tasks_db import insert_download
+
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 Task = namedtuple('Tasks', ['patient_id', 'accession_number', 'series_number',
                             'creation_time', 'execution_time', 'running_time',
@@ -12,7 +14,7 @@ TransferTask = namedtuple('TransferTask',
                            'running_time', 'status', 'exception'])
 
 
-def download_task(entry: Dict[str, str], dir_name: str) -> Task:
+def download_task(cursor, entry: Dict[str, str], dir_name: str) -> Task:
     """
     Creates a new download task with all the necessary fields set.
     """
@@ -20,7 +22,7 @@ def download_task(entry: Dict[str, str], dir_name: str) -> Task:
     accession_number = entry['accession_number']
     series_number = entry['series_number']
 
-    return Task(patient_id=patient_id,
+    task = Task(patient_id=patient_id,
                 accession_number=accession_number,
                 series_number=series_number,
                 dir_name=dir_name,
@@ -29,6 +31,8 @@ def download_task(entry: Dict[str, str], dir_name: str) -> Task:
                 running_time="0",
                 status=None,
                 exception=None)
+    insert_download(cursor, task)
+    return task
 
 
 def finish_task(future):

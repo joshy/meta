@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, Future
 
 from meta.command import base_command, transfer_command
 from meta.task import download_task, transfer_task, finish_task
-from meta.app import app, OUTPUT_DIR
+from meta.app import app, OUTPUT_DIR, get_db
 
 
 POOL = ThreadPoolExecutor(1)
@@ -50,7 +50,7 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = download_task(entry, dir_name)
+        future.task = download_task(get_db().cursor(), entry, dir_name)
         future.add_done_callback(_download_done)
         FUTURES.append(future)
     return len(series_list)

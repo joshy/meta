@@ -107,3 +107,6 @@ image_data
 # data import folders
 import/data/
 import/data-*/
+
+# tasks db
+tasks.db
