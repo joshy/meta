@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.3.2 - 06.02.2017
+ * Added feedback on transfer
+
 ## v1.3.1 - 03.02.2017
  * Fixed transfer to teamplay
 
