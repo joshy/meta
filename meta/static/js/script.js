@@ -65,9 +65,13 @@ $(function () {
     e.preventDefault();
     var data = getCheckedData();
     var target = $("input[type='radio']:checked").val();
+    var data = {
+      'data': data,
+      'target': target
+    }
     $.ajax({
       type: 'POST',
-      url: 'transfer/' + target,
+      url: 'transfer',
       data: JSON.stringify(data),
       dataType: 'json'
     }).done(function (data) {

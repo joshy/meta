@@ -82,11 +82,13 @@ def download():
     return json.dumps({'status':'OK', 'series_length': length})
 
 
-@app.route('/transfer/<target>', methods=['POST'])
-def transfer(target):
+@app.route('/transfer', methods=['POST'])
+def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
+    data = request.get_json(force=True)
+    target = data.get('target', '')
+    series_list = data.get('data', '')
     app.logger.info("transfer called and sending to %s", target)
-    series_list = request.get_json(force=True)
     study_size = transfer_series(series_list, target)
     return study_size
 
