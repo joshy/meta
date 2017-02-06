@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT
 from meta.query import query_body
 from meta.paging import calc
-from meta.pull import download_series, transfer_series, status
+from meta.pull import download_series, transfer_series, download_status, transfer_status
 from meta.facets import prepare_facets
 from meta.grouping import group
 from meta.solr import solr_url
@@ -99,7 +99,7 @@ def transfers():
 
 @app.route('/transfers/data')
 def transfersdata():
-    data = status()
+    data = transfer_status()
     return render_template('partials/transfers-status.html', tasks=data)
 
 
@@ -113,7 +113,7 @@ def tasks():
 
 @app.route('/tasks/data')
 def tasksdata():
-    data = status()
+    data = download_status()
     return render_template('partials/tasks-status.html', tasks=data)
 
 

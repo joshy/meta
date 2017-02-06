@@ -20,7 +20,7 @@ def transfer_status():
     return (waiting_tasks, done_tasks)
 
 
-def status():
+def download_status():
     """ Returns all done tasks and open tasks as lists.
     A task is a named tuple.
     """
