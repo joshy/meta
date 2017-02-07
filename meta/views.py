@@ -1,6 +1,6 @@
 import json
 from requests import get, RequestException
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request
 import sqlite3
 
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT, init_db
@@ -51,7 +51,7 @@ def search():
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         paging = calc(results, params.get('offset', '0'), RESULT_LIMIT)
-        demo = app.config['DEMO']
+        demo = DEMO
         return render_template('result.html',
                                docs=docs,
                                results=results,

@@ -2,6 +2,8 @@ import sqlite3
 from flask import Flask, g
 from flask_assets import Environment, Bundle
 
+from meta.config import dcmtk_config, pacs_config
+
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('meta.default_config')
 app.config.from_pyfile('config.cfg', silent=True)
@@ -12,13 +14,8 @@ VERSION = app.config['VERSION'] = '1.3.2'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
 # DCMTK settings
-DCMTK_BIN = app.config['DCMTK_BIN']
-DCMIN = app.config['DCMIN']
-AE_TITLE = app.config['AE_TITLE']
-AE_CALLED = app.config['AE_CALLED']
-PEER_ADDRESS = app.config['PEER_ADDRESS']
-PEER_PORT = app.config['PEER_PORT']
-INCOMING_PORT = app.config['INCOMING_PORT']
+DCMTK_CONFIG = dcmtk_config(app.config)
+PACS_CONFIG = pacs_config(app.config)
 
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
 TASKS_DB = app.config['TASKS_DB']

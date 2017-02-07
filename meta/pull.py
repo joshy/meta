@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, Future
 
 from meta.command import base_command, transfer_command
 from meta.task import download_task, transfer_task, finish_task, select_download, select_transfer
-from meta.app import app, OUTPUT_DIR, get_db
+from meta.app import app, OUTPUT_DIR, DCMTK_CONFIG, PACS_CONFIG, get_db
 
 POOL = ThreadPoolExecutor(1)
 
@@ -42,7 +42,7 @@ def download_series(series_list, dir_name):
         image_folder = _create_image_dir(entry, dir_name)
         study_instance_uid = entry['study_id']
         series_instance_uid = entry['series_id']
-        command = base_command() \
+        command = base_command(DCMTK_CONFIG, PACS_CONFIG) \
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
                   + ' -k SeriesInstanceUID=' + series_instance_uid
@@ -61,7 +61,7 @@ def transfer_series(series_list, target):
     app.logger.debug('Transferring ids: %s', study_ids)
 
     for study_id in study_ids:
-        command = transfer_command(target, study_id)
+        command = transfer_command(DCMTK_CONFIG, PACS_CONFIG, target, study_id)
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
