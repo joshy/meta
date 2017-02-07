@@ -67,10 +67,10 @@ def _result(params):
     # MultiDict[str, str] -> Tuple[int, str]
     """
     Makes a query and checks for number of results and if the query is valid.
-    If the query contains an valid result, it returns
-    positive integer, None
-    If the query contains an error it returns
-    -1, <error message>
+    If the query contains an valid result, it returns a tuple
+    (positive integer, None)
+    If the query contains an error it returns this tuple
+    (-1, <error message>)
     """
     headers = {'content-type': "application/json"}
     payload = q.query_body(w.MultiDict(params), limit=INTERNAL_LIMIT)
