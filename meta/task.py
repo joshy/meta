@@ -91,10 +91,11 @@ def select_download(conn):
 def _insert_download(conn, download):
     cursor = conn.cursor()
     # Cursor, Task -> None
-    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?)',
+    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?,?)',
                    (download.patient_id,
                     download.accession_number,
                     download.series_number,
+                    download.series_instance_uid,
                     download.dir_name,
                     download.creation_time,
                     download.execution_time,
@@ -136,13 +137,13 @@ def update_download(conn, download):
                       exception=?,
                       status=?
                     WHERE
-                      study_instance_uid = ?
+                      series_instance_uid = ?
                     ''',
                    (download.execution_time,
                     download.running_time,
-                    download.exception,
+                    str(download.exception),
                     download.status,
-                    download.study_instance_uid))
+                    download.series_instance_uid))
     conn.commit()
     return None
 
