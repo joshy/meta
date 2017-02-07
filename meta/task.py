@@ -54,7 +54,7 @@ def finish_task(conn, future):
     end = datetime.now()
     task = future.task._replace(
         execution_time=end,
-        running_time=(end - future.task.creation_time).total_seconds,
+        running_time=(end - future.task.creation_time).total_seconds(),
         exception=future.exception(),
         status='Successful' if future.exception() is None else 'Error')
     if isinstance(task, DownloadTask):
@@ -149,8 +149,9 @@ def update_download(conn, download):
 
 def update_transfer(conn, transfer):
     cursor = conn.cursor()
-    print(type(transfer.execution_time))
+    print(type(transfer.exception))
     print(transfer)
+    print(transfer.study_id)
     cursor.execute('''
                    UPDATE TRANSFER_TASKS SET
                      execution_time=?,
@@ -161,8 +162,9 @@ def update_transfer(conn, transfer):
                       study_id = ?''',
                    (transfer.execution_time,
                     transfer.running_time,
-                    transfer.exception,
+                    str(transfer.exception),
                     transfer.status,
                     transfer.study_id))
+    print(cursor.lastrowid)
     conn.commit()
     return None
