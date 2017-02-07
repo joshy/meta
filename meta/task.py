@@ -32,7 +32,7 @@ def download_task(conn, entry: Dict[str, str], dir_name: str) -> DownloadTask:
     patient_id = entry['patient_id']
     accession_number = entry['accession_number']
     series_number = entry['series_number']
-    series_instance_uid = entry['series_instance_uid']
+    series_instance_uid = entry['series_id']
     task = DownloadTask(patient_id=patient_id,
                         accession_number=accession_number,
                         series_instance_uid=series_instance_uid,
