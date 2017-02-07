@@ -51,9 +51,10 @@ def finish_task(conn, future):
     """
     Updates db with calculated execution times.
     """
+    end = datetime.now()
     task = future.task._replace(
-        execution_time=datetime.now,
-        running_time=_calculate_running_time(future.task),
+        execution_time=end,
+        running_time=(end - future.task.creation_time).total_seconds,
         exception=future.exception(),
         status='Successful' if future.exception() is None else 'Error')
     if isinstance(task, DownloadTask):
@@ -76,13 +77,6 @@ def transfer_task(conn, study_id) -> TransferTask:
                         exception=None)
     _insert_transfer(conn, task)
     return task
-
-
-def _calculate_running_time(task):
-    end = task.execution_time
-    start = task.creation_time
-    delta = end-start
-    return delta
 
 
 def select_download(conn):
@@ -155,6 +149,8 @@ def update_download(conn, download):
 
 def update_transfer(conn, transfer):
     cursor = conn.cursor()
+    print(type(transfer.execution_time))
+    print(transfer)
     cursor.execute('''
                    UPDATE TRANSFER_TASKS SET
                      execution_time=?,

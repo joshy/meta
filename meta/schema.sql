@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS TRANSFER_TASKS
     (id INTEGER PRIMARY KEY,
      study_id text,
      creation_time text,
-     executin_time text,
+     execution_time text,
      running_time real,
      status text,
      exception text);
