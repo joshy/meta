@@ -112,6 +112,7 @@ def _insert_download(conn, download):
 
 
 def select_transfer(conn):
+    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     result = []
     for row in cursor.execute('SELECT * FROM TRANSFER_TASKS LIMIT 1000'):
