@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS DOWNLOAD_TASKS
     (id INTEGER PRIMARY KEY,
      patient_id text,
+     accession_number text,
      series_number text,
+     series_instance_uid text,
      dir_name text,
      creation_time text,
      execution_time text,
@@ -12,7 +14,7 @@ CREATE TABLE IF NOT EXISTS DOWNLOAD_TASKS
 
 CREATE TABLE IF NOT EXISTS TRANSFER_TASKS
     (id INTEGER PRIMARY KEY,
-     stuy_id text,
+     study_id text,
      creation_time text,
      executin_time text,
      running_time real,

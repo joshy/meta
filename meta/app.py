@@ -27,7 +27,7 @@ def get_db():
     """ Returns a connection to sqllite db. """
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(TASKS_DB)
+        db = g._database = sqlite3.connect(TASKS_DB, detect_types=sqlite3.PARSE_DECLTYPES)
     return g._database
 
 

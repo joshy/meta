@@ -5,32 +5,31 @@ import os
 from concurrent.futures import ThreadPoolExecutor, Future
 
 from meta.command import base_command, transfer_command
-from meta.task import download_task, transfer_task, finish_task
+from meta.task import download_task, transfer_task, finish_task, select_download, select_transfer
 from meta.app import app, OUTPUT_DIR, get_db
 
-
 POOL = ThreadPoolExecutor(1)
-FUTURES = []  # type: List[Future]
-FUTURES_TRANSFER = []
 
 
 def transfer_status():
-    done_tasks = [future.task for future in FUTURES_TRANSFER if future.done()]
-    waiting_tasks = [future.task for future in FUTURES_TRANSFER if not future.done()]
-    return (waiting_tasks, done_tasks)
+    transfers = select_transfer(get_db())
+    waiting = [t for t in transfers if t['status'] is None]
+    done = [t for t in transfers if t['status'] is not None]
+    return (waiting, done)
 
 
 def download_status():
     """ Returns all done tasks and open tasks as lists.
     A task is a named tuple.
     """
-    done_tasks = [future.task for future in FUTURES if future.done()]
-    waiting_tasks = [future.task for future in FUTURES if not future.done()]
-    return (waiting_tasks, done_tasks)
+    downloads = select_download(get_db())
+    waiting = [t for t in downloads if t['status'] is None]
+    done = [t for t in downloads if t['status'] is not None]
+    return (waiting, done)
 
 
-def _download_done(future):
-    future.task = finish_task(future)
+def _task_done(future):
+    finish_task(get_db(), future)
 
 
 def download_series(series_list, dir_name):
@@ -50,9 +49,8 @@ def download_series(series_list, dir_name):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = download_task(get_db().cursor(), entry, dir_name)
-        future.add_done_callback(_download_done)
-        FUTURES.append(future)
+        future.task = download_task(get_db(), entry, dir_name)
+        future.add_done_callback(_task_done)
     return len(series_list)
 
 
@@ -67,8 +65,8 @@ def transfer_series(series_list, target):
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
-        future.task = transfer_task(study_id)
-        FUTURES_TRANSFER.append(future)
+        future.task = transfer_task(get_db(), study_id)
+        future.add_done_callback(_task_done)
     return len(study_ids)
 
 
