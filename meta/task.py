@@ -149,9 +149,6 @@ def update_download(conn, download):
 
 def update_transfer(conn, transfer):
     cursor = conn.cursor()
-    print(type(transfer.exception))
-    print(transfer)
-    print(transfer.study_id)
     cursor.execute('''
                    UPDATE TRANSFER_TASKS SET
                      execution_time=?,
@@ -165,6 +162,5 @@ def update_transfer(conn, transfer):
                     str(transfer.exception),
                     transfer.status,
                     transfer.study_id))
-    print(cursor.lastrowid)
     conn.commit()
     return None
