@@ -19,8 +19,7 @@ INTERNAL_LIMIT = 100
 
 def search_solr(params, pages=None):
     # Dict[str, Union[str, datetime]], int -> pd.DataFrame
-    """
-    Search the solr backend and returns all result. The paging through the
+    """Search the solr backend and returns all result. The paging through the
     result is done internal. So a query with '*:*' and no filters set could
     take some time. The following keys are taken into account:
       * query: str
@@ -29,7 +28,7 @@ def search_solr(params, pages=None):
       * StudyDescription: str
       * SeriesDescription: str
       * PatientID: str
-      * PatientName: str (Exact name match would be "John\^Doe")
+      * PatientName: str (Exact name match would be "John\\^Doe")
       * AccessionNumber: str
       * Modality: str
       * InstitutionName: str
@@ -83,11 +82,16 @@ def _result(params):
         return -1, msg
 
     docs = data['grouped']['PatientID']
-    results = int(docs['ngroups']) // INTERNAL_LIMIT
-    if results % INTERNAL_LIMIT > 0:
-        # add one additional request to get the remaining results
-        results += 1
-    return results, None
+    results = int(docs['ngroups'])
+
+    if results <= INTERNAL_LIMIT:
+        return results, None
+    else:
+        results = int(docs['ngroups']) // INTERNAL_LIMIT
+        if results % INTERNAL_LIMIT > 0:
+            # add one additional request to get the remaining results
+            results += 1
+        return results, None
 
 
 def _call(params):
