@@ -42,6 +42,7 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+init_db()
 
 # JS Assets part
 assets = Environment(app)

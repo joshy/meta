@@ -3,7 +3,7 @@ from requests import get, RequestException
 from flask import render_template, request
 import sqlite3
 
-from meta.app import app, VERSION, DEMO, RESULT_LIMIT, init_db
+from meta.app import app, VERSION, DEMO, RESULT_LIMIT
 from meta.query import query_body
 from meta.paging import calc
 from meta.pull import download_series, transfer_series, download_status, transfer_status
@@ -12,8 +12,6 @@ from meta.grouping import group
 from meta.solr import solr_url
 from meta.terms import get_terms_data
 
-
-init_db()
 
 @app.route('/')
 def main():
