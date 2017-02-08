@@ -30,7 +30,7 @@ def search():
     headers = {'content-type': "application/json"}
     try:
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
-        if response.status_code == 400 or response.status_code == 500:
+        if response.status_code >= 400:
             result = response.json()
             error = result['error']
             msg = result['error']['msg']
