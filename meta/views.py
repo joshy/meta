@@ -30,17 +30,29 @@ def search():
     headers = {'content-type': "application/json"}
     try:
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
-        if response.status_code >= 400:
-            result = response.json()
-            error = result['error']
-            msg = result['error']['msg']
-            trace = error.get('trace', '')
-            return render_template('search.html',
-                                   params={},
-                                   offset='0',
-                                   error='Solr failed: ' + msg,
-                                   trace=trace)
+    except RequestException:
+        return render_template('search.html',
+                               params={},
+                               error='No response from Solr, is it running?',
+                               trace=solr_url(app.config))
 
+    if response.status_code >= 400:
+        return render_template('search.html',
+                               params={},
+                               offset='0',
+                               error=response.reason,
+                               trace=response.url)
+    elif response.status_code >= 500:
+        result = response.json()
+        error = result['error']
+        msg = result['error']['msg']
+        trace = error.get('trace', '')
+        return render_template('search.html',
+                               params={},
+                               offset='0',
+                               error='Solr failed: ' + msg,
+                               trace=trace)
+    else:
         app.logger.debug('Calling Solr with url %s', response.url)
         app.logger.debug('Request body %s', json.dumps(payload))
         data = response.json()
@@ -62,10 +74,6 @@ def search():
                                modalities=params.getlist('Modality'),
                                offset=params.get('offset', '0'),
                                demo=demo)
-    except RequestException:
-        return render_template('search.html',
-                               params={},
-                               error='No response from Solr, is it running?')
 
 
 @app.route('/download', methods=['POST'])
