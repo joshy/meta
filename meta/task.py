@@ -84,7 +84,7 @@ def select_download(conn):
     cursor = conn.cursor()
     result = []
     for row in cursor.execute('SELECT * FROM DOWNLOAD_TASKS ORDER BY \
-                              creation_time ASC LIMIT 1000'):
+                              creation_time DESC LIMIT 1000'):
         result.append(row)
     return result
 
@@ -112,7 +112,7 @@ def select_transfer(conn):
     cursor = conn.cursor()
     result = []
     for row in cursor.execute('SELECT * FROM TRANSFER_TASKS ORDER BY \
-                              creation_time ASC LIMIT 1000'):
+                              creation_time DESC LIMIT 1000'):
         result.append(row)
     return result
 
