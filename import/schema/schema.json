@@ -41,7 +41,6 @@
 {
      "name":"PatientSex",
      "type":"strings",
-     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
