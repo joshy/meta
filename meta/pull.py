@@ -46,7 +46,8 @@ def download_series(series_list, dir_name):
         command = base_command(DCMTK_CONFIG, PACS_CONFIG) \
                   + ' --output-directory ' + image_folder \
                   + ' -k StudyInstanceUID=' + study_instance_uid \
-                  + ' -k SeriesInstanceUID=' + series_instance_uid
+                  + ' -k SeriesInstanceUID=' + series_instance_uid \
+                  + ' ' + DCMTK_CONFIG.dcmin
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args, shell=False)
