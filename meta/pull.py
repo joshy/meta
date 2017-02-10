@@ -50,7 +50,8 @@ def download_series(series_list, dir_name):
                   + ' ' + DCMTK_CONFIG.dcmin
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
-        future = POOL.submit(subprocess.run, args, shell=False)
+        future = POOL.submit(subprocess.run, args,
+                             stderr=subprocess.PIPE, shell=False)
         future.task = download_task(get_db(), entry, dir_name)
         future.add_done_callback(_task_done)
     return len(series_list)
@@ -66,7 +67,8 @@ def transfer_series(series_list, target):
         command = transfer_command(DCMTK_CONFIG, PACS_CONFIG, target, study_id)
         args = shlex.split(command)
         app.logger.debug('Running args %s', args)
-        future = POOL.submit(subprocess.run, args, shell=False)
+        future = POOL.submit(subprocess.run, args,
+                             stderr=subprocess.PIPE, shell=False)
         future.task = transfer_task(get_db(), study_id)
         future.add_done_callback(_task_done)
     return len(study_ids)
