@@ -83,7 +83,8 @@ def select_download(conn):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     result = []
-    for row in cursor.execute('SELECT * FROM DOWNLOAD_TASKS LIMIT 1000'):
+    for row in cursor.execute('SELECT * FROM DOWNLOAD_TASKS ORDER BY \
+                              creation_time ASC LIMIT 1000'):
         result.append(row)
     return result
 
@@ -110,7 +111,8 @@ def select_transfer(conn):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     result = []
-    for row in cursor.execute('SELECT * FROM TRANSFER_TASKS LIMIT 1000'):
+    for row in cursor.execute('SELECT * FROM TRANSFER_TASKS ORDER BY \
+                              creation_time ASC LIMIT 1000'):
         result.append(row)
     return result
 
