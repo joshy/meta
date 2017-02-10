@@ -29,7 +29,8 @@ def download_status():
 
 
 def _task_done(future):
-    finish_task(get_db(), future)
+    with app.app_context():
+        finish_task(get_db(), future)
 
 
 def download_series(series_list, dir_name):
