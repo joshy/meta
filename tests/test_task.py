@@ -1,15 +1,17 @@
 import unittest
+from unittest.mock import MagicMock
 from concurrent.futures import Future
 
 from meta.task import download_task, finish_task
-
 
 class TestTask(unittest.TestCase):
     def test_creation(self):
         entry = {'patient_id': 'a',
                  'accession_number': 1,
-                 'series_number': 2}
-        task = download_task(entry, 'foo')
+                 'series_number': 2,
+                 'series_id': 3}
+        conn = MagicMock()
+        task = download_task(conn, entry, 'foo')
         self.assertEqual(task.patient_id, 'a')
         self.assertEqual(task.accession_number, 1)
         self.assertEqual(task.series_number, 2)
@@ -17,13 +19,12 @@ class TestTask(unittest.TestCase):
     def test_done(self):
         entry = {'patient_id': 'a',
                  'accession_number': 1,
-                 'series_number': 2}
-        task = download_task(entry, 'foo')
+                 'series_number': 2,
+                 'series_id': 3}
+        conn = MagicMock()
+        task = download_task(conn, entry, 'foo')
         future = Future()
         future.set_result(1)
         future.task = task
-
-        new_task = finish_task(future)
-        self.assertNotEqual(new_task.creation_time, new_task.execution_time)
-
-
+        finish_task(conn, future)
+        self.assertNotEqual(future.task.creation_time, future.task.execution_time)

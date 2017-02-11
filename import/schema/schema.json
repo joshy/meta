@@ -2,6 +2,7 @@
   "add-field":[{
      "name":"AccessionNumber",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
   {
@@ -17,20 +18,24 @@
   {
      "name":"Modality",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
      "name":"PatientBirthDate",
      "multiValued":"false",
+     "required":"true",
      "type":"tlongs"},
 {
      "name":"PatientID",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
      "name":"PatientName",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
@@ -46,15 +51,18 @@
 {
      "name":"SeriesDescription",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
      "name":"SeriesInstanceUID",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true },
 {
      "name":"StudyDate",
+     "required":"true",
      "multiValued":"false",
      "type":"tlongs" },
 {
@@ -80,6 +88,7 @@
    {
      "name":"StudyInstanceUID",
      "type":"strings",
+     "required":"true",
      "multiValued":"false",
      "docValues":true }]
 }

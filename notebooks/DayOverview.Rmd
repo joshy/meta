@@ -1,0 +1,115 @@
+---
+title: "PACSCrawler Reports"
+author: "Joshy Cyriac, Kevin Mader"
+date: "2/6/2017"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(knitr)
+```
+
+```{r read_data}
+in_files<-Sys.glob("~/github/meta/import/data/20*/*.csv")
+i_df <- read.csv(in_files[1], sep = ";")
+```
+
+
+```{r show_rows, results = 'asis'}
+i_df %>% sample_n(10) %>%
+  kable()
+```
+
+```{r modality_overview}
+i_df %>%
+  group_by(Modality) %>%
+  summarize(count = n())
+```
+
+```{r dayoverview}
+i_df %>%
+  mutate(MeasureDate = parse_date_time(SeriesDate, "Ymd"),
+         MeasureDay = day(MeasureDate)) %>%
+  group_by(Modality, MeasureDay, AccessionNumber) %>%
+  dplyr::summarize(count = n()) %>%
+  ggplot(aes(x=MeasureDay,fill = Modality))+
+  geom_bar(aes(y = count),stat = "identity")+
+  facet_wrap(~Modality)+
+  theme_bw(10)
+```
+
+```{r dayoftheweekoverview}
+i_df %>%
+  mutate(MeasureDate = parse_date_time(SeriesDate, "Ymd"),
+         MeasureDay = wday(MeasureDate)) %>%
+  group_by(Modality, MeasureDay, AccessionNumber) %>%
+  dplyr::summarize(count = n()) %>%
+  ggplot(aes(x=MeasureDay,fill = Modality))+
+  geom_bar(aes(y = count),stat = "identity")+
+  facet_wrap(~Modality)+
+  theme_bw(10)
+```
+
+
+
+```{r}
+if (FALSE) {
+  # big data version
+all_days_modalities<-in_files %>% ldply(function (cfile) {
+  read.csv(cfile, sep = ";") %>%
+  group_by(Modality, SeriesDate, AccessionNumber) %>%
+    dplyr::summarize(count = n())
+})
+} else {
+  # little data
+  all_days_modalities_raw<-in_files %>% ldply(function (cfile) {
+  read.csv(cfile, sep = ";")
+
+})
+  all_days_modalities <- all_days_modalities_raw %>%
+    group_by(Modality, SeriesDate, AccessionNumber) %>%
+    dplyr::summarize(count = n())
+}
+```
+
+```{r day_overview}
+all_days_modalities %>%
+  dplyr::mutate(
+    MeasureDate = parse_date_time(SeriesDate, "Ymd"),
+    MeasureDay = day(MeasureDate),
+         MeasureMonth = month(MeasureDate)) %>%
+  dplyr::group_by(Modality, MeasureDay, MeasureMonth) %>%
+  dplyr::summarize(full_count = sum(count)) %>%
+  mutate(MeasureMonth = as.factor(MeasureMonth)) %>%
+  as.data.frame() %>%
+  ggplot(aes(x=MeasureDay, y=full_count))+
+  geom_line(aes(color = MeasureMonth))+
+  facet_wrap(~Modality, scales = "free_y")+
+  guides(color = "none")+
+  theme_bw(20)
+```
+
+```{r grid_overview}
+all_days_modalities %>%
+  dplyr::mutate(
+    MeasureDate = parse_date_time(SeriesDate, "Ymd"),
+    MeasureDay = day(MeasureDate),
+         MeasureMonth = month(MeasureDate)) %>%
+  dplyr::group_by(Modality, MeasureDay, MeasureMonth) %>%
+  dplyr::summarize(full_count = sum(count)) %>%
+  mutate(MeasureMonth = as.factor(MeasureMonth)) %>%
+  as.data.frame() %>%
+  ggplot(aes(x=MeasureDay, y = Modality, fill=full_count))+
+  geom_tile()+
+  scale_fill_gradientn(colours = rev(rainbow(6)),
+                       trans = "log")+
+  facet_wrap(~MeasureMonth)+
+  guides(color = "none")+
+  labs(x="Day of the Month", fill = "Scan Count")+
+  theme_bw(10)
+```
