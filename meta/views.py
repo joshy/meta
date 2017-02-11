@@ -3,7 +3,7 @@ from requests import get, RequestException
 from flask import render_template, request
 import sqlite3
 
-from meta.app import app, VERSION, DEMO, RESULT_LIMIT
+from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
 from meta.query import query_body
 from meta.paging import calc
 from meta.pull import download_series, transfer_series, download_status, transfer_status
@@ -71,6 +71,7 @@ def search():
                                params=params,
                                paging=paging,
                                version=VERSION,
+                               report_show_url=REPORT_SHOW_URL,
                                modalities=params.getlist('Modality'),
                                offset=params.get('offset', '0'),
                                demo=demo)

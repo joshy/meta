@@ -19,6 +19,7 @@ PACS_CONFIG = pacs_config(app.config)
 
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
 TASKS_DB = app.config['TASKS_DB']
+REPORT_SHOW_URL = app.config['REPORT_SHOW_URL']
 
 def get_db():
     """ Returns a connection to sqllite db. """
