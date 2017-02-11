@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4.0 - 11.02.2017
+ * Added RIS Report urls
+
 ## v1.3.2 - 06.02.2017
  * Added feedback on transfer
 
