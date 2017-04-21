@@ -9,7 +9,7 @@ PAGING_LINKS = 5
 def calc(results, current, limit=100):
     # type (Int, String, Int) -> (Int, bool, bool)
     """
-    Zero based pagging. PAGING_LINKS is the number of
+    Zero based paging. PAGING_LINKS is the number of
     pages links to be shown. Because results can be easily
     more than e.g. 50 pages, then only number of PAGING_LINKS are
     rendered.
