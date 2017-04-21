@@ -15,7 +15,7 @@ def transfer_status():
     transfers = select_transfer(get_db())
     waiting = [t for t in transfers if t['status'] is None]
     done = [t for t in transfers if t['status'] is not None]
-    return (waiting, done)
+    return waiting, done
 
 
 def download_status():
@@ -25,7 +25,7 @@ def download_status():
     downloads = select_download(get_db())
     waiting = [t for t in downloads if t['status'] is None]
     done = [t for t in downloads if t['status'] is not None]
-    return (waiting, done)
+    return waiting, done
 
 
 def _task_done(future):
