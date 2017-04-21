@@ -11,7 +11,8 @@ def group(groups):
         grouped = {}
         for key, value in groupby(g['doclist']['docs'],
                                   lambda x: x.get('AccessionNumber', '')):
-            grouped[key] = list(value)
+            values = list(value)
+            grouped[key] = sorted(values, key=lambda x: int(x.get('SeriesNumber', '0')))
             g['by_AccessionNumber'] = grouped
             patient = {}
             first_entry = list(grouped.values())[0][0]
@@ -21,5 +22,4 @@ def group(groups):
                 patient['birthdate'] = datetime.strptime(
                     str(birthdate), '%Y%m%d').strftime('%d.%m.%Y')
             g['patient'] = patient
-
     return groups
