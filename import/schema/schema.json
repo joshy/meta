@@ -80,6 +80,10 @@
      "type":"strings",
      "multiValued":"false",
      "docValues":true },
+    {
+     "name":"SeriesTime",
+     "type":"tlongs",
+     "multiValued":"false" },
    {
      "name":"SeriesNumber",
      "type":"strings",
