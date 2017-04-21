@@ -15,8 +15,8 @@
       </li>
       <ul class="list-group small collapse" id="{{ doc['groupValue'] }}">
         {% for accessionNumber in doc['by_AccessionNumber'] %}
-          <li class="list-group-item">
-            <div class="accession_number" data-accession-number="{{ accessionNumber }}">
+          <li class="list-group-item" style="padding-left:1.25rem">
+            <div class="accession_number" data-accession-number="{{ accessionNumber }}" style="padding-bottom:5px">
               Accession Number: {{ accessionNumber }}
               <a href="{{report_show_url}}{{ accessionNumber}}" target="_blank" style="padding-left:20px">
                 Show RIS Report
