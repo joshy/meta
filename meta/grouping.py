@@ -2,6 +2,10 @@ from itertools import groupby
 from datetime import datetime
 
 
+def _series_nr_int(series):
+    return int(series.get('SeriesNumber', '0'))
+
+
 def group(groups):
     """
     Groups all the documents according to the AccessionNumber. This is done
@@ -11,8 +15,7 @@ def group(groups):
         grouped = {}
         for key, value in groupby(g['doclist']['docs'],
                                   lambda x: x.get('AccessionNumber', '')):
-            values = list(value)
-            grouped[key] = sorted(values, key=lambda x: int(x.get('SeriesNumber', '0')))
+            grouped[key] = sorted(list(value), key=_series_nr_int)
             g['by_AccessionNumber'] = grouped
             patient = {}
             first_entry = list(grouped.values())[0][0]
