@@ -1,5 +1,5 @@
 Flask==0.12
 Flask-Assets==0.12
-jsmin
-requests
-pandas
+jsmin==2.2.1
+requests==2.13.0
+pandas==0.19.2
