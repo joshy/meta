@@ -1,5 +1,5 @@
-flask
-Flask-Assets
+Flask==0.12
+Flask-Assets==0.12
 jsmin
 requests
 pandas
