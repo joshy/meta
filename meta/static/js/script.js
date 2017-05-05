@@ -146,7 +146,7 @@ $(function () {
   });
 
   $('input[name=select-all-page').on('click', function(e) {
-    $('input[name=select-all-patient]').trigger('click');
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
   });
 
   $('li.list-group-item.patients a').on('click', function(e) {
