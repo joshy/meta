@@ -5,9 +5,9 @@
       <th>Patient Name</th>
       <th>Modality</th>
       <th>Study Description</th>
-      <th>Date</th>
-      <th>Series Description</th>
+      <th>Study Date</th>
       <th>Series Number</th>
+      <th>Series Description</th>
       <th>Referring Physician</th>
       <th>Institution Name</th>
     </tr>
@@ -26,9 +26,9 @@
       <td>{{ entry['PatientName'] }} </td>
       <td>{{ entry['Modality'] }} </td>
       <td>{{ entry['StudyDescription'] }} </td>
-      <td>{{ entry['StudyDate'] }} </td>
-      <td>{{ entry['SeriesDescription'] }} </td>
+      <td>{{ entry['StudyDate'] | to_date }} </td>
       <td>{{ entry['SeriesNumber'] }} </td>
+      <td>{{ entry['SeriesDescription'] }} </td>
       <td>{{ entry['ReferringPhysicianName'] }} </td>
       <td>{{ entry['InstitutionName'] }} </td>
     </tr>

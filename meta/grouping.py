@@ -9,7 +9,7 @@ def _series_nr_int(series):
 def group(groups):
     """
     Groups all the documents according to the AccessionNumber. This is done
-        as a post processing step, because Solr doesn't support sub grouping.
+    as a post processing step, because Solr doesn't support sub grouping.
     """
     for g in groups['groups']:
         grouped = {}
