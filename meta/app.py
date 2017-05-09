@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 from flask import Flask, g
 from flask_assets import Environment, Bundle
 
@@ -44,6 +45,12 @@ def init_db():
         db.commit()
 
 init_db()
+
+
+@app.template_filter('to_date')
+def to_date(date_as_int):
+    return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
+
 
 # JS Assets part
 assets = Environment(app)
