@@ -136,17 +136,20 @@ $(function () {
 
   $('input[name=select-all-accession-number').on('click', function(e) {
     var table = $(e.target).closest('table')
-    $("td input:checkbox", table).prop('checked', $(this).prop("checked"));
+    var value = $(this).prop("checked")
+    $("td input:checkbox", table).prop('checked', value);
   });
 
   $('input[name=select-all-patient').on('click', function(e) {
+    var value = $(this).prop("checked")
     var patientId = $(e.target).attr('data-patient-id');
     var selector = 'table[data-patient-id="' + patientId + '"]'
-    $(selector).find('thead tr th input').trigger('click')
+    $(selector).find('input:checkbox').prop('checked', value)
   });
 
   $('input[name=select-all-page').on('click', function(e) {
-    $("input:checkbox").prop('checked', $(this).prop("checked"));
+    var value = $(this).prop("checked")
+    $("input:checkbox").prop('checked', value);
   });
 
   $('li.list-group-item.patients a').on('click', function(e) {
