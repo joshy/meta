@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.1 - 09.05.2017
+ * Faster select all on whole page and patients
+ * StudyDate is formatted now 20171231 -> 31.12.2017
+
 ## v1.4.0 - 11.02.2017
  * Added RIS Report urls
 
