@@ -17,7 +17,6 @@ class TestQueryStuff(unittest.TestCase):
                 'StartDate': '1.1.2016', 'EndDate': '31.12.2016',
                 'StudyDescription': 'lorem ipsum'}
         result = meta.query.query_body(args)
-
         self.assertEqual(result['filter'],
                          ['StudyDescription:lorem ipsum'])
 
@@ -27,7 +26,6 @@ class TestQueryStuff(unittest.TestCase):
                 'StudyDescription': 'lorem ipsum',
                 'SeriesDescription': 'dolor sit amet'}
         result = meta.query.query_body(args)
-
         self.assertEqual(result['filter'],
                          ['StudyDescription:lorem ipsum',
                           'SeriesDescription:dolor sit amet'])
@@ -41,7 +39,6 @@ class TestQueryStuff(unittest.TestCase):
                 'PatientName': 'Hans Mueller',
                 'AccessionNumber': 'A123456789'}
         result = meta.query.query_body(args)
-
         self.assertEqual(result['filter'],
                          ['StudyDescription:lorem ipsum',
                           'SeriesDescription:dolor sit amet',
@@ -54,7 +51,6 @@ class TestQueryStuff(unittest.TestCase):
                 'EndDate': '31.12.2016',
                 'Modality': 'CT'}
         result = meta.query.query_body(args)
-
         self.assertEqual(result['filter'],
                          ['Modality:CT'])
 
@@ -63,9 +59,5 @@ class TestQueryStuff(unittest.TestCase):
                 'EndDate': '31.12.2016',
                 'Modality': ['CT', 'MR']}
         result = meta.query.query_body(args)
-
         self.assertEqual(result['filter'],
                          ["Modality:['CT', 'MR']"])
-
-if __name__ == '__main__':
-    unittest.main()
