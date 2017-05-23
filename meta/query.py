@@ -1,14 +1,13 @@
 import logging
 from datetime import datetime
 
-
 DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
                    'query': '*:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 1000, 'group.ngroups': 'true'},
                    'facet':
                        {'SeriesDescription':
-                        {'type': 'terms', 'field': 'SeriesDescription'},
+                            {'type': 'terms', 'field': 'SeriesDescription'},
                         'StudyDescription':
                             {'type': 'terms', 'field': 'StudyDescription'}
                        }
