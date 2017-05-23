@@ -1,5 +1,5 @@
 """
-DCMTK command genertion.
+DCMTK command generation.
 """
 
 TARGET_MAPPING = {
