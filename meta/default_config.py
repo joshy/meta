@@ -13,7 +13,7 @@ DEMO = True
 
 ## Location of where the image data should be donwloaded to (Full path!)
 IMAGE_FOLDER = '/Users/joshy/github/meta/image_data'
-TASKS_DB = '/Users/joshy/github/meta/tasks.db'
+TASKS_DB = 'tasks.db'
 REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
 
 # Solr settings

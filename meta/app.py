@@ -49,7 +49,10 @@ init_db()
 
 @app.template_filter('to_date')
 def to_date(date_as_int):
-    return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
+    if date_as_int:
+        return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
+    else:
+        return ''
 
 
 # JS Assets part
