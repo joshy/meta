@@ -1,7 +1,6 @@
 import json
 from requests import get, RequestException
 from flask import render_template, request
-import sqlite3
 
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
 from meta.query import query_body

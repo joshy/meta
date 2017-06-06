@@ -8,7 +8,7 @@ needs to be stored on a Apache Solr instance.
 ## Running the application
 
 ### Installation
-To run the it, python 3.5 is needed. To manage the python environment
+To run the it, python 3.6 is needed. To manage the python environment
 [Anaconda](https://www.continuum.io/downloads) should be used.
 
 Python libraries needed are:

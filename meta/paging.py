@@ -1,5 +1,3 @@
-from meta.query_param import set_query_parameter
-
 # Total number of paging links to render left and
 # right to the current page. Is capped at 0 and
 # last page.

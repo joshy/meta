@@ -9,8 +9,8 @@ PACS_CONFIG = pacs_config({'AE_TITLE':'AE_TITLE', 'AE_CALLED': 'AE_CALLED',
                            'PEER_ADDRESS': '127.0.0.1', 'PEER_PORT': 104,
                            'INCOMING_PORT': 11110})
 
-class TestCommand(unittest.TestCase):
 
+class TestCommand(unittest.TestCase):
 
     def test_base_command(self):
         expected = '/usr/local/bin/movescu -v -S -k QueryRetrieveLevel=SERIES -aet AE_TITLE -aec AE_CALLED 127.0.0.1 104 +P 11110'
