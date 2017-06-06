@@ -18,4 +18,5 @@ def solr_terms_url(config):
 def _solr_core_url(config):
     core_name = config['SOLR_CORE_NAME']
     hostname = config['SOLR_HOSTNAME']
-    return 'http://{}:8983/solr/{}/'.format(hostname, core_name)
+    port = config['SOLR_PORT']
+    return 'http://{}:{}/solr/{}/'.format(hostname, port, core_name)
