@@ -8,13 +8,21 @@
 <div class="col-sm-7">
 <form id="search-form" action="/search" method="POST">
   <div class="form-group row">
-    <div class="col-sm-10">
+    <div class="col-sm-8">
       <div class="input-group">
         <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="query" value="{{ params.query }}" autofocus>
         <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">Search</button>
         </span>
       </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#fileupload">Hochladen</button>
+        </span>
+      </div>
+      {% include 'partials/upload.html' %}
     </div>
   </div>
   <div class="form-group row">
