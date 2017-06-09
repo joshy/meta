@@ -110,3 +110,4 @@ import/data-*/
 
 # ignore tasks db
 tasks.db
+meta/static/gen
