@@ -25,10 +25,12 @@ def query_patients(patients, limit=100):
 
 
 def _query_patients(patient):
-    patient_birthdate = _create_patient_birthdate(patient.get('birthdate'))
+    b = patient.get('birthdate')
+    pb = _create_patient_birthdate(b)
     first_name = patient.get('first_name')
     last_name = patient.get('last_name')
-    q = "(" + first_name + "\^" + last_name + " AND " + _create_patient_birthdate(patient_birthdate) + ")"
+    q = "(PatientName:" + first_name + "\^" + last_name + " AND " + pb + ")"
+    print(q)
     return q
 
 
@@ -42,8 +44,6 @@ def query_body(args, limit=100):
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
     if date_range is not None:
         body['query'] = body['query'] + ' AND ' + date_range
-
-
 
     body['filter'] = _create_filter_query(args)
     return body

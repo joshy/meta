@@ -1,12 +1,22 @@
-{"patients": [
+$.ajax({
+  type: "POST",
+  url: "q",
+  data: JSON.stringify(data),
+  success: function(d) {console.log(d)},
+  contentType: 'application/json',
+  dataType: 'json'
+});
+
+
+data = {"patients": [
     {
-        "first_name": "Thom",
-        "last_name": "Müller",
-        "birthdate": "24.12.1969"
+        "first_name": "Bram",
+        "last_name": "L. Munich",
+        "birthdate": "24.01.1964"
     },
     {
-        "first_name": "Bem",
-        "last_name": "Mac",
-        "birthdate": "24.12.1969"
+        "first_name": "Flavio",
+        "last_name": "D. Konstanz",
+        "birthdate": "09.07.1966"
     }
 ]}

@@ -139,11 +139,11 @@ def terms():
 def q():
     """ Ajax query for excel completion. """
     query = request.get_json()
-    headers = {'content-type': "application/json"}
     payload = query_patients(query.get('patients'))
     try:
+        headers = {'content-type': "application/json"}
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
-        print(response)
+        print(response.json())
         return jsonify('ok')
     except RequestException as e:
         print(e)
