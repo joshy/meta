@@ -1,9 +1,9 @@
 import json
 from requests import get, RequestException
-from flask import render_template, request
+from flask import render_template, request, jsonify
 
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
-from meta.query import query_body
+from meta.query import query_body, query_patients
 from meta.paging import calc
 from meta.pull import download_series, transfer_series, download_status, transfer_status
 from meta.facets import prepare_facets
@@ -133,3 +133,18 @@ def terms():
     """ Renders a page about term information. Only internal use. """
     data = get_terms_data(app.config)
     return render_template('terms.html', terms=data)
+
+
+@app.route('/q', methods=['POST'])
+def q():
+    """ Ajax query for excel completion. """
+    query = request.get_json()
+    headers = {'content-type': "application/json"}
+    payload = query_patients(query.get('patients'))
+    try:
+        response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
+        print(response)
+        return jsonify('ok')
+    except RequestException as e:
+        print(e)
+    return jsonify('ok')

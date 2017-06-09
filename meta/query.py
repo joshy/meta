@@ -14,7 +14,26 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
                   }
 
 
+def query_patients(patients, limit=100):
+    """ Query list of patients with birthdate. """
+    body = DEFAULT_PAYLOAD.copy()
+    body['limit'] = limit
+    body['query'] = '*:*'
+    body['offset'] = 0
+    body['filter'] = _query_patients(patients[0])
+    return body
+
+
+def _query_patients(patient):
+    patient_birthdate = _create_patient_birthdate(patient.get('birthdate'))
+    first_name = patient.get('first_name')
+    last_name = patient.get('last_name')
+    q = "(" + first_name + "\^" + last_name + " AND " + _create_patient_birthdate(patient_birthdate) + ")"
+    return q
+
+
 def query_body(args, limit=100):
+    """ Normal html form submit function is using this. """
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     body['query'] = args.get('query', '*:*')
@@ -23,8 +42,10 @@ def query_body(args, limit=100):
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
     if date_range is not None:
         body['query'] = body['query'] + ' AND ' + date_range
-    body['filter'] = _create_filter_query(args)
 
+
+
+    body['filter'] = _create_filter_query(args)
     return body
 
 
@@ -36,13 +57,18 @@ def _create_filter_query(args):
               _filter('AccessionNumber', args),
               _filter('Modality', args),
               _filter('InstitutionName', args)]
-
     return [x for x in result if x is not None]
 
 
 def _filter(element, args):
     if args.get(element):
         return '{0}:{1}'.format(element, args.get(element))
+
+
+def _create_patient_birthdate(birthdate):
+    if not birthdate:
+        return None
+    return 'PatientBirthDate:' + _convert(birthdate)
 
 
 def _create_date_range(start_date, end_date):
