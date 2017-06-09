@@ -1,0 +1,12 @@
+{"patients": [
+    {
+        "first_name": "Thom",
+        "last_name": "Müller",
+        "birthdate": "24.12.1969"
+    },
+    {
+        "first_name": "Bem",
+        "last_name": "Mac",
+        "birthdate": "24.12.1969"
+    }
+]}
