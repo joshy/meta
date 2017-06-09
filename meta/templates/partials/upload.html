@@ -1,44 +1,86 @@
 <!-- Uplod Modal -->
 <div class="modal multi-step" id="fileupload" tabindex="-1" role="dialog" aria-labelledby="fileupload" reset-on-close="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h4 class="modal-title step-1" data-step="1">Step 1</h4>
-          <h4 class="modal-title step-2" data-step="2">Step 2</h4>
-          <h4 class="modal-title step-3" data-step="3">Step 3</h4>
-          <div class="m-progress">
-              <div class="m-progress-bar-wrapper">
-                  <div class="m-progress-bar">
-                  </div>
-              </div>
-              <div class="m-progress-stats">
-                  <span class="m-progress-current">
-                  </span>
-                  /
-                  <span class="m-progress-total">
-                  </span>
-              </div>
-              <div class="m-progress-complete">
-                  Completed
-              </div>
-          </div>
-      </div>
-      <div class="modal-body step step-1">
-      This is step 1.
-      </div>
-      <div class="modal-body step step-2">
-      This is step 2.
-      </div>
-      <div class="modal-body step step-3">
-      This is step 3.
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Continue</button>
-                <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 1)">Back</button>
-                <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Continue</button>
-            
-      </div>
-    </div>
-  </div>
+	<div class="modal-dialog modal-lg" role="document">
+	 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title step-1" data-step="1">
+					<h1>Hochladen</h1>
+					<p>Beschreibung dieses Steps</p>
+				</div>
+				<div class="modal-title step-2" data-step="2">
+					<h1>Strukturerkennung</h1>
+					<p>Beschreibung dieses Steps</p>
+				</div>
+				<div class="modal-title step-3" data-step="3">
+					<h1>Listenauswahl</h1>
+					<p>Beschreibung dieses Steps</p>
+				</div>
+				<div class="modal-title step-4" data-step="4">
+					<h1>Ergebnis</h1>
+					<p>Beschreibung dieses Steps</p>
+				</div>
+			</div>
+
+			<!-- a new step -->
+			<div class="modal-body step step-1">
+				<h4>Titel dieses Steps</h4>
+				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
+				<hr />
+
+				{% include 'partials/upload/step-1.html' %}
+			</div>
+
+			<!-- a new step -->
+			<div class="modal-body step step-2">
+				<h4>Titel dieses Steps</h4>
+				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
+				<hr />
+
+				{% include 'partials/upload/step-2.html' %}
+			</div>
+
+			<!-- a new step -->
+			<div class="modal-body step step-3">
+				<h4>Titel dieses Steps</h4>
+				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
+				<hr />
+
+				{% include 'partials/upload/step-3.html' %}
+			</div>
+
+			<!-- a new step -->
+			<div class="modal-body step step-4">
+				<h4>Titel dieses Steps</h4>
+				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
+				<hr />
+
+				{% include 'partials/upload/step-4.html' %}
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 1)">Zurück</button>
+				<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 2)">Zurück</button>
+				<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="sendEvent('#fileupload', 3)">Zurück</button>
+
+				 <div class="m-progress">
+					<div class="m-progress-bar-wrapper">
+						<div class="m-progress-bar"></div>
+					</div>
+					<div class="m-progress-stats">
+						<span class="m-progress-current"></span>/
+						<span class="m-progress-total"></span>
+					</div>
+					<div class="m-progress-complete">
+						Completed
+					</div>
+				</div>
+			 
+				<button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Weiter</button>
+				<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Weiter</button>
+				<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 4)">Weiter</button>
+				<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="">Fertig</button>
+			</div>
+		</div>
+	</div>
 </div>
