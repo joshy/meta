@@ -175,4 +175,13 @@ $(function () {
     value = names.join(',');
     $('#patientname-input').val(value);
   });
+
+
+  /**
+    * Modal stuff, description later 
+  */
+  sendEvent = function(sel, step) {
+      $(sel).trigger('next.m.' + step);
+  }
+
 });

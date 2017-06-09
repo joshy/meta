@@ -1,18 +1,43 @@
-Test
-<!-- Modal -->
-<div class="modal fade" id="fileupload" tabindex="-1" role="dialog" aria-labelledby="fileupload">
+<!-- Uplod Modal -->
+<div class="modal multi-step" id="fileupload" tabindex="-1" role="dialog" aria-labelledby="fileupload" reset-on-close="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Upload</h4>
+          <h4 class="modal-title step-1" data-step="1">Step 1</h4>
+          <h4 class="modal-title step-2" data-step="2">Step 2</h4>
+          <h4 class="modal-title step-3" data-step="3">Step 3</h4>
+          <div class="m-progress">
+              <div class="m-progress-bar-wrapper">
+                  <div class="m-progress-bar">
+                  </div>
+              </div>
+              <div class="m-progress-stats">
+                  <span class="m-progress-current">
+                  </span>
+                  /
+                  <span class="m-progress-total">
+                  </span>
+              </div>
+              <div class="m-progress-complete">
+                  Completed
+              </div>
+          </div>
       </div>
-      <div class="modal-body">
-        Lorem Ipsum
+      <div class="modal-body step step-1">
+      This is step 1.
+      </div>
+      <div class="modal-body step step-2">
+      This is step 2.
+      </div>
+      <div class="modal-body step step-3">
+      This is step 3.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Continue</button>
+                <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 1)">Back</button>
+                <button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Continue</button>
+            
       </div>
     </div>
   </div>
