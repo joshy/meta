@@ -6,12 +6,14 @@ class TestSolr(unittest.TestCase):
 
     def test_url(self):
         config = {'SOLR_CORE_NAME': 'foo',
-                  'SOLR_HOSTNAME': 'http://localhost'}
+                  'SOLR_HOSTNAME': 'http://localhost',
+                  'SOLR_PORT': 8983}
         self.assertEqual('http://http://localhost:8983/solr/foo/query',
                          solr_url(config))
 
     def test_terms_url(self):
         config = {'SOLR_CORE_NAME': 'foo',
-                  'SOLR_HOSTNAME': 'http://localhost'}
+                  'SOLR_HOSTNAME': 'http://localhost',
+                  'SOLR_PORT': 8983}
         self.assertEqual('http://http://localhost:8983/solr/foo/terms',
                          solr_terms_url(config))
