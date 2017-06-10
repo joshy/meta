@@ -135,8 +135,8 @@ def terms():
     return render_template('terms.html', terms=data)
 
 
-@app.route('/q', methods=['POST'])
-def q():
+@app.route('/query_patients', methods=['POST'])
+def query_patients():
     """ Ajax query for excel completion. """
     query = request.get_json()
     payload = query_patients(query.get('patients'))
@@ -144,7 +144,10 @@ def q():
         headers = {'content-type': "application/json"}
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
         print(response.json())
-        return jsonify('ok')
+        data = response.json()
+        docs = data['grouped']['PatientID']
+        docs = group(docs)
+        return jsonify(docs)
     except RequestException as e:
         print(e)
     return jsonify('ok')

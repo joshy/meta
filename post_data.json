@@ -1,6 +1,6 @@
 $.ajax({
   type: "POST",
-  url: "q",
+  url: "query_patients",
   data: JSON.stringify(data),
   success: function(d) {console.log(d)},
   contentType: 'application/json',

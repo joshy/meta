@@ -18,20 +18,16 @@ def query_patients(patients, limit=100):
     """ Query list of patients with birthdate. """
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    body['query'] = '*:*'
     body['offset'] = 0
-    body['filter'] = _query_patients(patients[0])
+    body['query'] = ' OR '.join([_query_patient(p) for p in patients])
     return body
 
 
-def _query_patients(patient):
-    b = patient.get('birthdate')
-    pb = _create_patient_birthdate(b)
+def _query_patient(patient):
+    birthdate = _create_patient_birthdate(patient.get('birthdate'))
     first_name = patient.get('first_name')
     last_name = patient.get('last_name')
-    q = "(PatientName:" + first_name + "\^" + last_name + " AND " + pb + ")"
-    print(q)
-    return q
+    return r"(PatientName:{}\^{} AND {})".format(first_name, last_name, birthdate)
 
 
 def query_body(args, limit=100):
@@ -76,7 +72,6 @@ def _create_date_range(start_date, end_date):
         return None
     _start_date = _convert(start_date)
     _end_date = _convert(end_date)
-
     return 'StudyDate:[' + _start_date + ' TO ' + _end_date + ']'
 
 
