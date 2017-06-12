@@ -2,8 +2,8 @@ import json
 from requests import get, RequestException
 from flask import render_template, request, jsonify
 
+import meta.query as q
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
-from meta.query import query_body, query_patients
 from meta.paging import calc
 from meta.pull import download_series, transfer_series, download_status, transfer_status
 from meta.facets import prepare_facets
@@ -25,7 +25,7 @@ def main():
 def search():
     """ Renders the search results. """
     params = request.form
-    payload = query_body(params, RESULT_LIMIT)
+    payload = q.query_body(params, RESULT_LIMIT)
     headers = {'content-type': "application/json"}
     try:
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
@@ -139,7 +139,7 @@ def terms():
 def query_patients():
     """ Ajax query for excel completion. """
     query = request.get_json()
-    payload = query_patients(query.get('patients'))
+    payload = q.query_patients(query.get('patients'))
     try:
         headers = {'content-type': "application/json"}
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
