@@ -1,0 +1,94 @@
+/*!
+ * Upload
+ * IP-517bb PACS Project by Yannick Hasler & Jessica Odermatt
+ */
+
+/* upload template */
+#fileupload button.close {
+	position: absolute;
+	right: -25px;
+	top: -25px;
+	z-index: 1;
+	color: white;
+	font-size: 30px;
+	line-height: 50px;
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	padding: 0;
+	border-radius: 50%;
+	background: #ccc;
+	opacity: 1;
+	font-weight: normal;
+}
+
+#fileupload .modal-footer {
+	text-align: normal;
+	display: flex;
+}
+
+/* progress */
+#fileupload .m-progress {
+	flex-grow: 1;
+	margin: 0 15px;
+}
+
+#fileupload .m-progress-bar {
+    min-height: 2px;
+    background: #0275d8;
+    width: 5%;
+    margin-top: 15px;
+    position: relative;
+}
+
+#fileupload .m-progress-bar::before {
+	content: "";
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #0275d8;
+	border-radius: 50%;
+	position: absolute;
+	left: 0;
+	top: -10px;
+}
+
+#fileupload .m-progress-bar::after {
+	content: "";
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #0275d8;
+	border-radius: 50%;
+	position: absolute;
+	right: 0;
+	top: -10px;
+}
+
+#fileupload .m-progress-stats {
+	display: none;
+}
+
+#fileupload .m-progress-step {
+	background-color: pink;
+	width: 20%;
+	height: 5px;
+}
+
+/* steps */
+#accordion-closest [data-toggle] {
+	display: block;
+
+}
+
+#accordion-closest [data-toggle]::after {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	transform: rotate(45deg);
+	float: right;
+	margin: 5px;
+	transform: rotate(45deg);
+}

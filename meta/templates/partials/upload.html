@@ -1,72 +1,98 @@
 <!-- Uplod Modal -->
-<div class="modal multi-step" id="fileupload" tabindex="-1" role="dialog" aria-labelledby="fileupload" reset-on-close="true">
+<div class="modal multi-step" id="fileupload" tabindex="-1" role="dialog" aria-labelledby="fileupload" reset-on-close="true" data-backdrop="static">
 	<div class="modal-dialog modal-lg" role="document">
-	 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-default close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="modal-title step-1" data-step="1">
 					<h1>Hochladen</h1>
-					<p>Beschreibung dieses Steps</p>
+					<p>Achten Sie darauf, dass nur .xlsx oder .csv Dateien akzeptiert werden. Die maximale Grösse beträgt 20MB. Falls Probleme auftauchen, schliessen Sie dieses Fenster und versuchen Sie es erneut.</p>
+					<!-- <h4 class="float-md-left">Laden Sie jetzt die gewünschte Datei hoch</h4> -->
 				</div>
 				<div class="modal-title step-2" data-step="2">
 					<h1>Strukturerkennung</h1>
-					<p>Beschreibung dieses Steps</p>
+					<p>Jede Box stellt eine Spalte ihrer Datei dar. Weisen Sie alle für die Suche notwendigen Kategorien 
+					<!-- <h4 class="float-md-left">Definieren Sie die Struktur der hochgeladenen Datei, um die Suche zu starten.</h4> -->
 				</div>
 				<div class="modal-title step-3" data-step="3">
 					<h1>Listenauswahl</h1>
-					<p>Beschreibung dieses Steps</p>
+					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Korrigieren Sie ihr File 
+					<!-- <h4 class="float-md-left">Die folgenden Patienten konnten nicht gefunden werden.</h4> -->
 				</div>
 				<div class="modal-title step-4" data-step="4">
-					<h1>Ergebnis</h1>
-					<p>Beschreibung dieses Steps</p>
+					<h1>Daten korrigieren</h1>
+					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Sie sehen stattdessen eine 
+					<!-- <h4 class="float-md-left">Korrigieren Sie nun die nicht eindeutig identifizierten Patienten.</h4> -->
+				</div>
+				<div class="modal-title step-5" data-step="5">
+					<h1>Weiterverarbeiten</h1>
+					<p>Sie können nun die Patienten auswählen, welche Sie transferieren oder herunterladen möchten.</p>
+					<!-- <h4 class="float-md-left">Entscheiden Sie, wie Sie das Ergebnis weiterverarbeiten wollen.</h4> -->
 				</div>
 			</div>
 
 			<!-- a new step -->
 			<div class="modal-body step step-1">
-				<h4>Titel dieses Steps</h4>
-				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
-				<hr />
-
+				<div class="interaction-info clearfix">
+					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
+					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
+				</div>
 				{% include 'partials/upload/step-1.html' %}
 			</div>
 
 			<!-- a new step -->
 			<div class="modal-body step step-2">
-				<h4>Titel dieses Steps</h4>
-				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
-				<hr />
-
+				<div class="interaction-info clearfix">
+					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
+					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
+				</div>
 				{% include 'partials/upload/step-2.html' %}
 			</div>
 
 			<!-- a new step -->
 			<div class="modal-body step step-3">
-				<h4>Titel dieses Steps</h4>
-				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
-				<hr />
-
+				<div class="interaction-info clearfix">
+					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
+					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
+				</div>
 				{% include 'partials/upload/step-3.html' %}
 			</div>
 
 			<!-- a new step -->
 			<div class="modal-body step step-4">
-				<h4>Titel dieses Steps</h4>
-				<a href="#reset" data-reset="">Auswahl zurücksetzen</a>
-				<hr />
-
+				<div class="interaction-info clearfix">
+					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
+					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
+				</div>
 				{% include 'partials/upload/step-4.html' %}
 			</div>
 
+			<!-- a new step -->
+			<div class="modal-body step step-5">
+				<div class="interaction-info clearfix">
+					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
+					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
+				</div>
+				{% include 'partials/upload/step-5.html' %}
+			</div>
+
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 1)">Zurück</button>
-				<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 2)">Zurück</button>
-				<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="sendEvent('#fileupload', 3)">Zurück</button>
+				<div class="m-prev">
+					<button type="button" class="btn btn-primary step-1" data-step="1" onclick="" disabled>Zurück</button>
+					<button type="button" class="btn btn-primary step-2" data-step="2" onclick="sendEvent('#fileupload', 1)">Zurück</button>
+					<button type="button" class="btn btn-primary step-3" data-step="3" onclick="sendEvent('#fileupload', 2)">Zurück</button>
+					<button type="button" class="btn btn-primary step-4" data-step="4" onclick="sendEvent('#fileupload', 3)">Zurück</button>
+					<button type="button" class="btn btn-primary step-5" data-step="5" onclick="sendEvent('#fileupload', 4)">Zurück</button>
+				</div>
 
 				 <div class="m-progress">
 					<div class="m-progress-bar-wrapper">
 						<div class="m-progress-bar"></div>
 					</div>
+					<!-- <div class="m-progress-steps-wrapper">
+					</div> -->
 					<div class="m-progress-stats">
 						<span class="m-progress-current"></span>/
 						<span class="m-progress-total"></span>
@@ -76,10 +102,13 @@
 					</div>
 				</div>
 			 
-				<button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Weiter</button>
-				<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Weiter</button>
-				<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 4)">Weiter</button>
-				<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="">Fertig</button>
+			 	<div class="m-prev">
+					<button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Weiter</button>
+					<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Weiter</button>
+					<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 4)">Weiter</button>
+					<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="sendEvent('#fileupload', 5)">Weiter</button>
+					<button type="button" class="btn btn-primary step step-5" data-step="5" onclick="">Fertig</button>
+				</div>
 			</div>
 		</div>
 	</div>
