@@ -14,21 +14,30 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
                   }
 
 
-def query_patients(patients, limit=100):
+def query_patient(patient, limit=100):
     """ Query list of patients with birthdate. """
+    exact_body = query_patient_body()
+    exact_body['query'] = _query_patient(patient, approx=False)
+    approx_body = query_patient_body()
+    approx_body['query'] = _query_patient(patient, approx=True)
+    return (exact_body, approx_body)
+
+
+def query_patient_body(limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     body['offset'] = 0
-    body['query'] = ' OR '.join([_query_patient(p) for p in patients])
     return body
 
 
-def _query_patient(patient):
+def _query_patient(patient, approx=False):
     birthdate = _create_patient_birthdate(patient.get('birthdate'))
     first_name = patient.get('first_name')
     last_name = patient.get('last_name')
-    full_name = "{} {}".format(first_name, last_name).replace(' ', r'\^')
-    return r"(PatientName:{} AND {})".format(full_name, birthdate)
+    full_name = "PatientName:{} {}".format(last_name, first_name).replace(' ', r'\^')
+    if approx:
+        full_name = "PatientName:{} {}~".format(last_name, first_name).replace(' ', r'\^')
+    return r"{} AND {}".format(birthdate, full_name)
 
 
 def query_body(args, limit=100):
