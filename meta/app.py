@@ -61,6 +61,7 @@ js = Bundle("js/jquery-3.1.0.min.js", "js/tether.min.js",
             "js/bootstrap.min.js", "js/moment.min.js", "js/pikaday.js",
             "js/pikaday.jquery.js", "js/jquery.noty.packaged.min.js", "js/multi-step-modal.js",
             "js/script.js",
+            "js/upload.js",
             filters='jsmin', output='gen/packed.js')
 assets.register('js_all', js)
 

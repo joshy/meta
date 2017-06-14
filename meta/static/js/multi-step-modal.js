@@ -1,3 +1,8 @@
+/*
+** original by https://github.com/ngzhian/multi-step-modal
+** changed by IP-517bb 
+*/
+
 +function($) {
     'use strict';
 
@@ -14,6 +19,9 @@
         var $progress_total = $modal.find('.m-progress-total');
         var $progress_complete  = $modal.find('.m-progress-complete');
         var reset_on_close = $modal.attr('reset-on-close') === 'true';
+
+        /* steps */
+        var $progress_steps = $modal.find('.m-progress-steps-wrapper');
 
         function reset() {
             $modal.find('.step').hide();
@@ -37,6 +45,7 @@
         }
 
         function updateProgress(current, total) {
+
             $progress_bar.animate({
                 width: getPercentComplete(current, total)
             });
@@ -54,6 +63,14 @@
                     dp.removeClass('completed');
                 }
             });
+            
+            // console.log(current);
+            //  $progress_steps
+            // for (var i = 1; i <= total; i ++) {
+            //     var isCurrent = (current == i);
+            //     $progress_steps.append('<div width="" class="m-progress-step m-progress-step-'+i+' '+ (isCurrent ? "current" : "") +'"></div>');    
+            // }
+            
         }
 
         function goToStep(step) {
