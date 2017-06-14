@@ -27,7 +27,8 @@ def _query_patient(patient):
     birthdate = _create_patient_birthdate(patient.get('birthdate'))
     first_name = patient.get('first_name')
     last_name = patient.get('last_name')
-    return r"(PatientName:{}\^{} AND {})".format(first_name, last_name, birthdate)
+    full_name = "{} {}".format(first_name, last_name).replace(' ', r'\^')
+    return r"(PatientName:{} AND {})".format(full_name, birthdate)
 
 
 def query_body(args, limit=100):
