@@ -9,72 +9,72 @@
 				<div class="modal-title step-1" data-step="1">
 					<h1>Hochladen</h1>
 					<p>Achten Sie darauf, dass nur .xlsx oder .csv Dateien akzeptiert werden. Die maximale Grösse beträgt 20MB. Falls Probleme auftauchen, schliessen Sie dieses Fenster und versuchen Sie es erneut.</p>
-					<!-- <h4 class="float-md-left">Laden Sie jetzt die gewünschte Datei hoch</h4> -->
+					<div class="interaction-info clearfix">
+						<h5 class="float-md-left">Laden Sie jetzt die gewünschte Datei hoch</h5>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Zurücksetzen</small></a>
+					</div>
 				</div>
 				<div class="modal-title step-2" data-step="2">
 					<h1>Strukturerkennung</h1>
-					<p>Jede Box stellt eine Spalte ihrer Datei dar. Weisen Sie alle für die Suche notwendigen Kategorien 
-					<!-- <h4 class="float-md-left">Definieren Sie die Struktur der hochgeladenen Datei, um die Suche zu starten.</h4> -->
+					<p>Jede Box stellt eine Spalte ihrer Datei dar. Weisen Sie alle für die Suche notwendigen Kategorien mithilfe der Dropdown-Liste den Spalten zu. Die bereits zugewiesenenen Kategorien haben wir automatisch erkannt, diese können korrigiert werden.</p>
+					<div class="interaction-info clearfix">
+						<h5 class="float-md-left">Definieren Sie die Struktur der hochgeladenen Datei, um die Suche zu starten.</h5>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Zurücksetzen</small></a>
+					</div>
 				</div>
 				<div class="modal-title step-3" data-step="3">
-					<h1>Listenauswahl</h1>
-					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Korrigieren Sie ihr File 
-					<!-- <h4 class="float-md-left">Die folgenden Patienten konnten nicht gefunden werden.</h4> -->
+					<h1>Nicht gefundene Patienten</h1>
+					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Korrigieren Sie ihr File und laden Sie dieses erneut hoch oder überspringen Sie diesen Schritt.</p>
+					<div class="interaction-info clearfix">
+						<h5 class="float-md-left">Die folgenden Patienten konnten nicht gefunden werden.</h5>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Datei neu hochladen</small></a>
+					</div>
 				</div>
 				<div class="modal-title step-4" data-step="4">
-					<h1>Daten korrigieren</h1>
-					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Sie sehen stattdessen eine 
-					<!-- <h4 class="float-md-left">Korrigieren Sie nun die nicht eindeutig identifizierten Patienten.</h4> -->
+					<h1>Ähnlich gefundene Patienten</h1>
+					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Sie sehen stattdessen eine Liste von Patienten, die ähnliche Parameter enthalten. Wählen Sie die zutreffende Person aus. Wenn Sie nichts auswählen, geht der Eintrag verloren.</p>
+					<div class="interaction-info clearfix">
+						<h5 class="float-md-left">Korrigieren Sie nun die nicht eindeutig identifizierten Patienten.</h5>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Datei neu hochladen</small></a>
+					</div>
 				</div>
 				<div class="modal-title step-5" data-step="5">
 					<h1>Weiterverarbeiten</h1>
 					<p>Sie können nun die Patienten auswählen, welche Sie transferieren oder herunterladen möchten.</p>
-					<!-- <h4 class="float-md-left">Entscheiden Sie, wie Sie das Ergebnis weiterverarbeiten wollen.</h4> -->
+					<div class="interaction-info clearfix">
+						<h5 class="float-md-left">Entscheiden Sie, wie Sie das Ergebnis weiterverarbeiten wollen.</h5>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Datei neu hochladen</small></a>
+					</div>
 				</div>
 			</div>
 
 			<!-- a new step -->
-			<div class="modal-body step step-1">
-				<div class="interaction-info clearfix">
-					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
-					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
-				</div>
+			<div class="modal-body step step-1 step-upload">
+				<p class="text-action text-danger font-weight-bold"></p>
 				{% include 'partials/upload/step-1.html' %}
 			</div>
 
 			<!-- a new step -->
-			<div class="modal-body step step-2">
-				<div class="interaction-info clearfix">
-					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
-					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
-				</div>
+			<div class="modal-body step step-2 step-structure">
+				<p class="text-action text-danger font-weight-bold">Sie müssen noch <span>3</span> Kategorien zuweisen</p>
 				{% include 'partials/upload/step-2.html' %}
 			</div>
 
 			<!-- a new step -->
-			<div class="modal-body step step-3">
-				<div class="interaction-info clearfix">
-					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
-					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
-				</div>
+			<div class="modal-body step step-3 step-notfound">
+				<p class="text-action text-success font-weight-bold">Laden Sie eine neue Datei hoch oder überspringen Sie diesen Schritt</p>
 				{% include 'partials/upload/step-3.html' %}
 			</div>
 
 			<!-- a new step -->
-			<div class="modal-body step step-4">
-				<div class="interaction-info clearfix">
-					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
-					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
-				</div>
+			<div class="modal-body step step-4 step-closest">
+				<p class="text-action text-danger font-weight-bold">Beschreibung der Interaktion</p>
 				{% include 'partials/upload/step-4.html' %}
 			</div>
 
 			<!-- a new step -->
-			<div class="modal-body step step-5">
-				<div class="interaction-info clearfix">
-					<p class="text-action float-md-left text-danger font-weight-bold">Beschreibung der Interaktion</p>
-					<a href="#reset" data-reset="" class="float-xs-right">Zurücksetzen</a>
-				</div>
+			<div class="modal-body step step-5 step-transfer">
+				<p class="text-action text-danger font-weight-bold">Beschreibung der Interaktion</p>
 				{% include 'partials/upload/step-5.html' %}
 			</div>
 
