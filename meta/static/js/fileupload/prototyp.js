@@ -12,6 +12,7 @@ var rowHeaderControl = false;
 var previewControl = false;
 var dropareaControl = false;
 var sourceFile = false;
+var data = false;
 
 /* define valid date formats for birthdate detection* */
 
@@ -185,6 +186,7 @@ function PrepareFileContent(data) {
 
 /* prepare data to send */
 function FinalizeData(data) {
+    console.log(data);
     var result = [];
 
     // prefill empty data array
@@ -367,7 +369,11 @@ $(function () {
 
     parseControl.on('click', function () {
         GetFileContent(PrepareFileContent);
-    });   
+    });
+
+    sendControl.on('click', function() {
+        FinalizeData();
+    })
 
     resetControl.on('click', function () {
         Reset();
@@ -425,6 +431,16 @@ function goToStep(nextStep) {
 }
 
 
+function searchPatients(data) {
+    $.ajax({
+        type: "POST",
+        url: "query_patients",
+        data: JSON.stringify(data),
+        success: prepareOutputData,
+        contentType: 'application/json',
+        dataType: 'json'
+    });
+}
 
 function fillBoxes(data) {
     toggleLoader(2);
