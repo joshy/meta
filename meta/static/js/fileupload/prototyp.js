@@ -200,12 +200,12 @@ function FinalizeData(data) {
     $.each(data['header'], function (key, value) {
         if (value['selected']) {
             switch (value['selected']) {
-                case 'firstname':
+                case 'first_name':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
                     });
                     break;
-                case 'lastname':
+                case 'last_name':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
                     });
