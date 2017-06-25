@@ -193,8 +193,14 @@
 	margin-bottom: 0;
 }
 
+.step-structure .card-block .card-title {
+	text-decoration: underline;
+	font-size: 0.9rem;
+}
+
 .step-structure .card-block .card-text {
 	line-height: 1;
+	font-size: 0.9rem;
 }
 
 /* step 3 notfound */

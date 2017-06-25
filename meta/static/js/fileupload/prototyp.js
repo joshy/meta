@@ -188,25 +188,61 @@ function PrepareFileContent(data) {
 
     fillBoxes(data);
 
-    var result = FinalizeData(data);
-    console.log(JSON.stringify(result, 2, 2));
+    //var result = FinalizeData(data);
+    console.log(JSON.stringify(data, 2, 2));
 }
 
 function fillBoxes(data) {
+    toggleLoader(3);
+
     var parent = $('.step-2 .data-list');
-    var box = parent.find('.data-template');
+    var box = parent.find('.data-template > div');
 
     $.each(data['header'], function(key, value) {
-        var tempBox = box.clone();
-        tempBox.addClass("box-" + key).removeClass('data-template');
+        var tempBox = box.clone(true);
+        tempBox.addClass("box box-" + key).removeClass('data-template');
+        tempBox.data('id', key);
 
         tempBox.find('[data-tmpl="header"]').html(value.title);
         tempBox.find('[data-tmpl="sampledata"]').html(value.sampledata);
-        tempBox.find('[data-tmpl="select"] option[value="'+ value.selected+'"]');
+        tempBox.find('[data-tmpl="select"]').val(value.selected);
         tempBox.appendTo(parent);
     });
 
-    //toggleLoader(3);
+    $(window).on('change', box, function(event) {
+        changeSelectedData(event.target, data);
+    });
+
+    $('#fileupload').trigger('next.m.' + 2);
+    toggleLoader(3);
+}
+
+/* change selected values */
+function changeSelectedData(select, data) {
+    // change views
+    var $select = $(select);
+    var box = $(select).closest('.box');
+    var selectValue = $select.val();
+
+    $('.box select').each(function() {
+        if ($(this).val() == $select.val()) {
+            $(this).val("");
+        }
+    });
+    $select.val(selectValue);
+    $select.removeClass('has-danger');
+
+    // change data array
+    $.each(data['header'], function (key, value) {
+        if (value['selected'] && value['selected'] == selectValue) {
+            value['selected'] = "";
+        }
+        if (key == box.data('id')) {
+            value['selected'] = selectValue;
+        }
+    });
+
+    console.log(data);
 }
 
 /* prepare data to send */
@@ -391,7 +427,7 @@ function toggleLoader(nextStep) {
 $(function () {
     /* define controls */
     fileControl = $('#uploadFile');
-    parseControl = $('.m-next .step-1');
+    parseControl = $('#parseControl');
     rowHeaderControl = $('#firstRowIsHeader');
     previewControl = $('#filePreview');
 
@@ -415,14 +451,14 @@ $(function () {
         GetFileContent(PrepareFileContent);
     });
 
+
+
     /* multi steps handler */
     sendEvent = function(sel, nextStep) {
         switch(nextStep) {
             case 2:
                 // check file validation
-                toggleLoader(nextStep);
-
-                $(sel).trigger('next.m.' + nextStep);
+                
                 break;
 
             case 3:
