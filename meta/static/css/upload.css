@@ -196,11 +196,16 @@
 .step-structure .card-block .card-title {
 	text-decoration: underline;
 	font-size: 0.9rem;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	margin-bottom: 5px;
 }
 
 .step-structure .card-block .card-text {
 	line-height: 1;
 	font-size: 0.9rem;
+	word-break: break-all;
 }
 
 /* step 3 notfound */

@@ -357,7 +357,7 @@ $(function () {
     dropareaControl = $('#droparea');
 
     /* init */
-    parseControl.hide();
+    parseControl.prop('disabled', true);
 
     rowHeaderControl.on('change', function () {
         if (CheckFile()) {
@@ -389,6 +389,11 @@ $(function () {
     else {
         alert('Browser not supported!');
     }
+
+
+    $(window).on('change', '.data-list .data-template', function(event) {
+        changeSelectedData(event.target);
+    });
 });
 
 
@@ -414,6 +419,7 @@ function toggleLoader(nextStep) {
 
 /* goes to a specific step */
 function goToStep(nextStep) {
+
     $('#fileupload').trigger('next.m.' + nextStep);
     //toggleLoader(nextStep);
 }
@@ -437,15 +443,12 @@ function fillBoxes(data) {
         tempBox.appendTo(parent);
     });
 
-    $(window).on('change', box, function(event) {
-        changeSelectedData(event.target, data);
-    });
-
     goToStep(2);
+    return data;
 }
 
 /* change selected values */
-function changeSelectedData(select, data) {
+function changeSelectedData(select) {
     // change views
     var $select = $(select);
     var box = $(select).closest('.box');
