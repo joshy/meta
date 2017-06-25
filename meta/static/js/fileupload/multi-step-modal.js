@@ -49,7 +49,6 @@
             for (var i = 1; i <= total; i ++) {
                 $progress_steps.append('<div width="" class="m-progress-step m-progress-step-'+i+'"></div>'); 
                 $progress_steps.find('.m-progress-step').each(function(index, item) {
-                    console.log(index);
                     if (index == 0) {
                         $(this).css("width", "20px");
                     } else {

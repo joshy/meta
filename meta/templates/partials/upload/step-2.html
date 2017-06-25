@@ -1,88 +1,23 @@
 <button type="button" class="btn btn-primary getData" onclick="getData()">BackendCall</button>
 
-<div class="row">
-	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<div class="card">
-			<div class="card-header has-danger">
-				<select class="form-control input-sm">
-					<option value="Keines">Keines</option>
-					<option value="Name">Name</option>
-					<option value="Vorname">Vorname</option>
-					<option value="Patienten">Patienten-Id</option>
-					<option value="Geburtsdatum">Geburtsdatum</option>
-				</select>
-			</div>
-			<div class="card-block">
-				<h6 class="card-title"><small><u>Name</u></small></h6>
-			    <p class="card-text"><small>Datensätze</small></p>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<div class="card">
-			<div class="card-header has-danger">
-				<select class="form-control input-sm">
-					<option value="Keines">Keines</option>
-					<option value="Name">Name</option>
-					<option value="Vorname">Vorname</option>
-					<option value="Patienten">Patienten-Id</option>
-					<option value="Geburtsdatum">Geburtsdatum</option>
-				</select>
-			</div>
-			<div class="card-block">
-				<h6 class="card-title"><small><u>Name</u></small></h6>
-			    <p class="card-text"><small>Datensätze</small></p>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<div class="card">
-			<div class="card-header has-danger">
-				<select class="form-control input-sm">
-					<option value="Keines">Keines</option>
-					<option value="Name">Name</option>
-					<option value="Vorname">Vorname</option>
-					<option value="Patienten">Patienten-Id</option>
-					<option value="Geburtsdatum">Geburtsdatum</option>
-				</select>
-			</div>
-			<div class="card-block">
-				<h6 class="card-title"><small><u>Name</u></small></h6>
-			    <p class="card-text"><small>Datensätze</small></p>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<div class="card">
-			<div class="card-header has-danger">
-				<select class="form-control input-sm">
-					<option value="Keines">Keines</option>
-					<option value="Name">Name</option>
-					<option value="Vorname">Vorname</option>
-					<option value="Patienten">Patienten-Id</option>
-					<option value="Geburtsdatum">Geburtsdatum</option>
-				</select>
-			</div>
-			<div class="card-block">
-				<h6 class="card-title"><small><u>Name</u></small></h6>
-			    <p class="card-text"><small>Datensätze</small></p>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-		<div class="card">
-			<div class="card-header has-danger">
-				<select class="form-control input-sm">
-					<option value="Keines">Keines</option>
-					<option value="Name">Name</option>
-					<option value="Vorname">Vorname</option>
-					<option value="Patienten">Patienten-Id</option>
-					<option value="Geburtsdatum">Geburtsdatum</option>
-				</select>
-			</div>
-			<div class="card-block">
-				<h6 class="card-title"><small><u>Name</u></small></h6>
-			    <p class="card-text"><small>Datensätze</small></p>
+<div class="row data-list">
+	<div class="data-template">
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+			<div class="card">
+				<div class="card-header has-danger">
+					<select class="form-control input-sm" data-tmpl="select">
+						<option value="">Keines</option>
+						<option value="full_name">Ganzer Name</option>
+						<option value="last_name">Name</option>
+						<option value="first_name">Vorname</option>
+						<option value="patient_id">Patienten-Id</option>
+						<option value="birthdate">Geburtsdatum</option>
+					</select>
+				</div>
+				<div class="card-block">
+					<h6 class="card-title" data-tmpl="header"></h6>
+				    <p class="card-text" data-tmpl="sampledata"></p>
+				</div>
 			</div>
 		</div>
 	</div>

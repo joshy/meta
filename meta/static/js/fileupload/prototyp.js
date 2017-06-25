@@ -1,11 +1,16 @@
-/* NERF THIS! */
+/* ================================================================================
+
+    File recognition and validation of structure
+    Created by J. Odermatt, Y. Hasler
+
+================================================================================ */
+
 var fileControl = false;
 var parseControl = false;
 var rowHeaderControl = false;
 var previewControl = false;
 
 /* define valid date formats for birthdate detection* */
-
 var birthdayFormats = [
     'YYYYMMDD',
     'YYYY-MM-DD',
@@ -14,21 +19,20 @@ var birthdayFormats = [
     'DD.MM.YY'
 ]
 
-
 /* define auto matiching mechanics */
 var autoMatches = [];
 autoMatches.push(
     {
-        'type': 'firstname',
+        'type': 'first_name',
         'used': false,
-        'values': ['firstname', 'vorname', 'prenom']
+        'values': ['first_name', 'vorname', 'prenom']
     }
 );
 autoMatches.push(
     {
-        'type': 'lastname',
+        'type': 'last_name',
         'used': false,
-        'values': ['lastname', 'name', 'nachname', 'nom']
+        'values': ['last_name', 'name', 'nachname', 'nom']
     }
 );
 autoMatches.push(
@@ -41,9 +45,9 @@ autoMatches.push(
 
 autoMatches.push(
     {
-        'type': 'patientid',
+        'type': 'patient_id',
         'used': false,
-        'values': ['patientid', 'patient']
+        'values': ['patient_id', 'patient']
     }
 );
 
@@ -64,12 +68,14 @@ function CheckBrowserSupport() {
     return true;
 }
 
+/* Create output table */
 function CreateTable(data, amount = -1) {
     if (amount == -1) {
         amount = data.length;
     }
 
     var table = document.createElement('table');
+    table.className = "table-responsive";
     for (var i = 0; i < amount; i++) {
         var row = document.createElement('tr');
         if (data[i]) {
@@ -109,12 +115,12 @@ function CheckFile() {
         case 'csv':
         case 'xls':
         case 'xlsx':
-            parseControl.show();
+            parseControl.prop('disabled', false);
             fileControl.parent('form').removeClass('invalid');
             result = true;
             break;
         default:
-            parseControl.hide();
+            parseControl.prop('disabled', true);
             fileControl.parent('form').addClass('invalid');
             break;
     }
@@ -180,8 +186,27 @@ function PrepareFileContent(data) {
     data = DetectBirthdate(data);
     data = PrepareDefaults(data);
 
+    fillBoxes(data);
+
     var result = FinalizeData(data);
     console.log(JSON.stringify(result, 2, 2));
+}
+
+function fillBoxes(data) {
+    var parent = $('.step-2 .data-list');
+    var box = parent.find('.data-template');
+
+    $.each(data['header'], function(key, value) {
+        var tempBox = box.clone();
+        tempBox.addClass("box-" + key).removeClass('data-template');
+
+        tempBox.find('[data-tmpl="header"]').html(value.title);
+        tempBox.find('[data-tmpl="sampledata"]').html(value.sampledata);
+        tempBox.find('[data-tmpl="select"] option[value="'+ value.selected+'"]');
+        tempBox.appendTo(parent);
+    });
+
+    //toggleLoader(3);
 }
 
 /* prepare data to send */
@@ -201,12 +226,12 @@ function FinalizeData(data) {
     $.each(data['header'], function (key, value) {
         if (value['selected']) {
             switch (value['selected']) {
-                case 'firstname':
+                case 'first_name':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
                     });
                     break;
-                case 'lastname':
+                case 'last_name':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
                     });
@@ -228,7 +253,7 @@ function FinalizeData(data) {
                     });
 
                     break;
-                case 'patientid':
+                case 'patient_id':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['patient_id'] = subvalue[key];
                     });
@@ -297,6 +322,7 @@ function SplitData(data) {
                 var headerItem = {};
                 var title = data[i][j];
                 headerItem['title'] = title;
+                headerItem['sampledata'] = [];
                 title = $.trim(title.toLowerCase());
 
                 $.each(autoMatches, function (index, item) {
@@ -321,15 +347,42 @@ function SplitData(data) {
     if (result['header'].length == 0) {
         var headerItem = {};
         headerItem['title'] = '';
+        headerItem['sampledata'] = [];
         headerItem['noHeaderProvided'] = true;
         for (var i = 0; i <= maxColSize; i++) {
             result['header'].push(headerItem);
         }
     }
 
+    var maxSampleData = 4;
+    if (result['content'].length < maxSampleData) {
+        maxSampleData = result['content'].length;
+    }
+
+    for (var i = 0; i < maxSampleData; i++) {
+        for (var j = 0; j < result['header'].length; j++) {
+            result['header'][j]['sampledata'].push(result['content'][i][j]);
+        }
+    }
+
     return result;
 }
 
+/* ================================================================================
+    Step Helper
+================================================================================ */
+
+function toggleLoader(nextStep) {
+    var loaderBtn = $('.btn.step-' + (nextStep-1));
+
+    if (loaderBtn.hasClass('loading')) {
+        loaderBtn.removeClass('loading');
+        loaderBtn.prop("disabled", false);
+    } else {
+        loaderBtn.addClass('loading');
+        loaderBtn.prop("disabled", true);
+    }
+}
 
 /* ================================================================================
     Main
@@ -338,12 +391,12 @@ function SplitData(data) {
 $(function () {
     /* define controls */
     fileControl = $('#uploadFile');
-    parseControl = $('#btnParse');
+    parseControl = $('.m-next .step-1');
     rowHeaderControl = $('#firstRowIsHeader');
     previewControl = $('#filePreview');
 
     /* init */
-    parseControl.hide();
+    parseControl.prop('disabled', true);
 
     /* bind events */
     fileControl.on('change', function () {
@@ -361,4 +414,47 @@ $(function () {
     parseControl.on('click', function () {
         GetFileContent(PrepareFileContent);
     });
+
+    /* multi steps handler */
+    sendEvent = function(sel, nextStep) {
+        switch(nextStep) {
+            case 2:
+                // check file validation
+                toggleLoader(nextStep);
+
+                $(sel).trigger('next.m.' + nextStep);
+                break;
+
+            case 3:
+                // check output
+                var parent = $('.step-3 .patient-list');
+                var tmpl = parent.find('.data-template').html();
+
+                var appended = parent.append(tmpl);
+                appended.find('[data-tmpl="info"]').html('Patient blah');
+                appended.find('[data-tmpl="id"]').attr('data-id', 1);
+
+                // when there are not founded patients
+                if (false) {
+                    $(sel).trigger('next.m.' + nextStep);
+                } else {
+                    $(sel).trigger('next.m.' + (nextStep+1));
+                }
+                break;
+
+            case 4:
+                $(sel).trigger('next.m.' + nextStep);
+                break;
+
+            case 5:
+                // make exakt matches out of selected closest match
+                $(sel).trigger('next.m.' + nextStep);
+                break;
+
+            default:
+                $(sel).trigger('next.m.' + nextStep);
+                break;
+        }
+
+    }
 });
