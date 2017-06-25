@@ -152,8 +152,9 @@
 }
 
 /* step 1 upload */
-.step-upload .custom-file {
-	text-align: center;
+/* dropzone */
+.step-upload #droparea {
+    text-align: center;
 	border: 1px dashed #dadada;
 	background-color: #F2F2F2;
 	padding: 30px 15px 15px;
@@ -162,8 +163,24 @@
 	display: block;
 }
 
-.step-upload .custom-file .custom-file-input {
-	display: none;
+/* Essential FileDrop zone element configuration: */
+.fd-zone {
+    position: relative;
+    overflow: hidden;
+}
+
+.fd-file {
+    opacity: 0;
+    font-size: 118px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    font-family: sans-serif;
 }
 
 /* step 2 structure */
@@ -304,11 +321,4 @@
 	-webkit-transform: rotate(360deg);
 	transform: rotate(360deg);
 	}
-}
-
-/* dropzone */
-#droparea {
-    width : 200px;
-    height : 200px;
-    background-color : green;
 }

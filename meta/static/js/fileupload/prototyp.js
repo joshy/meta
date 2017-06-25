@@ -68,6 +68,13 @@ autoMatches.push(
 /* ================================================================================
     Generic Helper Functions
 ================================================================================ */
+function CheckBrowserSupport(fileControl) {
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+        alert('File API not supported by browser!')
+        return false;
+    }
+    return true;
+}
 
 function CreateTable(data, amount) {
     if (!amount || amount < 0) {
@@ -133,20 +140,33 @@ function CheckFile() {
     return result;
 }
 
+
+
 /* Get File content (header + content) based on file extension */
 function GetFileContent(callback) {
     var extension = GetFileExtension(sourceFile.name);
 
-    var fileContent = $.removeUriScheme(sourceFile.data);
-    if (extension == 'csv') {
-        // get csv data
-        fileContent = window.atob(fileContent);
-        callback($.csv.toArrays(fileContent));
-    }
-    else if (extension == 'xlsx' || extension == 'xls') {
-        // get excel data
-        var wb = XLSX.read(fileContent, { type: 'base64' });
-        callback(WorkbookToJson(wb));
+    if (CheckBrowserSupport()) {
+        var file = sourceFile.nativeFile;
+        var reader = new FileReader();
+        if (extension == 'csv') {
+            // get csv data
+            reader.readAsText(file);
+            reader.onload = function (event) {
+                var csv = event.target.result;
+                callback($.csv.toArrays(csv));
+            };
+        }
+        else if (extension == 'xlsx' || extension == 'xls') {
+            // get excel data
+            reader.onload = function (event) {
+                var data = event.target.result;
+                var arr = String.fromCharCode.apply(null, new Uint8Array(data));
+                var wb = XLSX.read(btoa(arr), { type: 'base64' });
+                callback(WorkbookToJson(wb));
+            };
+            reader.readAsArrayBuffer(file);
+        };
     };
     return;
 }
@@ -182,11 +202,11 @@ function PrepareFileContent(data) {
     data = PrepareDefaults(data);
     data = fillBoxes(data);
     //console.log(JSON.stringify(data, 2, 2));
+    console.log(JSON.stringify(data, 2, 2));
 }
 
 /* prepare data to send */
 function FinalizeData(data) {
-    console.log(data);
     var result = [];
 
     // prefill empty data array
@@ -194,7 +214,7 @@ function FinalizeData(data) {
         result.push({
             'full_name': '',
             'birthdate': '',
-            'patient_id':''
+            'patient_id': ''
         })
     });
 
@@ -202,12 +222,12 @@ function FinalizeData(data) {
     $.each(data['header'], function (key, value) {
         if (value['selected']) {
             switch (value['selected']) {
-                case 'first_name':
+                case 'firstname':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
                     });
                     break;
-                case 'last_name':
+                case 'lastname':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
                     });
@@ -371,39 +391,33 @@ $(function () {
         GetFileContent(PrepareFileContent);
     });
 
-    sendControl.on('click', function() {
-        FinalizeData();
-    })
-
     resetControl.on('click', function () {
         Reset();
     });
 
-    if ($.support.fileDrop) {
-        dropareaControl.fileDrop({
-            decodebase64: true,
-            onFileRead: function (fileCollection) {
-                $.each(fileCollection, function () {
-                    sourceFile = this;
-                    if (CheckFile()) {
-                        GetFileContent(PreviewFileContent);
-                    };
-                });
-            },
-        });
-    }
-    else {
-        alert('Browser not supported!');
-    }
+    // sendControl.on('click', function() {
+    //     FinalizeData();
+    // })
 
+    dropareaControl.on('click', function () {
+        $(this).find('input [type=file]').click();
+    });
+
+    var zone = new FileDrop($(dropareaControl)[0])
+    zone.event('send', function (files) {
+        files.each(function (file) {
+            sourceFile = file;
+
+            if (CheckFile()) {
+                GetFileContent(PreviewFileContent);
+            };
+        })
+    })
 
     $(window).on('change', '.data-list .data-template', function(event) {
         changeSelectedData(event.target);
     });
 });
-
-
-
 
 
 /* ================================================================================
