@@ -44,33 +44,45 @@
             return Math.min(current_step / total_steps * 100, 100) + '%';
         }
 
+        /* add steps and calculate width */
+        function initProgress(total) {
+            for (var i = 1; i <= total; i ++) {
+                $progress_steps.append('<div width="" class="m-progress-step m-progress-step-'+i+'"></div>'); 
+                $progress_steps.find('.m-progress-step').each(function(index, item) {
+                    console.log(index);
+                    if (index == 0) {
+                        $(this).css("width", "20px");
+                    } else {
+                        $(this).css("width", "calc((" + 100 + "% - 20px) / " + (total-1) + ")");
+                    }
+                });
+            }
+        }
+
         function updateProgress(current, total) {
 
-            $progress_bar.animate({
-                width: getPercentComplete(current, total)
-            });
-            if (current - 1 >= total_num_steps) {
-                completeSteps();
-            } else {
-                $progress_current.text(current);
-            }
+            // $progress_bar.animate({
+            //     width: getPercentComplete(current, total)
+            // });
+            // if (current - 1 >= total_num_steps) {
+            //     completeSteps();
+            // } else {
+            //     $progress_current.text(current);
+            // }
 
-            $progress.find('[data-progress]').each(function() {
-                var dp = $(this);
-                if (dp.data().progress <= current - 1) {
-                    dp.addClass('completed');
-                } else {
-                    dp.removeClass('completed');
-                }
-            });
+            // $progress.find('[data-progress]').each(function() {
+            //     var dp = $(this);
+            //     if (dp.data().progress <= current - 1) {
+            //         dp.addClass('completed');
+            //     } else {
+            //         dp.removeClass('completed');
+            //     }
+            // });
             
             // console.log(current);
-            //  $progress_steps
-            // for (var i = 1; i <= total; i ++) {
-            //     var isCurrent = (current == i);
-            //     $progress_steps.append('<div width="" class="m-progress-step m-progress-step-'+i+' '+ (isCurrent ? "current" : "") +'"></div>');    
-            // }
-            
+
+            $progress_steps.find(".m-progress-step").removeClass("current");    
+            $progress_steps.find(".m-progress-step-"+current+"").addClass("current");
         }
 
         function goToStep(step) {
@@ -117,6 +129,7 @@
 
         function initialize() {
             reset();
+            initProgress(total_num_steps);
             updateProgress(1, total_num_steps);
             $modal.find('.step-1').show();
             $progress_complete.hide();

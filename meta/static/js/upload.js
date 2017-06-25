@@ -3,7 +3,7 @@
  */
 
 
-var inputData = {"patients": [ { "first_name": "Bram", "last_name": "^L.^Munich", "birthdate": "24.01.1964" } ]}
+var inputData = {"patients": [ { "first_name": "Bram", "last_name": "L. Munich", "birthdate": "24.01.1964" }, { "first_name": "Flavio", "last_name": "D. Konstanz", "birthdate": "09.07.1966" } ]}
 // call to backend
 function getData() {
     $.ajax({
@@ -18,3 +18,9 @@ function getData() {
     });
 }
 
+// modal
+$(function() {
+    sendEvent = function(sel, step) {
+      $(sel).trigger('next.m.' + step);
+    }
+})

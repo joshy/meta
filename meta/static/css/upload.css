@@ -41,7 +41,7 @@
 	flex-grow: 1;
 	margin: 0 15px;
 }
-
+/*
 #fileupload .m-progress-bar {
     min-height: 2px;
     background: #0275d8;
@@ -76,12 +76,52 @@
 
 #fileupload .m-progress-stats {
 	display: none;
+}*/
+
+#fileupload .m-progress-steps-wrapper {
+	text-align: left;
 }
 
+
 #fileupload .m-progress-step {
-	background-color: pink;
+	background-color: #0275d8;
 	width: 20%;
 	height: 5px;
+	display: inline-block;
+	position: relative;
+}
+
+#fileupload .m-progress-step::after {
+	content: "";
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: #0275d8;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
+}
+
+#fileupload .m-progress-step:first-child {
+	width: 0;
+}
+
+#fileupload .m-progress-step.current {
+	background-color: #0275d8;
+}
+
+
+#fileupload .m-progress-step.current::after  {
+	background-color: #0275d8;
+}
+
+#fileupload .m-progress-step.current ~ .m-progress-step {
+	background-color: #dadada;
+}
+
+#fileupload .m-progress-step.current ~ .m-progress-step::after {
+	background-color: #dadada;
 }
 
 /******* steps *******/
@@ -109,7 +149,7 @@
 /* step 1 upload */
 .step-upload .custom-file {
 	text-align: center;
-	border: 1px dashed rgba(0,0,0,.125);
+	border: 1px dashed #dadada;
 	background-color: #F2F2F2;
 	padding: 30px 15px 15px;
 	height: auto;
@@ -141,7 +181,7 @@
 	padding: 0.5em;
 	padding-top: 25px;
 	margin-top: -30px;
-	border: 1px solid rgba(0,0,0,.125);
+	border: 1px solid #dadada;
 	background-color: #F2F2F2;
 }
 .step-structure .card-block h6 {
@@ -154,7 +194,7 @@
 
 /* step 3 notfound */
 .step-notfound .list-group .list-group-item {
-	background-color: rgba(0,0,0,.125);
+	background-color: #dadada;
 	border: 1px solid white;
 	border-radius: 0;
 	padding: .25rem 1.25rem;
@@ -176,7 +216,7 @@
 }
 
 .step .patient-list .card .card-header {
-	background-color: rgba(0,0,0,.125);
+	background-color: #dadada;
 	border: 1px solid white;
 	border-radius: 0;
 	padding: .25rem 1.25rem;
