@@ -7,10 +7,14 @@
 
 var fileControl = false;
 var parseControl = false;
+var resetControl = false;
 var rowHeaderControl = false;
 var previewControl = false;
+var dropareaControl = false;
+var sourceFile = false;
 
 /* define valid date formats for birthdate detection* */
+
 var birthdayFormats = [
     'YYYYMMDD',
     'YYYY-MM-DD',
@@ -19,20 +23,21 @@ var birthdayFormats = [
     'DD.MM.YY'
 ]
 
+
 /* define auto matiching mechanics */
 var autoMatches = [];
 autoMatches.push(
     {
         'type': 'first_name',
         'used': false,
-        'values': ['first_name', 'vorname', 'prenom']
+        'values': ['firstname', 'vorname', 'prenom']
     }
 );
 autoMatches.push(
     {
         'type': 'last_name',
         'used': false,
-        'values': ['last_name', 'name', 'nachname', 'nom']
+        'values': ['lastname', 'name', 'nachname', 'nom']
     }
 );
 autoMatches.push(
@@ -47,7 +52,15 @@ autoMatches.push(
     {
         'type': 'patient_id',
         'used': false,
-        'values': ['patient_id', 'patient']
+        'values': ['patientid', 'patient']
+    }
+);
+
+autoMatches.push(
+    {
+        'type': 'full_name',
+        'used': false,
+        'values': ['ganzer name', 'patientenname']
     }
 );
 
@@ -55,22 +68,8 @@ autoMatches.push(
     Generic Helper Functions
 ================================================================================ */
 
-/* Check Browser support */
-function CheckBrowserSupport() {
-    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-        alert('File API not supported by browser!')
-        return false;
-    }
-    else if (!fileControl.prop('files')) {
-        alert('Files property not supported by browser!');
-        return false;
-    }
-    return true;
-}
-
-/* Create output table */
-function CreateTable(data, amount = -1) {
-    if (amount == -1) {
+function CreateTable(data, amount) {
+    if (!amount || amount < 0) {
         amount = data.length;
     }
 
@@ -88,6 +87,12 @@ function CreateTable(data, amount = -1) {
         table.appendChild(row);
     }
     return table;
+}
+
+function Reset() {
+    sourceFile = false;
+    previewControl.html('');
+    console.clear();
 }
 
 /* ================================================================================
@@ -109,7 +114,7 @@ function GetFileExtension(fileName) {
 
 /* Get file if correct extension */
 function CheckFile() {
-    var extension = GetFileExtension(fileControl.val());
+    var extension = GetFileExtension(sourceFile.name);
     var result = false;
     switch (extension) {
         case 'csv':
@@ -129,29 +134,18 @@ function CheckFile() {
 
 /* Get File content (header + content) based on file extension */
 function GetFileContent(callback) {
-    var extension = GetFileExtension(fileControl.val());
+    var extension = GetFileExtension(sourceFile.name);
 
-    if (CheckBrowserSupport()) {
-        var file = fileControl.prop('files')[0];
-        var reader = new FileReader();
-        if (extension == 'csv') {
-            // get csv data
-            reader.readAsText(file);
-            reader.onload = function (event) {
-                var csv = event.target.result;
-                callback($.csv.toArrays(csv));
-            };
-        }
-        else if (extension == 'xlsx' || extension == 'xls') {
-            // get excel data
-            reader.onload = function (event) {
-                var data = event.target.result;
-                var arr = String.fromCharCode.apply(null, new Uint8Array(data));
-                var wb = XLSX.read(btoa(arr), { type: 'base64' });
-                callback(WorkbookToJson(wb));
-            };
-            reader.readAsArrayBuffer(file);
-        };
+    var fileContent = $.removeUriScheme(sourceFile.data);
+    if (extension == 'csv') {
+        // get csv data
+        fileContent = window.atob(fileContent);
+        callback($.csv.toArrays(fileContent));
+    }
+    else if (extension == 'xlsx' || extension == 'xls') {
+        // get excel data
+        var wb = XLSX.read(fileContent, { type: 'base64' });
+        callback(WorkbookToJson(wb));
     };
     return;
 }
@@ -185,64 +179,8 @@ function PrepareFileContent(data) {
     data = SplitData(data);
     data = DetectBirthdate(data);
     data = PrepareDefaults(data);
-
-    fillBoxes(data);
-
-    //var result = FinalizeData(data);
-    console.log(JSON.stringify(data, 2, 2));
-}
-
-function fillBoxes(data) {
-    toggleLoader(3);
-
-    var parent = $('.step-2 .data-list');
-    var box = parent.find('.data-template > div');
-
-    $.each(data['header'], function(key, value) {
-        var tempBox = box.clone(true);
-        tempBox.addClass("box box-" + key).removeClass('data-template');
-        tempBox.data('id', key);
-
-        tempBox.find('[data-tmpl="header"]').html(value.title);
-        tempBox.find('[data-tmpl="sampledata"]').html(value.sampledata);
-        tempBox.find('[data-tmpl="select"]').val(value.selected);
-        tempBox.appendTo(parent);
-    });
-
-    $(window).on('change', box, function(event) {
-        changeSelectedData(event.target, data);
-    });
-
-    $('#fileupload').trigger('next.m.' + 2);
-    toggleLoader(3);
-}
-
-/* change selected values */
-function changeSelectedData(select, data) {
-    // change views
-    var $select = $(select);
-    var box = $(select).closest('.box');
-    var selectValue = $select.val();
-
-    $('.box select').each(function() {
-        if ($(this).val() == $select.val()) {
-            $(this).val("");
-        }
-    });
-    $select.val(selectValue);
-    $select.removeClass('has-danger');
-
-    // change data array
-    $.each(data['header'], function (key, value) {
-        if (value['selected'] && value['selected'] == selectValue) {
-            value['selected'] = "";
-        }
-        if (key == box.data('id')) {
-            value['selected'] = selectValue;
-        }
-    });
-
-    console.log(data);
+    data = fillBoxes(data);
+    //console.log(JSON.stringify(data, 2, 2));
 }
 
 /* prepare data to send */
@@ -262,17 +200,17 @@ function FinalizeData(data) {
     $.each(data['header'], function (key, value) {
         if (value['selected']) {
             switch (value['selected']) {
-                case 'first_name':
+                case 'firstname':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
                     });
                     break;
-                case 'last_name':
+                case 'lastname':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
                     });
                     break;
-                case 'fullname':
+                case 'full_name':
                     $.each(data['content'], function (subkey, subvalue) {
                         result[subkey]['full_name'] = subvalue[key];
                     });
@@ -314,6 +252,7 @@ function PrepareDefaults(data) {
                 birthdateUsed = true;
             }
         }
+        data['header'][key]['sampledata'] = data['header'][key]['sampledata'].join(',');
     });
 
     if (!birthdateUsed) {
@@ -405,9 +344,62 @@ function SplitData(data) {
 }
 
 /* ================================================================================
+    Main
+================================================================================ */
+
+$(function () {
+    /* define controls */
+    fileControl = $('#uploadFile');
+    parseControl = $('#btnParse');
+    resetControl = $('#btnReset');
+    rowHeaderControl = $('#firstRowIsHeader');
+    previewControl = $('#filePreview');
+    dropareaControl = $('#droparea');
+
+    /* init */
+    parseControl.hide();
+
+    rowHeaderControl.on('change', function () {
+        if (CheckFile()) {
+            GetFileContent(PreviewFileContent);
+        };
+    })
+
+    parseControl.on('click', function () {
+        GetFileContent(PrepareFileContent);
+    });   
+
+    resetControl.on('click', function () {
+        Reset();
+    });
+
+    if ($.support.fileDrop) {
+        dropareaControl.fileDrop({
+            decodebase64: true,
+            onFileRead: function (fileCollection) {
+                $.each(fileCollection, function () {
+                    sourceFile = this;
+                    if (CheckFile()) {
+                        GetFileContent(PreviewFileContent);
+                    };
+                });
+            },
+        });
+    }
+    else {
+        alert('Browser not supported!');
+    }
+});
+
+
+
+
+
+/* ================================================================================
     Step Helper
 ================================================================================ */
 
+/* show/hide loading button */
 function toggleLoader(nextStep) {
     var loaderBtn = $('.btn.step-' + (nextStep-1));
 
@@ -420,77 +412,65 @@ function toggleLoader(nextStep) {
     }
 }
 
-/* ================================================================================
-    Main
-================================================================================ */
+/* goes to a specific step */
+function goToStep(nextStep) {
+    $('#fileupload').trigger('next.m.' + nextStep);
+    //toggleLoader(nextStep);
+}
 
-$(function () {
-    /* define controls */
-    fileControl = $('#uploadFile');
-    parseControl = $('#parseControl');
-    rowHeaderControl = $('#firstRowIsHeader');
-    previewControl = $('#filePreview');
 
-    /* init */
-    parseControl.prop('disabled', true);
 
-    /* bind events */
-    fileControl.on('change', function () {
-        if (CheckFile()) {
-            GetFileContent(PreviewFileContent);
-        };
+function fillBoxes(data) {
+    toggleLoader(2);
+
+    var parent = $('.step-2 .data-list');
+    var box = parent.find('.data-template > div');
+
+    $.each(data['header'], function(key, value) {
+        var tempBox = box.clone(true);
+        tempBox.addClass("box box-" + key).removeClass('data-template');
+        tempBox.data('id', key);
+
+        tempBox.find('[data-tmpl="header"]').html(value.title);
+        tempBox.find('[data-tmpl="sampledata"]').html(value.sampledata);
+        tempBox.find('[data-tmpl="select"]').val(value.selected);
+        tempBox.appendTo(parent);
     });
 
-    rowHeaderControl.on('change', function () {
-        if (CheckFile()) {
-            GetFileContent(PreviewFileContent);
-        };
-    })
-
-    parseControl.on('click', function () {
-        GetFileContent(PrepareFileContent);
+    $(window).on('change', box, function(event) {
+        changeSelectedData(event.target, data);
     });
 
+    goToStep(2);
+}
 
+/* change selected values */
+function changeSelectedData(select, data) {
+    // change views
+    var $select = $(select);
+    var box = $(select).closest('.box');
+    var selectValue = $select.val();
 
-    /* multi steps handler */
-    sendEvent = function(sel, nextStep) {
-        switch(nextStep) {
-            case 2:
-                // check file validation
-                
-                break;
-
-            case 3:
-                // check output
-                var parent = $('.step-3 .patient-list');
-                var tmpl = parent.find('.data-template').html();
-
-                var appended = parent.append(tmpl);
-                appended.find('[data-tmpl="info"]').html('Patient blah');
-                appended.find('[data-tmpl="id"]').attr('data-id', 1);
-
-                // when there are not founded patients
-                if (false) {
-                    $(sel).trigger('next.m.' + nextStep);
-                } else {
-                    $(sel).trigger('next.m.' + (nextStep+1));
-                }
-                break;
-
-            case 4:
-                $(sel).trigger('next.m.' + nextStep);
-                break;
-
-            case 5:
-                // make exakt matches out of selected closest match
-                $(sel).trigger('next.m.' + nextStep);
-                break;
-
-            default:
-                $(sel).trigger('next.m.' + nextStep);
-                break;
+    $('.box select').each(function() {
+        if ($(this).val() == $select.val()) {
+            $(this).val("");
+            console.log($(this).closest('.card-header'));
+            $(this).closest('.card-header').removeClass('has-success').addClass('has-warning');
         }
+    });
 
-    }
-});
+    $select.val(selectValue);
+    box.removeClass('has-warning').addClass('has-success');
+
+    // change data array
+    $.each(data['header'], function (key, value) {
+        if (value['selected'] && value['selected'] == selectValue) {
+            value['selected'] = "";
+        }
+        if (key == box.data('id')) {
+            value['selected'] = selectValue;
+        }
+    });
+
+    console.log(data);
+}
