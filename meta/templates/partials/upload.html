@@ -35,7 +35,7 @@
 					<p>Die folgenden Patienten konnten nicht eindeutig identifiziert werden. Sie sehen stattdessen eine Liste von Patienten, die ähnliche Parameter enthalten. Wählen Sie die zutreffende Person aus. Wenn Sie nichts auswählen, geht der Eintrag verloren.</p>
 					<div class="interaction-info clearfix">
 						<h5 class="float-md-left">Korrigieren Sie nun die nicht eindeutig identifizierten Patienten.</h5>
-						<a href="#reset" data-reset="" class="float-xs-right"><small>Datei neu hochladen</small></a>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Zurücksetzen</small></a>
 					</div>
 				</div>
 				<div class="modal-title step-5" data-step="5">
@@ -43,7 +43,7 @@
 					<p>Sie können nun die Patienten auswählen, welche Sie transferieren oder herunterladen möchten.</p>
 					<div class="interaction-info clearfix">
 						<h5 class="float-md-left">Entscheiden Sie, wie Sie das Ergebnis weiterverarbeiten wollen.</h5>
-						<a href="#reset" data-reset="" class="float-xs-right"><small>Datei neu hochladen</small></a>
+						<a href="#reset" data-reset="" class="float-xs-right"><small>Zurücksetzen</small></a>
 					</div>
 				</div>
 			</div>
@@ -101,11 +101,11 @@
 					</div> -->
 				</div>
 			 
-			 	<div class="m-prev">
-					<button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)">Weiter</button>
-					<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)">Weiter</button>
-					<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 4)">Weiter</button>
-					<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="sendEvent('#fileupload', 5)">Weiter</button>
+			 	<div class="m-next">
+					<button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent('#fileupload', 2)"><span>Weiter</span><div class="loader">Loading...</div></button>
+					<button type="button" class="btn btn-primary step step-2" data-step="2" onclick="sendEvent('#fileupload', 3)"><span>Weiter</span><div class="loader">Loading...</div></button>
+					<button type="button" class="btn btn-primary step step-3" data-step="3" onclick="sendEvent('#fileupload', 4)"><span>Weiter</span><div class="loader">Loading...</div></button>
+					<button type="button" class="btn btn-primary step step-4" data-step="4" onclick="sendEvent('#fileupload', 5)"><span>Weiter</span><div class="loader">Loading...</div></button>
 					<button type="button" class="btn btn-primary step step-5" data-step="5" onclick="">Fertig</button>
 				</div>
 			</div>
