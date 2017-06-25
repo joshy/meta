@@ -86,7 +86,7 @@
 #fileupload .m-progress-step {
 	background-color: #0275d8;
 	width: 20%;
-	height: 5px;
+	height: 2px;
 	display: inline-block;
 	position: relative;
 }
