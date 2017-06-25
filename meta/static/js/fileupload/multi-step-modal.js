@@ -143,11 +143,14 @@
                 $modal.on('hidden', function () {
                     reset();
                     $modal.find('.step-1').show();
+                    goToStep(1);
+
                 })
                 //Bootstrap 3
                 $modal.on('hidden.bs.modal', function () {
                     reset();
                     $modal.find('.step-1').show();
+                    goToStep(1);
                 })
             }
         }
