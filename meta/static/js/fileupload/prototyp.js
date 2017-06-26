@@ -247,7 +247,7 @@ function fillNotFoundMatches() {
     $.each(matchesNotfound, function(key, value) {
         var tempCard = card.clone();
         tempCard.addClass("card-" + key).removeClass('data-template');
-        tempCard.data('id', key);
+        tempCard.attr('data-id', key);
 
         var content = "";
         content += "Zeile " + (value+1) + ": ";
@@ -275,7 +275,7 @@ function fillClosestMatches() {
         var tempCard = card.clone(true);
         var uniqueId = "card_" + key + "_" +Math.floor((Math.random() * 1000) + 1);
         tempCard.addClass(uniqueId).removeClass('data-template');
-        tempCard.data('id', key);
+        tempCard.attr('data-id', value.patient_key);
 
         tempCard.find('[data-tmpl="header"]').attr("id", "header-" + uniqueId);
         tempCard.find('[data-tmpl="collapse_body"]').attr("aria-labelledby", "header-" + uniqueId);
@@ -296,9 +296,9 @@ function fillClosestMatches() {
         $.each(value.closest, function(key, value) {
             var tempRadio = radio.clone(true);
             tempRadio.addClass("check-" + uniqueId).removeClass('data-template');
-            tempRadio.data('id', key);
+            tempRadio.attr('data-id', key);
             tempRadio.find('[data-tmpl="closest_radio"]').attr("name", "closestpatient_" + uniqueId);
-            tempRadio.find('[data-tmpl="closest_patient"]').html(key);
+            tempRadio.find('[data-tmpl="closest_radio"]').attr("value", key);
 
             var content = "";
             content += value.doclist.docs[0].PatientName;
@@ -311,6 +311,10 @@ function fillClosestMatches() {
         });
         
         tempCard.appendTo(parent);
+    });
+
+    $(window).on('change', radio, function() {
+        finalizeClosestMatches(event.target);
     });
 
     goToStep(4);
@@ -326,7 +330,7 @@ function fillFinalMatches() {
         console.log(key, value);
         var tempCard = card.clone(true);
         tempCard.addClass("check-" + key).removeClass('data-template');
-        tempCard.data('id', key);
+        tempCard.attr('data-id', key);
 
         var patient = value.doclist.docs[0];
         var content = "";
@@ -374,6 +378,26 @@ function changeSelectedData(select) {
         }
         if (key == box.data('id')) {
             value['selected'] = selectedValue;
+        }
+    });
+
+    return;
+}
+
+/* change selected values */
+function finalizeClosestMatches(radio) {
+    var $radio = $(radio);
+    var card = $radio.closest('.card');
+    var selectedValue = $radio.val();
+
+    //change data in array
+    $.each(matchesClosest, function(key, value) {
+        if (selectedValue == "") {
+            matchesFinal.pop(value.closest[selectedValue]);
+        } else {
+            if (value.patient_key == card.data('id')) {
+                matchesFinal.push(value.closest[selectedValue])
+            }
         }
     });
 
