@@ -163,6 +163,16 @@
 	display: block;
 }
 
+.firstRowIsHeader {
+	margin: 2rem 0 0.5rem;
+	text-align: center;
+}
+
+#filePreview {
+	font-size: 0.8rem;
+	margin-bottom: 1rem;
+}
+
 /* Essential FileDrop zone element configuration: */
 .fd-zone {
     position: relative;
@@ -184,8 +194,16 @@
 }
 
 /* step 2 structure */
+.step-structure .data-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .step-structure .card {
 	border: 0;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .step-structure .card-header {
@@ -205,6 +223,7 @@
 	margin-top: -30px;
 	border: 1px solid #dadada;
 	background-color: #F2F2F2;
+	flex-grow: 1;
 }
 .step-structure .card-block h6 {
 	margin-bottom: 0;

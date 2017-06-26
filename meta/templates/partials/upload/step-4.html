@@ -1,60 +1,27 @@
 <div id="accordion-closest" role="tablist" aria-multiselectable="true" class="patient-list">
-  <div class="card">
-    <div class="card-header" role="tab" id="headingOne">
-        <a data-toggle="collapse" data-parent="#accordion-closest" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Patient 1
-        </a>
-    </div>
-    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
-      <div class="card-block">
-       <div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-		    <span>Keiner der Vorschläge</span>
-		  </label>
+	<div class="data-template">
+		<div class="card">
+			<div class="card-header" role="tab" id="headingOne" data-tmpl="header">
+				<a data-toggle="collapse" data-parent="#accordion-closest" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" data-tmpl="toggler"></a>
+			</div>
+			<div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-tmpl="collapse_body">
+				<div class="card-block">
+					<div class="form-check">
+						<label class="form-check-label">
+							<input class="form-check-input" type="radio" name="exampleRadios" value="" checked data-tmpl="closest_radio_default">
+							<span>Keiner der Vorschläge</span>
+						</label>
+					</div>
+					<div class="data-template">
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="radio" name="exampleRadios" value="" data-tmpl="closest_radio">
+								<span data-tmpl="closest_patient"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-       <div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
-		    <span>Vorschlag 1</span>
-		  </label>
-		</div>
-		<div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-		    <span>Vorschlag 2</span>
-		  </label>
-		</div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" role="tab" id="headingTwo">
-        <a data-toggle="collapse" data-parent="#accordion-closest" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          Patient 1
-        </a>
-    </div>
-    <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="card-block">
-       <div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-		    <span>Keiner der Vorschläge</span>
-		  </label>
-		</div>
-       <div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
-		    <span>Vorschlag 1</span>
-		  </label>
-		</div>
-		<div class="form-check">
-		  <label class="form-check-label">
-		    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-		    <span>Vorschlag 2</span>
-		  </label>
-		</div>
-      </div>
-    </div>
-  </div>
+	 </div>
 </div>
