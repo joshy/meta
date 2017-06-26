@@ -212,7 +212,7 @@ function PrepareFileContent() {
 /* fill markup of boxes for structure recognition */
 function fillStructureBoxes() {
     var parent = $('.step-2 .data-list');
-    var box = parent.find('.data-template > div');
+    var box = parent.find('> .data-template > div');
 
     $.each(fileData['header'], function(key, value) {
         var tempBox = box.clone(true); // clone(true) binds data and events
@@ -242,16 +242,18 @@ function fillStructureBoxes() {
 /* fills markup of not founded patients with data */
 function fillNotFoundMatches() {
     var parent = $('.step-3 .patient-list');
-    var card = parent.find('.data-template > div');
+    var card = parent.find('> .data-template > div');
 
     $.each(matchesNotfound, function(key, value) {
         var tempCard = card.clone();
         tempCard.addClass("card-" + key).removeClass('data-template');
         tempCard.data('id', key);
 
-        var content = (fileData['patients'][0]['full_name'] ? fileData['patients'][0]['full_name'] : "");
-        content += (fileData['patients'][0]['birthdate'] ? ", " + fileData['patients'][0]['birthdate'] : "");
-        content += (fileData['patients'][0]['patient_id'] ? ", " + fileData['patients'][0]['patient_id'] : "");
+        var content = "";
+        content += "Zeile " + (value+1) + ": ";
+        content += (fileData['patients'][value]['full_name'] ? fileData['patients'][value]['full_name'] : "");
+        content += (fileData['patients'][value]['birthdate'] ? ", " + fileData['patients'][value]['birthdate'] : "");
+        content += (fileData['patients'][value]['patient_id'] ? ", " + fileData['patients'][value]['patient_id'] : "");
 
         tempCard.find('[data-tmpl="patient"]').html(content);
 
@@ -261,15 +263,91 @@ function fillNotFoundMatches() {
     goToStep(3);
     return;
 }
+
 /* fills markup of closest matches with data */
 function fillClosestMatches() {
+    var parent = $('.step-4 .patient-list');
+    var card = parent.find('> .data-template > div');
+    var parentRadio = card.find('.card-block');
+    var radio = parentRadio.find('.data-template > div');
+
+    $.each(matchesClosest, function(key, value) {
+        var tempCard = card.clone(true);
+        var uniqueId = "card_" + key + "_" +Math.floor((Math.random() * 1000) + 1);
+        tempCard.addClass(uniqueId).removeClass('data-template');
+        tempCard.data('id', key);
+
+        tempCard.find('[data-tmpl="header"]').attr("id", "header-" + uniqueId);
+        tempCard.find('[data-tmpl="collapse_body"]').attr("aria-labelledby", "header-" + uniqueId);
+        tempCard.find('[data-tmpl="collapse_body"]').attr("id", "body-" + uniqueId);
+
+        var content = "";
+        content += "Zeile " + (value.patient_key+1) + ": ";
+        content += (fileData['patients'][value.patient_key]['full_name'] ? fileData['patients'][value.patient_key]['full_name'] : "");
+        content += (fileData['patients'][value.patient_key]['birthdate'] ? ", " + fileData['patients'][value.patient_key]['birthdate'] : "");
+        content += (fileData['patients'][value.patient_key]['patient_id'] ? ", " + fileData['patients'][value.patient_key]['patient_id'] : "");
+        
+        tempCard.find('[data-tmpl="toggler"]').html(content);
+        tempCard.find('[data-tmpl="toggler"]').attr("href", "#body-" + uniqueId);
+        tempCard.find('[data-tmpl="toggler"]').attr("aria-controls", "body-" + uniqueId);
+        tempCard.find('[data-tmpl="closest_radio_default"]').attr("name", "closestpatient_" + uniqueId);
+
+        /* radio boxes */
+        $.each(value.closest, function(key, value) {
+            var tempRadio = radio.clone(true);
+            tempRadio.addClass("check-" + uniqueId).removeClass('data-template');
+            tempRadio.data('id', key);
+            tempRadio.find('[data-tmpl="closest_radio"]').attr("name", "closestpatient_" + uniqueId);
+            tempRadio.find('[data-tmpl="closest_patient"]').html(key);
+
+            var content = "";
+            content += value.doclist.docs[0].PatientName;
+            content += ", " + value.doclist.docs[0].PatientBirthDate;
+            content += ", " + value.doclist.docs[0].PatientID;
+ 
+            tempRadio.find('[data-tmpl="closest_patient"]').html(content);
+
+            tempRadio.appendTo(tempCard.find('.card-block'));
+        });
+        
+        tempCard.appendTo(parent);
+    });
+
     goToStep(4);
     return;
 }
 
-/* fills markup of XXXX with data */
+/* fills markup of final matches with data */
 function fillFinalMatches() {
+    var parent = $('.step-5 .patient-list');
+    var card = parent.find('> .data-template > div');
 
+    $.each(matchesFinal, function(key, value) {
+        console.log(key, value);
+        var tempCard = card.clone(true);
+        tempCard.addClass("check-" + key).removeClass('data-template');
+        tempCard.data('id', key);
+
+        var patient = value.doclist.docs[0];
+        var content = "";
+        content += patient.PatientName;
+        content += ", " + patient.PatientBirthDate;
+        content += ", " + patient.PatientID;
+        tempCard.find('[data-tmpl="patient"]').html(content);
+
+        tempCard.find('[data-tmpl="patient_info"]').attr('data-patient-id', patient.PatientID);
+        tempCard.find('[data-tmpl="patient_info"]').attr('data-study-id', patient.StudyID);
+        tempCard.find('[data-tmpl="patient_info"]').attr('data-series-id', patient.SeriesInstanceUID);
+        tempCard.find('[data-tmpl="patient_info"]').attr('data-accession-number', patient.AccessionNumber);
+        tempCard.find('[data-tmpl="patient_info"]').attr('data-series-number', patient.SeriesNumber);
+
+        
+
+        tempCard.appendTo(parent);
+    });
+
+    goToStep(5);
+    return;
 }
 
 /* change selected values */
@@ -515,13 +593,18 @@ $(function () {
         FinalizeData();
     });
 
-    /* init structure and search API call  */
+    /* show closest matches if found or finalize  */
     $('.m-next .btn.step-3').on('click', function () {
         if (matchesClosest.length > 0) {
             fillClosestMatches();
         } else {
             fillFinalMatches();
         }
+    });
+
+    /* show finale matches  */
+    $('.m-next .btn.step-4').on('click', function () {
+        fillFinalMatches();
     });
     
 });
@@ -590,7 +673,7 @@ function prepareOutputData(data) {
             }
          } else {
             // exact match
-            matchesFinal.push(value[0].groups);
+            matchesFinal.push(value[0].groups[0]);
          }
     });
 
