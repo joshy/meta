@@ -205,17 +205,17 @@ function PrepareFileContent() {
     SplitData();
     DetectBirthdate();
     PrepareDefaults();
-    fillBoxes();
+    fillStructureBoxes();
     //console.log(JSON.stringify(fileData, 2, 2));
 }
 
 /* fill markup of boxes for structure recognition */
-function fillBoxes() {
+function fillStructureBoxes() {
     var parent = $('.step-2 .data-list');
     var box = parent.find('.data-template > div');
 
     $.each(fileData['header'], function(key, value) {
-        var tempBox = box.clone(true);
+        var tempBox = box.clone(true); // clone(true) binds data and events
         tempBox.addClass("box box-" + key).removeClass('data-template');
         tempBox.data('id', key);
 
@@ -237,6 +237,39 @@ function fillBoxes() {
 
     goToStep(2);
     return;
+}
+
+/* fills markup of not founded patients with data */
+function fillNotFoundMatches() {
+    var parent = $('.step-3 .patient-list');
+    var card = parent.find('.data-template > div');
+
+    $.each(matchesNotfound, function(key, value) {
+        var tempCard = card.clone();
+        tempCard.addClass("card-" + key).removeClass('data-template');
+        tempCard.data('id', key);
+
+        var content = (fileData['patients'][0]['full_name'] ? fileData['patients'][0]['full_name'] : "");
+        content += (fileData['patients'][0]['birthdate'] ? ", " + fileData['patients'][0]['birthdate'] : "");
+        content += (fileData['patients'][0]['patient_id'] ? ", " + fileData['patients'][0]['patient_id'] : "");
+
+        tempCard.find('[data-tmpl="patient"]').html(content);
+
+        tempCard.appendTo(parent);
+    });
+
+    goToStep(3);
+    return;
+}
+/* fills markup of closest matches with data */
+function fillClosestMatches() {
+    goToStep(4);
+    return;
+}
+
+/* fills markup of XXXX with data */
+function fillFinalMatches() {
+
 }
 
 /* change selected values */
@@ -481,6 +514,15 @@ $(function () {
     searchControl.on('click', function () {
         FinalizeData();
     });
+
+    /* init structure and search API call  */
+    $('.m-next .btn.step-3').on('click', function () {
+        if (matchesClosest.length > 0) {
+            fillClosestMatches();
+        } else {
+            fillFinalMatches();
+        }
+    });
     
 });
 
@@ -504,12 +546,10 @@ function toggleLoader(nextStep) {
 
 /* goes to a specific step */
 function goToStep(nextStep) {
-
     $('#fileupload').trigger('next.m.' + nextStep);
-    //toggleLoader(nextStep);
 }
 
-
+/* search the patients */
 function searchPatients() {
     $.ajax({
         type: "POST",
@@ -521,11 +561,21 @@ function searchPatients() {
     });
 }
 
+/* process and prepare the search results */
 function prepareOutputData(data) {
+    // init vars
     searchData = data;
+    matchesClosest = [];
+    matchesNotfound = [];
+    matchesFinal = [];
 
     /* developer output: */
     searchData = [[{"groups":[{"by_AccessionNumber":{"ZH140519MR3043":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"}]},"doclist":{"docs":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"}],"numFound":2,"start":0},"groupValue":"10206705","patient":{"birthdate":"24.01.1964","name":"Bram^L.^Munich"}}],"matches":2,"ngroups":1},{"groups":[{"by_AccessionNumber":{"ZH140519MR3043":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"}]},"doclist":{"docs":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"}],"numFound":2,"start":0},"groupValue":"10206705","patient":{"birthdate":"24.01.1964","name":"Bram^L.^Munich"}}],"matches":2,"ngroups":1}],[{"groups":[],"matches":0,"ngroups":0},{"groups":[{"by_AccessionNumber":{"ZH140519MR3043":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"}]},"doclist":{"docs":[{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[250],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917185841333961868.0.0.0","SeriesNumber":"10","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272670036000,"id":"0"},{"AccessionNumber":"ZH140519MR3043","BodyPartExamined":"Missing","InstanceAvailability":"Missing","InstanceNumber":[155],"InstitutionName":"Wankdorf_Pathology_Center","Modality":"MR","PatientBirthDate":19640124,"PatientID":"10206705","PatientName":"Bram^L.^Munich","PatientSex":"M","ProtocolName":["t1_mpr_sag_p2_iso_256_1x1x1"],"SeriesDescription":"t1_mpr_sag_p2_iso_256_1x1x1","SeriesInstanceUID":"1.3.12.2.1107.5.2.32.35424.2014051917040895196947132.0.0.0","SeriesNumber":"7","StudyDate":20140519,"StudyDescription":"MRI_Schaedel","StudyID":"677123","StudyInstanceUID":"1.2.840.113619.186.35125912074.20140519114638815.700","StudyTime":[165335.64],"_version_":1571175272740290600,"id":"3"}],"numFound":2,"start":0},"groupValue":"10206705","patient":{"birthdate":"24.01.1964","name":"Bram^L.^Munich"}}],"matches":2,"ngroups":1}],[{"groups":[],"matches":0,"ngroups":0},{"groups":[],"matches":0,"ngroups":0}]];
+    fileData = {"patients": [ 
+                 { "full_name": "Bram L. Munich", "birthdate": "24.01.1964" }, 
+                 { "full_name": "Bram L. Munic", "birthdate": "24.01.1964" },
+                 { "full_name": "Bram Kein", "birthdate": "09.07.1966" }
+             ]};
 
     // each through searched patients
     $.each(searchData, function(key, value) {
@@ -542,5 +592,14 @@ function prepareOutputData(data) {
             // exact match
             matchesFinal.push(value[0].groups);
          }
-     });
+    });
+
+    // jump over steps if there is nothing to show
+    if (matchesNotfound.length > 0) {
+        fillNotFoundMatches();
+    } else if (matchesClosest.length > 0) {
+        fillClosestMatches();
+    } else {
+        fillFinalMatches();
+    }
 }
