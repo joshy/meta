@@ -31,13 +31,17 @@ def query_patient_body(limit=100):
 
 
 def _query_patient(patient, approx=False):
+    patient_id = _create_patient_id(patient.get('patient_id'))
     birthdate = _create_patient_birthdate(patient.get('birthdate'))
-    first_name = patient.get('first_name')
-    last_name = patient.get('last_name')
-    full_name = "PatientName:{} {}".format(last_name, first_name).replace(' ', r'\^')
+    full_name = patient.get('full_name', '')
+
     if approx:
-        full_name = "PatientName:{} {}~".format(last_name, first_name).replace(' ', r'\^')
-    return r"{} AND {}".format(birthdate, full_name)
+        full_name = "PatientName:{}~".format(full_name).replace(' ', r'\^')
+    else:
+        full_name = "PatientName:{}".format(full_name).replace(' ', r'\^')
+
+    cond = [c for c in [patient_id, birthdate, full_name] if c]
+    return " AND ".join(cond)
 
 
 def query_body(args, limit=100):
@@ -69,6 +73,12 @@ def _create_filter_query(args):
 def _filter(element, args):
     if args.get(element):
         return '{0}:{1}'.format(element, args.get(element))
+
+
+def _create_patient_id(patient_id):
+    if not patient_id:
+        return None
+    return 'PatientID:' + patient_id
 
 
 def _create_patient_birthdate(birthdate):
