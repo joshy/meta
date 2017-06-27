@@ -475,6 +475,7 @@ function PrepareDefaults() {
                 birthdateUsed = true;
             }
         }
+        //console.log( fileData['header'][key]['sampledata']);
         fileData['header'][key]['sampledata'] = fileData['header'][key]['sampledata'].join(',');
     });
 
@@ -579,6 +580,7 @@ $(function () {
     /* init file upload & file content recognition */
     parseControl.prop('disabled', true);
     rowHeaderControl.closest('.firstRowIsHeader').hide();
+    rowHeaderControl.prop('checked', true);
 
     rowHeaderControl.on('change', function () {
         if (CheckFile()) {
@@ -639,16 +641,17 @@ $(function () {
 ================================================================================ */
 
 /* show/hide loading button */
-function toggleLoader(nextStep) {
-    // var loaderBtn = $('.btn.step-' + (nextStep-1));
+function activateLoader(step) {
+    var loaderBtn = $('.btn.step-' + (step));
 
-    // if (loaderBtn.hasClass('loading')) {
-    //     loaderBtn.removeClass('loading');
-    //     loaderBtn.prop("disabled", false);
-    // } else {
-    //     loaderBtn.addClass('loading');
-    //     loaderBtn.prop("disabled", true);
-    // }
+    loaderBtn.addClass('loading');
+    loaderBtn.prop("disabled", true);
+    
+}
+
+function deactivateLoader(step) {
+    loaderBtn.removeClass('loading');
+    loaderBtn.prop("disabled", false);
 }
 
 /* goes to a specific step */
