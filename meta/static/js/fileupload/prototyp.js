@@ -104,6 +104,7 @@ function Reset() {
     sourceFile = false;
     previewControl.html('');
     rowHeaderControl.closest('.firstRowIsHeader').hide();
+    fileData = false;
     console.clear();
 }
 
@@ -203,6 +204,7 @@ function WorkbookToJson(workbook) {
 function PreviewFileContent(data) {
     var table = CreateTable(data, 5);
     previewControl.html(table);
+    fileData = [];
     fileData = data;
 }
 
@@ -219,6 +221,7 @@ function PrepareFileContent() {
 function fillStructureBoxes() {
     var parent = $('.step-2 .data-list');
     var box = parent.find('> .data-template > div');
+    parent.find('> .box').remove();
 
     $.each(fileData['header'], function(key, value) {
         var tempBox = box.clone(true); // clone(true) binds data and events
@@ -249,6 +252,7 @@ function fillStructureBoxes() {
 function fillNotFoundMatches() {
     var parent = $('.step-3 .patient-list');
     var card = parent.find('> .data-template > div');
+    parent.find('> .card').remove();
 
     $.each(matchesNotfound, function(key, value) {
         var tempCard = card.clone();
@@ -277,6 +281,8 @@ function fillClosestMatches() {
     var parentRadio = card.find('.card-block');
     var radio = parentRadio.find('.data-template > div');
 
+    parent.find('> .card').remove();
+
     $.each(matchesClosest, function(key, value) {
         var tempCard = card.clone(true);
         var uniqueId = "card_" + key + "_" +Math.floor((Math.random() * 1000) + 1);
@@ -298,6 +304,8 @@ function fillClosestMatches() {
         tempCard.find('[data-tmpl="toggler"]').attr("aria-controls", "body-" + uniqueId);
         tempCard.find('[data-tmpl="closest_radio_default"]').attr("name", "closestpatient_" + uniqueId);
 
+        tempCard.find('.card-block > .form-check').remove();
+
         /* radio boxes */
         $.each(value.closest, function(key, value) {
             var tempRadio = radio.clone(true);
@@ -311,8 +319,7 @@ function fillClosestMatches() {
             content += ", " + value.doclist.docs[0].PatientBirthDate;
             content += ", " + value.doclist.docs[0].PatientID;
  
-            tempRadio.find('[data-tmpl="closest_patient"]').html(content);
-
+            tempRadio.find('[data-tmpl="closest_patient"]').html(content);            
             tempRadio.appendTo(tempCard.find('.card-block'));
         });
         
@@ -331,6 +338,7 @@ function fillClosestMatches() {
 function fillFinalMatches() {
     var parent = $('.step-5 .patient-list');
     var card = parent.find('> .data-template > div');
+    parent.find('> .card').remove();
 
     $.each(matchesFinal, function(key, value) {
         console.log(key, value);
@@ -350,8 +358,6 @@ function fillFinalMatches() {
         tempCard.find('[data-tmpl="patient_info"]').attr('data-series-id', patient.SeriesInstanceUID);
         tempCard.find('[data-tmpl="patient_info"]').attr('data-accession-number', patient.AccessionNumber);
         tempCard.find('[data-tmpl="patient_info"]').attr('data-series-number', patient.SeriesNumber);
-
-        
 
         tempCard.appendTo(parent);
     });
@@ -568,6 +574,7 @@ function SplitData() {
         }
     }
 
+    fileData = [];
     fileData = result;
 }
 
@@ -615,7 +622,6 @@ $(function () {
     zone.event('send', function (files) {
         files.each(function (file) {
             sourceFile = file;
-
             if (CheckFile()) {
                 GetFileContent(PreviewFileContent);
             };
@@ -656,15 +662,15 @@ $(function () {
 function activateLoader(step) {
     deactivateAllLoader();
 
-    var loaderBtn = $('.btn.step-' + (step));
+    var loaderBtn = $('.m-next .btn.step-' + (step));
     loaderBtn.addClass('loading');
     loaderBtn.prop("disabled", true);
     
 }
 
 function deactivateAllLoader() {
-    $('.btn.step').removeClass('loading');
-    $('.btn.step').prop('disabled', false);
+    $('.m-next .btn.step').removeClass('loading');
+    $('.m-next .btn.step').prop('disabled', false);
 }
 
 /* goes to a specific step */
@@ -675,7 +681,10 @@ function goToStep(nextStep) {
 
 /* search the patients */
 function searchPatients() {
-    console.log(JSON.stringify(fileData));
+    if (fileData.length == 0) {
+        showMessage(2, "Keine Daten für die Suche vorhanden.", "danger");
+    }
+
     $.ajax({
         type: "POST",
         url: "query_patients",
@@ -689,7 +698,7 @@ function searchPatients() {
 
 function showSearchError(e) {
     console.log("En Error occured", e);
-    showMessage(2, "Das hat leider nicht funktioniert", "danger");
+    showMessage(2, "Bei der Übertragung ist ein Fehler aufgetreten.", "danger");
 }
 
 function showMessage(step, message, status) {
@@ -703,12 +712,17 @@ function showMessage(step, message, status) {
     $('#fileupload').animate({
         scrollTop: $(actionEl).offset().top
     }, 300);
+    deactivateAllLoader();
 }
 
 /* process and prepare the search results */
 function prepareOutputData(data) {
     // init vars
     searchData = data;
+    if (searchData.length == 0) {
+        showMessage(2, "Keine Daten für die Suche vorhanden.", "danger");
+    }
+
     matchesClosest = [];
     matchesNotfound = [];
     matchesFinal = [];
