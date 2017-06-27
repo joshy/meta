@@ -154,9 +154,12 @@ def execute(payload):
         headers = {'content-type': "application/json"}
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
         data = response.json()
-        docs = data['grouped']['PatientID']
-        docs = group(docs)
-        return docs
+        if grouped in data:
+            docs = data['grouped']['PatientID']
+            docs = group(docs)
+            return docs
+        else:
+            return []
     except RequestException as e:
         print(e)
     return []
