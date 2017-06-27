@@ -204,7 +204,6 @@ function WorkbookToJson(workbook) {
 function PreviewFileContent(data) {
     var table = CreateTable(data, 5);
     previewControl.html(table);
-    fileData = [];
     fileData = data;
 }
 
@@ -574,7 +573,6 @@ function SplitData() {
         }
     }
 
-    fileData = [];
     fileData = result;
 }
 
@@ -737,7 +735,7 @@ function prepareOutputData(data) {
 
     // each through searched patients
     $.each(searchData, function(key, value) {
-         
+         console.log(key, value);
          if (value[0].matches == 0) {
             if (value[1].matches == 0) {
                 // no match
