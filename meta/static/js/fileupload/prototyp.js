@@ -368,8 +368,13 @@ function changeSelectedData(select) {
         }
     });
     $select.val(selectedValue);
+    if (selectedValue == "") {
+        box.find('.card-header').removeClass('has-success').addClass('has-warning');
+    } else {
+        box.find('.card-header').removeClass('has-warning').addClass('has-success');
+    }
 
-    box.find('.card-header').removeClass('has-warning').addClass('has-success')
+    
 
     //change data in array
     $.each(fileData['header'], function (key, value) {
@@ -589,6 +594,7 @@ $(function () {
     })
 
     parseControl.on('click', function () {
+        activateLoader(1);
         GetFileContent(PrepareFileContent);
     });
 
@@ -616,11 +622,13 @@ $(function () {
 
     /* init structure and search API call  */
     searchControl.on('click', function () {
+        activateLoader(2);
         FinalizeData();
     });
 
     /* show closest matches if found or finalize  */
     $('.m-next .btn.step-3').on('click', function () {
+        activateLoader(3);
         if (matchesClosest.length > 0) {
             fillClosestMatches();
         } else {
@@ -630,6 +638,7 @@ $(function () {
 
     /* show finale matches  */
     $('.m-next .btn.step-4').on('click', function () {
+        activateLoader(4);
         fillFinalMatches();
     });
     
@@ -642,21 +651,23 @@ $(function () {
 
 /* show/hide loading button */
 function activateLoader(step) {
-    var loaderBtn = $('.btn.step-' + (step));
+    deactivateAllLoader();
 
+    var loaderBtn = $('.btn.step-' + (step));
     loaderBtn.addClass('loading');
     loaderBtn.prop("disabled", true);
     
 }
 
-function deactivateLoader(step) {
-    loaderBtn.removeClass('loading');
-    loaderBtn.prop("disabled", false);
+function deactivateAllLoader() {
+    $('.btn.step').removeClass('loading');
+    $('.btn.step').prop('disabled', false);
 }
 
 /* goes to a specific step */
 function goToStep(nextStep) {
     $('#fileupload').trigger('next.m.' + nextStep);
+    deactivateAllLoader();
 }
 
 /* search the patients */
@@ -666,9 +677,14 @@ function searchPatients() {
         url: "query_patients",
         data: JSON.stringify(fileData),
         success: prepareOutputData,
+        fail: showSearchError,
         contentType: 'application/json',
         dataType: 'json'
     });
+}
+
+function showSearchError(e) {
+    console.log(e);
 }
 
 /* process and prepare the search results */
