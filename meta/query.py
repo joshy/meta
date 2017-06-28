@@ -41,7 +41,7 @@ def _query_patient(patient, approx=False):
         full_name = "PatientName:{}".format(full_name).replace(' ', r'\^')
 
     cond = [c for c in [patient_id, birthdate, full_name] if c]
-    return " AND ".join(cond)
+    return " OR ".join(cond)
 
 
 def query_body(args, limit=100):
