@@ -775,6 +775,7 @@ $(function () {
 	});
 
 	resetControl.on('click', function () {
+        parseControl.prop('disabled', true);
 		Reset();
 	});
 
