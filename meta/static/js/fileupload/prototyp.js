@@ -243,6 +243,8 @@ function fillStructureBoxes() {
 		changeSelectedData(event.target);
 	});
 
+	checkStructureMinimum();
+
 	goToStep(2);
 	return;
 }
@@ -385,8 +387,6 @@ function changeSelectedData(select) {
 		box.find('.card-header').removeClass('has-warning').addClass('has-success');
 	}
 
-	
-
 	//change data in array
 	$.each(fileData['header'], function (key, value) {
 		if (value['selected'] && value['selected'] == selectedValue) {
@@ -397,7 +397,43 @@ function changeSelectedData(select) {
 		}
 	});
 
+	checkStructureMinimum();
+
 	return;
+}
+
+/* to show minimum required messages on structure */
+function checkStructureMinimum() {
+	var minimumReached = false;
+	var minimumCounter = 0;
+	$.each(fileData['header'], function (key, value) {
+		
+		if (value['selected'] && value['selected'] == 'patient_id') {
+			minimumReached = true;
+		}
+		if (value['selected'] && value['selected'] == 'full_name') {
+			minimumCounter++;
+		}
+		if (value['selected'] && value['selected'] == 'first_name') {
+			minimumCounter++;
+		}
+		if (value['selected'] && value['selected'] == 'last_name') {
+			minimumCounter++;
+		}
+		if (value['selected'] && value['selected'] == 'birthdate') {
+			minimumCounter++;
+		}
+	});
+
+	if (minimumCounter >= 2) {
+		minimumReached = true;
+	}
+
+	if (minimumReached) {
+		showMessage(2, "Die minimalen Kategorien sind ausgewählt. Sie können nun die Suche starten.", "success");
+	} else {
+		showMessage(2, "Wählen Sie weitere Kategorien aus, um die Suche zu starten.", "danger");
+	}
 }
 
 /* change selected values */
@@ -707,9 +743,11 @@ function showMessage(step, message, status) {
 	actionEl.addClass('text-'+status);
 	actionEl.html(message);
 
-	$('#fileupload').animate({
-		scrollTop: $(actionEl).offset().top
-	}, 300);
+	if (status == "danger") {
+		$('#fileupload').animate({
+			scrollTop: $(actionEl).offset().top
+		}, 300);
+	}
 	deactivateAllLoader();
 }
 

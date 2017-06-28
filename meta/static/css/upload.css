@@ -215,6 +215,10 @@
 
 .step-structure .card-header select {
 	border-width: 2px;
+	font-size: 12px;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .step-structure .card-block {
