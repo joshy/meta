@@ -61,7 +61,7 @@ js = Bundle("js/jquery-3.1.0.min.js", "js/tether.min.js",
             "js/bootstrap.min.js", "js/moment.min.js", "js/pikaday.js",
             "js/pikaday.jquery.js", "js/jquery.noty.packaged.min.js",
             "js/script.js",
-            "js/fileupload/filedrop-min.js", "js/fileupload/jquery.csv.min.js", "js/fileupload/xlsx.full.min.js", "js/fileupload/prototyp.js", "js/fileupload/multi-step-modal.js", "js/fileupload/main.js",
+            "js/fileupload/filedrop-min.js", "js/fileupload/jquery.csv.min.js", "js/fileupload/xlsx.full.min.js", "js/fileupload/multi-step-modal.js", "js/fileupload/main.js",
             filters='jsmin', output='gen/packed.js')
 assets.register('js_all', js)
 
