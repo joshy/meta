@@ -24,6 +24,9 @@ var searchData = false;
 var matchesClosest = false;
 var matchesNotfound = false;
 var matchesFinal = false;
+var keepFileData = [];
+var keepHeaderAndContentData = [];
+var headerAndContentDataSet = false;
 
 /* define valid date formats for birthdate detection* */
 var birthdayFormats = [
@@ -115,6 +118,9 @@ function Reset() {
 	previewControl.html('');
 	rowHeaderControl.closest('.firstRowIsHeader').hide();
 	fileData = false;
+    keepFileData = [];
+    keepHeaderAndContentData = [];
+    headerAndContentDataSet = false;
 	console.clear();
 }
 
@@ -157,8 +163,35 @@ function deactivateAllLoader() {
 
 /* go to a specific step */
 function goToStep(nextStep) {
+    if(nextStep == 1) {
+        parseControl.prop('disabled', true);
+        Reset();
+    }
+	if (nextStep == 4) {
+		if (matchesClosest.length > 0) {
+			nextStep = 4;
+		}
+        else if (matchesNotfound.length > 0) {
+            nextStep = 3;
+        }
+		else {
+			nextStep = 2;
+		}
+	}
+    if (nextStep == 3) {
+        if (matchesNotfound.length > 0) {
+            nextStep = 3;
+        }
+        else {
+            nextStep = 2;
+        }
+    }
 	$('#fileupload').trigger('next.m.' + nextStep);
 	deactivateAllLoader();
+    if (nextStep == 2) {
+        checkStructureMinimum();
+    }
+
 }
 
 /* ================================================================================
@@ -289,62 +322,63 @@ function finalizeClosestMatches(radio) {
 
 /* prepare data to send */
 function FinalizeData() {
-	var result = [];
+    headerAndContentDataSet = true;
+    keepHeaderAndContentData = fileData;
+    var result = [];
+    // prefill empty data array
+    $.each(fileData['content'], function (key, value) {
+        result.push({
+            'full_name': '',
+            'birthdate': '',
+            'patient_id': ''
+        })
+    });
 
-	// prefill empty data array
-	$.each(fileData['content'], function (key, value) {
-		result.push({
-			'full_name': '',
-			'birthdate': '',
-			'patient_id': ''
-		})
-	});
+    // fill data array based on selected cols
+    $.each(fileData['header'], function (key, value) {
+        if (value['selected']) {
+            switch (value['selected']) {
+                case 'firstname':
+                    $.each(fileData['content'], function (subkey, subvalue) {
+                        result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
+                    });
+                    break;
+                case 'lastname':
+                    $.each(fileData['content'], function (subkey, subvalue) {
+                        result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
+                    });
+                    break;
+                case 'full_name':
+                    $.each(fileData['content'], function (subkey, subvalue) {
+                        result[subkey]['full_name'] = subvalue[key];
+                    });
 
-	// fill data array based on selected cols
-	$.each(fileData['header'], function (key, value) {
-		if (value['selected']) {
-			switch (value['selected']) {
-				case 'firstname':
-					$.each(fileData['content'], function (subkey, subvalue) {
-						result[subkey]['full_name'] = subvalue[key] + result[subkey]['full_name'];
-					});
-					break;
-				case 'lastname':
-					$.each(fileData['content'], function (subkey, subvalue) {
-						result[subkey]['full_name'] = result[subkey]['full_name'] + subvalue[key];
-					});
-					break;
-				case 'full_name':
-					$.each(fileData['content'], function (subkey, subvalue) {
-						result[subkey]['full_name'] = subvalue[key];
-					});
+                    break;
+                case 'birthdate':
+                    $.each(fileData['content'], function (subkey, subvalue) {
+                        //result[subkey]['birthdate'] = "06.11.1974";
+                        $.each(birthdayFormats, function (key, value) {
+                            var parsedDate = moment(subvalue[key], value, true);
+                            if (parsedDate.isValid()) {
+                                result[subkey]['birthdate'] = parsedDate.format('DD.MM.YYYY');
+                            }
+                        });
+                    });
 
-					break;
-				case 'birthdate':
-					$.each(fileData['content'], function (subkey, subvalue) {
-						$.each(birthdayFormats, function (key, value) {
-							var parsedDate = moment(subvalue[key], value, true);
-							if (parsedDate.isValid()) {
-								result[subkey]['birthdate'] = parsedDate.format('DD.MM.YYYY');
-							}
-						});
-					});
+                    break;
+                case 'patient_id':
+                    $.each(fileData['content'], function (subkey, subvalue) {
+                        result[subkey]['patient_id'] = subvalue[key];
+                    });
 
-					break;
-				case 'patient_id':
-					$.each(fileData['content'], function (subkey, subvalue) {
-						result[subkey]['patient_id'] = subvalue[key];
-					});
+                    break;
+            }
 
-					break;
-			}
+        }
+    });
 
-		}
-	});
-
-	result = { patients: result };
-	fileData = result;
-
+    result = {patients: result};
+    fileData = result;
 	searchPatients();
 }
 
@@ -475,7 +509,6 @@ function fillStructureBoxes() {
 	});
 
 	checkStructureMinimum();
-
 	goToStep(2);
 	return;
 }
@@ -592,7 +625,6 @@ function fillFinalMatches() {
 
 		tempCard.appendTo(parent);
 	});
-
 	goToStep(5);
 	return;
 }
@@ -640,8 +672,10 @@ function changeSelectedData(select) {
 function checkStructureMinimum() {
 	var minimumReached = false;
 	var minimumCounter = 0;
+    if (headerAndContentDataSet == true) {
+        fileData = keepHeaderAndContentData;
+    }
 	$.each(fileData['header'], function (key, value) {
-		
 		if (value['selected'] && value['selected'] == 'patient_id') {
 			minimumReached = true;
 		}
@@ -667,6 +701,7 @@ function checkStructureMinimum() {
 		showMessage(2, "Die minimalen Kategorien sind ausgewählt. Sie können nun die Suche starten.", "success");
 	} else {
 		showMessage(2, "Wählen Sie weitere Kategorien aus, um die Suche zu starten.", "danger");
+        searchControl.prop('disabled', true);
 	}
 }
 
@@ -679,7 +714,7 @@ function searchPatients() {
 	if (fileData.length == 0) {
 		showMessage(2, "Keine Daten für die Suche vorhanden.", "danger");
 	}
-
+    //console.log(fileData);
 	$.ajax({
 		type: "POST",
 		url: "query_patients",
@@ -700,6 +735,7 @@ function showSearchError(e) {
 function prepareOutputData(data) {
 	// init vars
 	searchData = data;
+    //console.log(searchData);
 
 	if (searchData.length == 0) {
 		showMessage(2, "Keine Daten für die Suche vorhanden.", "danger");
