@@ -52,12 +52,16 @@ $(function () {
     } else {
       $('input[name="' + input_name + '"]').val('"' + input_value + '"')
     }
+    // Reset to zero because paging should start by zero
+    $('input[name="page"]').val('0');
     $('#search-form').submit();
   });
 
   $('.page-link').on('click', function(e) {
     page = $(this).data('page');
-    $('input[name="offset"]').val(page);
+    offset = $(this).data('offset');
+    $('input[name="offset"]').val(offset);
+    $('input[name="page"]').val(page);
     $('#search-form').submit();
   });
 

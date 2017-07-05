@@ -18,16 +18,16 @@ class TestPaging(unittest.TestCase):
     def test_active_1(self):
         result = calc(200, '0', 100)
         self.assertEqual(2, len(result))
-        self.assertEqual(True, result[0][1])
+        self.assertEqual(True, result[0][2])
 
     def test_active_2(self):
         result = calc(1200, '1', 100)
-        self.assertEqual(True, result[1][1])
+        self.assertEqual(True, result[1][2])
         self.assertEqual(6, len(result))
 
     def test_active_3(self):
         result = calc(1200, '5', 100)
-        self.assertEqual(True, result[4][1])
+        self.assertEqual(True, result[4][2])
 
     def test_last_1(self):
         result = calc(100, '5', 10)

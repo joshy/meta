@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.1 - 05.06.2017
+ * Paging was working only for one patient and not e.g. 100
+
 ## v1.4.1 - 09.05.2017
  * Faster select all on whole page and patients
  * StudyDate is formatted now 20171231 -> 31.12.2017

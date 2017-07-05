@@ -18,7 +18,7 @@ def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     body['query'] = args.get('query', '*:*')
-    body['offset'] = args.get('offset', '0')
+    body['offset'] = int(args.get('offset', 0))
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
     if date_range is not None:
@@ -36,7 +36,6 @@ def _create_filter_query(args):
               _filter('AccessionNumber', args),
               _filter('Modality', args),
               _filter('InstitutionName', args)]
-
     return [x for x in result if x is not None]
 
 
@@ -50,7 +49,6 @@ def _create_date_range(start_date, end_date):
         return None
     _start_date = _convert(start_date)
     _end_date = _convert(end_date)
-
     return 'StudyDate:[' + _start_date + ' TO ' + _end_date + ']'
 
 

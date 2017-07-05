@@ -17,6 +17,7 @@ def main():
     """ Renders the initial page. """
     return render_template('search.html',
                            version=VERSION,
+                           page=0,
                            offset=0,
                            params={'query': '*:*'})
 
@@ -38,7 +39,7 @@ def search():
     if response.status_code >= 400:
         return render_template('search.html',
                                params={},
-                               offset='0',
+                               page=0,
                                error=response.reason,
                                trace=response.url)
     elif response.status_code >= 500:
@@ -48,7 +49,8 @@ def search():
         trace = error.get('trace', '')
         return render_template('search.html',
                                params={},
-                               offset='0',
+                               page=0,
+                               offset=0,
                                error='Solr failed: ' + msg,
                                trace=trace)
     else:
@@ -59,7 +61,9 @@ def search():
         docs = group(docs)
         facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
-        paging = calc(results, params.get('offset', '0'), RESULT_LIMIT)
+        page = params.get('page', 0)
+        offset = params.get('offset', 0)
+        paging = calc(results, page, RESULT_LIMIT)
         demo = DEMO
         return render_template('result.html',
                                docs=docs,
@@ -72,7 +76,8 @@ def search():
                                version=VERSION,
                                report_show_url=REPORT_SHOW_URL,
                                modalities=params.getlist('Modality'),
-                               offset=params.get('offset', '0'),
+                               page=page,
+                               offset=0,
                                demo=demo)
 
 
