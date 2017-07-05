@@ -110,3 +110,5 @@ import/data-*/
 
 # ignore tasks db
 tasks.db
+
+.mypy_cache
