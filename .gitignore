@@ -112,3 +112,5 @@ import/data-*/
 tasks.db
 
 .mypy_cache
+
+.DS_Store
