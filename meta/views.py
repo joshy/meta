@@ -1,5 +1,5 @@
 import json
-from requests import get, RequestException
+from requests import get, RequestException, post
 from flask import render_template, request
 
 from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
@@ -10,7 +10,10 @@ from meta.facets import prepare_facets
 from meta.grouping import group
 from meta.solr import solr_url
 from meta.terms import get_terms_data
+from meta.meta_functions import test_query, merge_queries
 
+# from meta.down_and_upload import get_list_for_upload
+# get_list_for_upload()
 
 @app.route('/')
 def main():
@@ -29,7 +32,15 @@ def search():
     payload = query_body(params, RESULT_LIMIT)
     headers = {'content-type': "application/json"}
     try:
-        response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
+        print(payload)
+        response = post(solr_url(app.config), data=json.dumps(payload), headers=headers)
+        print(response.status_code)
+        # ris_response = test_query(params)
+        # merge_queries(response, ris_response, payload)
+        # print(payload)
+        # response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
+        # print(response.status_code)
+
     except RequestException:
         return render_template('search.html',
                                params={},
@@ -64,6 +75,8 @@ def search():
         page = params.get('page', 0)
         offset = params.get('offset', 0)
         paging = calc(results, page, RESULT_LIMIT)
+
+        # print(docs, facets, results, page, offset, paging)
         demo = DEMO
         return render_template('result.html',
                                docs=docs,
