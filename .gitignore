@@ -114,3 +114,5 @@ tasks.db
 .mypy_cache
 
 .DS_Store
+json_files
+unused

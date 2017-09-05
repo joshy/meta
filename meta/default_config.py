@@ -16,6 +16,14 @@ IMAGE_FOLDER = '/Users/joshy/github/meta/image_data'
 TASKS_DB = 'tasks.db'
 REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
 
+## urls and folders for ris crawler
+RIS_QUERY_URL = 'http://meqpacscrllt01.uhbs.ch:9000/q?day='
+SOLR_UPLOAD_URL = 'http://localhost:8983/solr/grouping/update/json?stream.file='
+RIS_FILES_DL = '../json_files/dl'
+RIS_FILES_UL = '../json_files/ul'
+RIS_CORE_NAME = 'ris_crawler'
+RIS_HOST_NAME = 'localhost'
+
 # Solr settings
 SOLR_HOSTNAME = 'localhost'
 SOLR_CORE_NAME = 'grouping'
