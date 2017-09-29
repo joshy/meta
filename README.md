@@ -21,6 +21,7 @@ Python libraries needed are noted in the requirements.txt
  * Create a core with `solr create -c <core_name>`
  * Delete the managed-schema file (path would be something like
    /usr/local/solr-6.2.1/server/solr/<core_name>/conf)
+ * Copy `import/schema/schema.xml` to the solr conf dir
  * In `solrconfig.xml` check/do
    - Remove any ManagedIndexSchemaFactory definition if it exists
    - Add `<schemaFactory class="ClassicIndexSchemaFactory"/>`
