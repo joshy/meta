@@ -11,7 +11,7 @@ class TestTask(unittest.TestCase):
                  'series_number': 2,
                  'series_id': 3}
         conn = MagicMock()
-        task = download_task(conn, entry, 'foo')
+        task = download_task(conn, entry, 'foo', '/tmp')
         self.assertEqual(task.patient_id, 'a')
         self.assertEqual(task.accession_number, 1)
         self.assertEqual(task.series_number, 2)
@@ -22,7 +22,7 @@ class TestTask(unittest.TestCase):
                  'series_number': 2,
                  'series_id': 3}
         conn = MagicMock()
-        task = download_task(conn, entry, 'foo')
+        task = download_task(conn, entry, 'foo', '/tmp')
         future = Future()
         future.set_result(1)
         future.task = task
