@@ -62,7 +62,8 @@ def finish_task(conn, future):
         status='Successful' if future.exception() is None else 'Error')
     if isinstance(task, DownloadTask):
         update_download(conn, task)
-        write_success(task)
+        if future.exception() is None:
+            write_success(task)
     elif isinstance(task, TransferTask):
         update_transfer(conn, task)
     else:
