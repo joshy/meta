@@ -395,28 +395,28 @@
   <fieldType name="tints" class="solr.TrieIntField" positionIncrementGap="0" docValues="true" multiValued="true" precisionStep="8"/>
   <fieldType name="tlong" class="solr.TrieLongField" positionIncrementGap="0" docValues="true" precisionStep="8"/>
   <fieldType name="tlongs" class="solr.TrieLongField" positionIncrementGap="0" docValues="true" multiValued="true" precisionStep="8"/>
-  <field name="AccessionNumber" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="BodyPartExamined" type="strings" multiValued="false" docValues="true"/>
-  <field name="InstanceAvailability" type="strings" multiValued="false" docValues="true"/>
-  <field name="InstitutionName" type="strings" multiValued="false" docValues="true"/>
-  <field name="Modality" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="PatientBirthDate" type="tlongs" multiValued="false" required="true"/>
-  <field name="PatientID" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="PatientName" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="PatientSex" type="strings" multiValued="false" docValues="true"/>
-  <field name="QueryRetrieveLevel" type="strings" multiValued="false" docValues="true"/>
-  <field name="ReferringPhysicianName" type="strings" multiValued="false" docValues="true"/>
-  <field name="RetrieveAETitle" type="strings" multiValued="false" docValues="true"/>
-  <field name="SeriesDate" type="strings" multiValued="false" docValues="true"/>
-  <field name="SeriesDescription" type="strings" docValues="true" multiValued="false"/>
-  <field name="SeriesInstanceUID" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="SeriesNumber" type="strings" multiValued="false" docValues="true"/>
-  <field name="SeriesTime" type="tlongs" multiValued="false" required="true"/>
-  <field name="StudyDate" type="tlongs" multiValued="false" required="true"/>
-  <field name="StudyDescription" type="strings" multiValued="false" docValues="true"/>
-  <field name="StudyID" type="strings" multiValued="false" docValues="true"/>
-  <field name="StudyInstanceUID" type="strings" docValues="true" multiValued="false" required="true"/>
-  <field name="SpecificCharacterSet" type="strings" docValues="true" multiValued="false"/>
+  <field name="AccessionNumber" type="string" docValues="true" required="true"/>
+  <field name="BodyPartExamined" type="string" docValues="true"/>
+  <field name="InstanceAvailability" type="string" docValues="true"/>
+  <field name="InstitutionName" type="string" docValues="true"/>
+  <field name="Modality" type="string" docValues="true" required="true"/>
+  <field name="PatientBirthDate" type="tlongs" required="true"/>
+  <field name="PatientID" type="string" docValues="true" required="true"/>
+  <field name="PatientName" type="string" docValues="true" required="true"/>
+  <field name="PatientSex" type="string" docValues="true"/>
+  <field name="QueryRetrieveLevel" type="string" docValues="true"/>
+  <field name="ReferringPhysicianName" type="string" docValues="true"/>
+  <field name="RetrieveAETitle" type="string" docValues="true"/>
+  <field name="SeriesDate" type="string" docValues="true"/>
+  <field name="SeriesDescription" type="string" docValues="true"/>
+  <field name="SeriesInstanceUID" type="string" docValues="true" required="true"/>
+  <field name="SeriesNumber" type="string" docValues="true"/>
+  <field name="SeriesTime" type="tlongs" required="true"/>
+  <field name="StudyDate" type="tlongs" required="true"/>
+  <field name="StudyDescription" type="string" docValues="true"/>
+  <field name="StudyID" type="string" docValues="true"/>
+  <field name="StudyInstanceUID" type="string" docValues="true" required="true"/>
+  <field name="SpecificCharacterSet" type="string" docValues="true"/>
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="long" indexed="true" stored="false"/>
