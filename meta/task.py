@@ -1,5 +1,6 @@
 import sqlite3
 from collections import namedtuple
+from pathlib import Path
 from datetime import datetime
 from typing import Dict
 
@@ -13,6 +14,7 @@ DownloadTask = namedtuple('DownloadTasks',
                            'execution_time',
                            'running_time',
                            'dir_name',
+                           'path', # need to know where to write the success file
                            'status',
                            'exception'])
 
@@ -25,7 +27,7 @@ TransferTask = namedtuple('TransferTask',
                            'exception'])
 
 
-def download_task(conn, entry: Dict[str, str], dir_name: str) -> DownloadTask:
+def download_task(conn, entry: Dict[str, str], dir_name: str, path: str) -> DownloadTask:
     """
     Creates a new download task with all the necessary fields set.
     """
@@ -38,6 +40,7 @@ def download_task(conn, entry: Dict[str, str], dir_name: str) -> DownloadTask:
                         series_instance_uid=series_instance_uid,
                         series_number=series_number,
                         dir_name=dir_name,
+                        path=path,
                         creation_time=datetime.now(),
                         execution_time=datetime.now(),
                         running_time=0.0,
@@ -59,10 +62,21 @@ def finish_task(conn, future):
         status='Successful' if future.exception() is None else 'Error')
     if isinstance(task, DownloadTask):
         update_download(conn, task)
+        write_success(task)
     elif isinstance(task, TransferTask):
         update_transfer(conn, task)
     else:
         raise ValueError('Unknown task type {}'.format(type(task)))
+
+
+def write_success(download_task):
+    # This is mainly for luigi or other applications to notify that
+    # the download is finished. If this file is available the download
+    # has been completed.
+    parent = Path(download_task.path)
+    result_file = parent.joinpath('download_done.txt')
+    with result_file.open('w') as w:
+        w.write('DONE')
 
 
 def transfer_task(conn, study_id) -> TransferTask:
@@ -92,12 +106,13 @@ def select_download(conn):
 def _insert_download(conn, download):
     cursor = conn.cursor()
     # Cursor, Task -> None
-    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?,?)',
+    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)',
                    (download.patient_id,
                     download.accession_number,
                     download.series_number,
                     download.series_instance_uid,
                     download.dir_name,
+                    download.path,
                     download.creation_time,
                     download.execution_time,
                     download.running_time,

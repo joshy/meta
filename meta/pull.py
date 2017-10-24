@@ -52,7 +52,7 @@ def download_series(series_list, dir_name):
         app.logger.debug('Running args %s', args)
         future = POOL.submit(subprocess.run, args,
                              stderr=subprocess.PIPE, shell=False)
-        future.task = download_task(get_db(), entry, dir_name)
+        future.task = download_task(get_db(), entry, dir_name, image_folder)
         future.add_done_callback(_task_done)
     return len(series_list)
 

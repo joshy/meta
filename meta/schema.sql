@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS DOWNLOAD_TASKS
      series_number text,
      series_instance_uid text,
      dir_name text,
+     path text,
      creation_time text,
      execution_time text,
      running_time real,
