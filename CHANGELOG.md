@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.2 - 24.10.2017
+ * Downloading a series creates a additional file called `download_done.txt`
+   to indicate the finishing of a download. Needed for consumers of meta to
+   know when a download is finished.
+
 ## v1.5.1 - 05.06.2017
  * Paging was working only for one patient and not e.g. 100
 
