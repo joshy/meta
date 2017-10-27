@@ -113,12 +113,12 @@ def _insert_download(conn, download):
                     download.series_number,
                     download.series_instance_uid,
                     download.dir_name,
-                    download.path,
                     download.creation_time,
                     download.execution_time,
                     download.running_time,
                     download.status,
-                    download.exception))
+                    download.exception,
+                    download.path))
     conn.commit()
     return None
 
