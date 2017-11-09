@@ -18,8 +18,8 @@
       <td>
         <input type="checkbox" name="series"
                  data-patient-id="{{ doc['groupValue'] }}"
-                 data-study-id="{{ entry['StudyInstanceUID'] }}"
-                 data-series-id="{{ entry['SeriesInstanceUID'] }}"
+                 data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
+                 data-series-id="{{ entry['SeriesInstanceUID'].strip(' \t\r\0') }}"
                  data-accession-number="{{ entry['AccessionNumber'] }}"
                  data-series-number="{{ entry['SeriesNumber'] }}">
       </td>
