@@ -1,0 +1,3 @@
+CELERY_BROKER_URL = 'amqp://'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TRACK_STARTED = True

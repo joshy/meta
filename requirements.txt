@@ -1,5 +1,7 @@
 Flask==0.12
 Flask-Assets==0.12
 jsmin==2.2.1
-requests==2.13.0
 pandas==0.19.2
+requests==2.13.0
+celery==4.1.0
+redis==2.10.6
