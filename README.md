@@ -72,6 +72,18 @@ pip intall redis
 ```
 *TODO: Set redis persistance on each transaction*
 
+### Celery with Postgres
+
+```bash
+sudo apt-get install postgresql postgresql-contrib 
+
+``` 
+Also, dev package needs to be installed, so pip can install 
+needed packages as well. The code is given for the current version 9.5.
+```bash
+sudo apt-get install postgresql-server-dev-9.5
+```
+
 
 
 ### Configuration

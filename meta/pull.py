@@ -4,7 +4,7 @@ import os
 
 from concurrent.futures import ThreadPoolExecutor
 
-from meta.command import transfer_command
+from meta.command_creator import transfer_command
 from meta.task import transfer_task, finish_task, select_transfer
 from meta.app import app
 

@@ -11,7 +11,7 @@ TARGET_MAPPING = {
 
 
 def _get_base_command(dcmtk_config, pacs_config):
-    """ Constructs the first part of a dcmtk command. """
+    """ Constructs the first part of a dcmtk command_creator. """
     return (
         dcmtk_config.dcmtk_bin +
         'movescu -v -S -k QueryRetrieveLevel=SERIES ' +
@@ -39,7 +39,7 @@ def _create_image_dir(entry, path_to_dir, dir_name):
     return image_folder
 
 
-def construct_command(dcmtk_config, pacs_config, entry, path_to_dir, dir_name):
+def construct_download_command(dcmtk_config, pacs_config, entry, path_to_dir, dir_name):
     base_command = _get_base_command(dcmtk_config, pacs_config)
     image_dir = _create_image_dir(entry, path_to_dir, dir_name)
     study_instance_uid = entry['study_id']
@@ -57,18 +57,16 @@ def construct_command(dcmtk_config, pacs_config, entry, path_to_dir, dir_name):
 
 
 def transfer_command(dcmkt_config, pacs_config, target, study_id):
-    """ Constructs the first part of the transfer command to a PACS node. """
+    """ Constructs the first part of the transfer command_creator to a PACS node. """
+    node = TARGET_MAPPING[target]
+
     return (
         dcmkt_config.dcmtk_bin +
-        'movescu -v -S ' +
-        _transfer(dcmkt_config, pacs_config, target, study_id)
-    )
-
-
-def _transfer(dcmkt_config, pacs_config, target, study_id):
-    node = TARGET_MAPPING[target]
-    return (
-        '-aem {} -aet {} -aec {} {} {} +P {} '+
+        'movescu -v -S '    
+        '-aem {} '
+        '-aet {} '
+        '-aec {} {} {} '
+        '+P {} '
         '-k StudyInstanceUID={} {}'.format(
             node,
             pacs_config.ae_title,
@@ -80,3 +78,4 @@ def _transfer(dcmkt_config, pacs_config, target, study_id):
             dcmkt_config.dcmin
         )
     )
+

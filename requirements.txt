@@ -1,7 +1,10 @@
-Flask==0.12
-Flask-Assets==0.12
-jsmin==2.2.1
-pandas==0.19.2
-requests==2.13.0
 celery==4.1.0
-redis==2.10.6
+Flask-Assets==0.12
+Flask-SQLAlchemy==2.3.2
+Flask==0.12
+jsmin==2.2.1
+kombu-sqlalchemy==1.1.0
+pandas==0.19.2
+redis==2.10.6 # TODO: will become obsolete
+requests==2.13.0
+sqlalchemy_pygresql==1.0.1

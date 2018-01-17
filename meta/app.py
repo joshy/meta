@@ -10,6 +10,7 @@ app.config.from_object('meta.default_config')
 app.config.from_pyfile('config.cfg', silent=True)
 app.config.from_object(celery_settings)
 
+
 # Exposing constants to use
 DEMO = app.config['DEMO']
 VERSION = app.config['VERSION'] = '1.5.2'
