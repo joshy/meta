@@ -56,7 +56,7 @@ def construct_download_command(dcmtk_config, pacs_config, entry, path_to_dir, di
     )
 
 
-def transfer_command(dcmkt_config, pacs_config, target, study_id):
+def construct_transfer_command(dcmkt_config, pacs_config, target, study_id):
     """ Constructs the first part of the transfer command_creator to a PACS node. """
     node = TARGET_MAPPING[target]
 

@@ -9,6 +9,7 @@ PacsConfig = namedtuple('PacsConfig', ['ae_title', 'ae_called', 'peer_address',
 
 DcmtkConfig = namedtuple('DcmtkConfig', ['dcmtk_bin', 'dcmin'])
 
+
 def pacs_config(config):
     """ Returns the pacs configuration parameters. """
     return PacsConfig(config['AE_TITLE'],

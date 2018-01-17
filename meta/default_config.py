@@ -8,10 +8,10 @@ a configuration. The configuration file needs to be named 'config.cfg'.
 DEBUG = False
 RESULT_LIMIT = 100
 
-## Don't show transfer and download options
+# Don't show transfer and download options
 DEMO = True
 
-## Location of where the image data should be donwloaded to (Full path!)
+# Location of where the image data should be downloaded to (Full path!)
 IMAGE_FOLDER = '/home/giga/images'
 TASKS_DB = 'tasks.db'
 REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
@@ -30,8 +30,8 @@ PEER_ADDRESS = '10.5.66.74'
 PEER_PORT = 104
 INCOMING_PORT = 11110
 
-REDIS = 'localhost'
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:postgres@localhost/postgres'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
