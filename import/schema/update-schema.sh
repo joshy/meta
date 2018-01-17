@@ -17,8 +17,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "docValues":true },
   {
      "name":"InstitutionName",
-     "type":"text_de",
-     "docValues":true },
+     "type":"text_de"},
   {
      "name":"Modality",
      "type":"string",
@@ -40,13 +39,10 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "docValues":true },
 {
      "name":"ReferringPhysicianName",
-     "type":"text_de",
-
-     "docValues":true },
+     "type":"text_de"},
 {
      "name":"SeriesDescription",
-     "type":"text_de",
-     "docValues":true },
+     "type":"text_de"},
 {
      "name":"SeriesInstanceUID",
      "type":"string",
@@ -56,8 +52,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "type":"plong" },
 {
      "name":"StudyDescription",
-     "type":"text_de",
-     "docValues":true },
+     "type":"text_de"},
    {
      "name":"StudyID",
      "type":"string",
