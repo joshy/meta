@@ -3,13 +3,17 @@ from flask import Flask, g
 from flask_assets import Environment, Bundle
 
 from meta.config import dcmtk_config, pacs_config
-import meta.celery_settings as celery_settings
+
+from meta.queue_manager_db import db
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('meta.default_config')
 app.config.from_pyfile('config.cfg', silent=True)
-app.config.from_object(celery_settings)
 
+app.app_context().push()
+db.init_app(app)
+db.create_all()
+db.session.commit()
 
 # Exposing constants to use
 DEMO = app.config['DEMO']
