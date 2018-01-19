@@ -58,10 +58,7 @@ TEST_DATA = {'groups': [
     }]}
 
 
-
 class TestGroupingStuff(unittest.TestCase):
-
-
     def test_grouping1(self):
         result = group(TEST_DATA_1)
         # same group size as before
@@ -70,7 +67,6 @@ class TestGroupingStuff(unittest.TestCase):
         # has grouped docs
         self.assertTrue('by_AccessionNumber' in groups[0])
         self.assertTrue('by_AccessionNumber' in groups[1])
-
 
     def test_grouping(self):
         result = group(TEST_DATA)

@@ -1,5 +1,7 @@
 from datetime import datetime
-from meta.queue_manager_db import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 class TaskInfo(db.Model):
@@ -12,7 +14,7 @@ class TaskInfo(db.Model):
     accession_number = db.Column(db.String)
     series_number = db.Column(db.String)
 
-    study_id = db.Column(db.String)  # study_id
+    study_id = db.Column(db.String)
 
     creation_time = db.Column(db.DateTime, default=datetime.now())
     execution_time = db.Column(db.DateTime, default=datetime.now())  # execution_time # TODO: Not sure if this is used

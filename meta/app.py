@@ -4,7 +4,7 @@ from flask_assets import Environment, Bundle
 
 from meta.config import dcmtk_config, pacs_config
 
-from meta.queue_manager_db import db
+from meta.queue_manager_models import db
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('meta.default_config')

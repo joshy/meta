@@ -2,6 +2,7 @@ import unittest
 
 from meta.app import to_date
 
+
 class TestToDate(unittest.TestCase):
     def test_empty(self):
         self.assertEqual(to_date(''), '')
