@@ -10,8 +10,10 @@
           <input type="checkbox" class="form-check-input" name="select-all-patient" data-patient-id="{{ doc['groupValue'] }}">
           <a data-toggle="collapse" data-target="#{{ doc['groupValue'] }}" href="#">
               <span class="oi oi-collapse-down float-sm-right"></span>
-            <span class="float-right pr-3">Studies <span class="badge badge-info badge-pill"> {{ doc['by_AccessionNumber'] | length }}</span></span>
-            {{ doc['patient']['name'] }}, {{ doc['patient']['birthdate'] }}, {{ doc['groupValue'] }}
+            <span class="float-right pr-3">Studies <span class="badge badge-info badge-pill align-text-bottom"> {{ doc['by_AccessionNumber'] | length }}</span></span>
+              <div class="col pl-0">
+                  {{ doc['patient']['name'] }}, <small>{{ doc['patient']['birthdate'] }}, {{ doc['groupValue'] }}</small>
+              </div>
           </a>
         </div>
       </li>
