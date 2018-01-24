@@ -18,6 +18,7 @@ REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
 
 # Solr settings
 SOLR_HOSTNAME = 'localhost'
+SOLR_PORT = '8983'
 SOLR_CORE_NAME = 'grouping'
 
 # DCMTK settings

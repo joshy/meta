@@ -2,9 +2,9 @@ import logging
 from datetime import datetime
 
 DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
-                   'query': 'RisReport:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
-                              'group.limit': 1000, 'group.ngroups': 'true'}
+                              'group.limit': 1000, 'group.ngroups': 'true',
+                              'fl': '*,[child parentFilter=Category:parent childFilter=Category:child]'}
                   }
 
 
