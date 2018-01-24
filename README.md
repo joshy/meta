@@ -26,53 +26,7 @@ Python libraries needed are noted in the requirements.txt
    - Remove any ManagedIndexSchemaFactory definition if it exists
    - Add `<schemaFactory class="ClassicIndexSchemaFactory"/>`
 
-### Setup Celery with RabbitMQ
-For queuing purposes we will need *Celery* with *RabbitMQ* as a message
-broker. Alternative is to use *Redis*, but *RabbitMQ* has been supported
-longer and is advertised as more robust in cases of abrupt power outages.
-
-A more in-depth text about why should you use a proper AMPQ instead of DB can
-be found [here](https://denibertovic.com/posts/celery-best-practices/).
-
-To install and run *RabbitMQ* on *Ubuntu* based machine, just this in terminal:
-
-```bash
-sudo apt-get install rabbitmq-server
-```
-When the command completes, the broker will already be running in the background,
-ready to move messages for you.
-
-To enable management console run:
-```bash
-sudo rabbitmq-plugins enable rabbitmq_management
-```
-Now you can access it by going to [http://localhost:15672/]().
-Default credentials are `guest:guest`.
-
-For other distros and OSs please check 
-[RabbitMQ download page](http://www.rabbitmq.com/download.html).
-
-*TODO: Use [prebuilt docker image for RabbitMQ](https://hub.docker.com/_/rabbitmq/).*
-
-Now we want to start the service (this can also be done in the background):
-```bash
-celery -c 1 -A <tasks module> worker --loglevel=info
-```
-The option `-c 1` tells celery to use only one worker.
-
-Install flower to sees celery stats:
-```bash
-pip install flower
-```
-
-For backend (maybe)
-```bash
-sudo apt-get install redis-server
-pip intall redis
-```
-*TODO: Set redis persistance on each transaction*
-
-### Celery with Postgres
+### Postgres
 
 ```bash
 sudo apt-get install postgresql postgresql-contrib 
