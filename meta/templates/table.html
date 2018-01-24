@@ -1,37 +1,16 @@
-<table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}">
-  <thead>
-    <tr>
-      <th><input type="checkbox" name='select-all-accession-number'></th>
-      <th>Patient Name</th>
-      <th>Modality</th>
-      <th>Study Description</th>
-      <th>Study Date</th>
-      <th>Series Number</th>
-      <th>Series Description</th>
-      <th>Referring Physician</th>
-      <th>Institution Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for entry in doc['by_AccessionNumber'][accessionNumber] %}
-    <tr>
-      <td>
-        <input type="checkbox" name="series"
-                 data-patient-id="{{ doc['groupValue'] }}"
-                 data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
-                 data-series-id="{{ entry['SeriesInstanceUID'].strip(' \t\r\0') }}"
-                 data-accession-number="{{ entry['AccessionNumber'] }}"
-                 data-series-number="{{ entry['SeriesNumber'] }}">
-      </td>
-      <td>{{ entry['PatientName'] }} </td>
-      <td>{{ entry['Modality'] }} </td>
-      <td>{{ entry['StudyDescription'] }} </td>
-      <td>{{ entry['StudyDate'] | to_date }} </td>
-      <td>{{ entry['SeriesNumber'] }} </td>
-      <td>{{ entry['SeriesDescription'] }} </td>
-      <td>{{ entry['ReferringPhysicianName'] }} </td>
-      <td>{{ entry['InstitutionName'] }} </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% for entry in doc['by_AccessionNumber'][accessionNumber] %}
+<p>StudyDate:
+  <strong>{{ entry['StudyDate'] | to_date}}</strong>, AccessionNumber:
+  <strong>{{entry['AccessionNumber'] }}</strong>, Modality:
+  <strong>{{entry['Modality']}}</strong>, StudyDescription:
+  <strong>{{entry['StudyDescription']}}</strong>, Referring Physician:
+  <strong>{{entry['ReferringPhysicianName']}}</strong>, Institution:
+  <strong>{{entry['InstitutionName']}}</strong>
+</p>
+<p>
+  <a data-toggle="collapse" href="#{{entry['AccessionNumber']}}" >RIS Report</a>
+</p>
+<div class="collapse container p-0" id="{{entry['AccessionNumber']}}">
+  <pre><code>{{entry['RisReport']}}</code></pre>
+</div>
+{% endfor %}

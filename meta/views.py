@@ -59,20 +59,20 @@ def search():
         data = response.json()
         docs = data['grouped']['PatientID']
         docs = group(docs)
-        facets = prepare_facets(data.get('facets', []), request.url)
+        #facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
-        paging = calc(results, page, RESULT_LIMIT)
+        #paging = calc(results, page, RESULT_LIMIT)
         demo = DEMO
         return render_template('result.html',
                                docs=docs,
                                results=results,
-                               facets=facets,
+                               #facets=facets,
                                payload=payload,
                                facet_url=request.url,
                                params=params,
-                               paging=paging,
+                               #paging=paging,
                                version=VERSION,
                                report_show_url=REPORT_SHOW_URL,
                                modalities=params.getlist('Modality'),

@@ -1,41 +1,33 @@
 import logging
 from datetime import datetime
 
-DEFAULT_PAYLOAD = {'offset': 0, 'limit': 100,
-                   'query': '*:*',
+DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
+                   'query': 'RisReport:*',
                    'params': {'group': 'true', 'group.field': 'PatientID',
-                              'group.limit': 1000, 'group.ngroups': 'true'},
-                   'facet':
-                       {'SeriesDescription':
-                            {'type': 'terms', 'field': 'SeriesDescription'},
-                        'StudyDescription':
-                            {'type': 'terms', 'field': 'StudyDescription'}
-                       }
+                              'group.limit': 1000, 'group.ngroups': 'true'}
                   }
 
 
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    body['query'] = args.get('query', '*:*')
+    body['query'] = 'RisReport:{}'.format(args.get('query', '*'))
     body['offset'] = int(args.get('offset', 0))
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
-    if date_range is not None:
-        body['query'] = body['query'] + ' AND ' + date_range
-    body['filter'] = _create_filter_query(args)
-
+    #if date_range is not None:
+    #    body['query'] = body['query'] + ' AND ' + date_range
+    #body['filter'] = _create_filter_query(args)
+    #print(body)
     return body
 
 
 def _create_filter_query(args):
     result = [_filter('StudyDescription', args),
-              _filter('SeriesDescription', args),
               _filter('PatientID', args),
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
-              _filter('Modality', args),
-              _filter('InstitutionName', args)]
+              _filter('Modality', args)]
     return [x for x in result if x is not None]
 
 

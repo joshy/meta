@@ -1,27 +1,19 @@
 {% extends "base.html" %}
 
 {% block search %}
-<div class="col-sm-2">
-  <h3><a href="/">Pacs Crawler </a></h3>
-   <small>&mdash; Search the PACS v{{ version }} &mdash;</small><br>
+<div class="col-sm-5">
+  <h1 class="h5"><a href="/">Pacs / RIS Crawler</a>
+  </h1>
 </div>
 <div class="col-sm-7">
 <form id="search-form" action="/search" method="POST">
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <div class="input-group">
-        <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="query" value="{{ params.query }}" autofocus>
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </span>
+  <div class="form-group">
+    <div class="input-group input-group-sm mb-3">
+      <input type="text" class="form-control form-control-sm" placeholder="Recipient's username" id="search-input" name="query"
+        value="{{ params.query }}" autofocus>
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Search in RIS Reports</button>
       </div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div>
-      <a class="btn" data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
-      <a class="btn" data-toggle="collapse" data-target="#help-details" href="#">Show some examples</a>
-      <a class="btn" href="/tree" onclick="javascript:event.target.port=8888">Expert mode (Notebook)</a>
     </div>
   </div>
   {% include 'partials/help.html' %}
@@ -64,7 +56,7 @@
         <input class="form-check-input" type="checkbox" id="modality11" name="Modality" value="PT" {% if 'PT' in modalities %} checked {% endif %}> PT</label>
         <label class="form-check-inline">
         <input class="form-check-input" type="checkbox" id="modality3" name="Modality" value="CR" {% if 'CR' in modalities %} checked {% endif %}> CR</label>
-        <a class="btn" data-toggle="collapse" data-target="#modality-details" href="#">Show all modalities</a>
+        <a class="btn" data-toggle="collapse" href="#modality-details">Show all modalities</a>
         <div id="modality-details" class="collapse">
           <label class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="modality4" name="Modality" value="XA" {% if 'XA' in modalities %} checked {% endif %}> XA</label>
@@ -122,19 +114,13 @@
     </div>
   </div>
 
-  <div class="alert alert-danger small {% if not error %} hidden-xs-up {% endif %}" role="alert">
+  <div class="alert alert-danger small {% if not error %} d-none {% endif %}" role="alert">
     <strong>Error:</strong> {{error}}<br>
     <small>{{trace}}</small>
   </div>
   <input type="hidden" name="offset" value="{{offset}}">
   <input type="hidden" name="page" value="{{page}}">
 </form>
-</div>
-<div class="col-sm-3">
-  <div class="row">
-  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Universitätsspital Basel"  style="height:44px">
-  <p class="pt-1 mb-0">Klinik für Radiologie und Nuklearmedizin</p>
-  </div>
 </div>
 
 {% endblock %}

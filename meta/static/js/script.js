@@ -4,17 +4,17 @@ $(function () {
   var startDatePicker = $('#start-date-picker').pikaday({
     format: 'DD.MM.YYYY',
     firstDay: 1,
-    minDate: new Date(2010, 0, 1),
+    minDate: new Date(2009, 0, 1),
     maxDate: new Date(),
-    yearRange: [2010, 2016]
+    yearRange: [2009, 2016]
   });
 
   var endDatePicker = $('#end-date-picker').pikaday({
     format: 'DD.MM.YYYY',
     firstDay: 1,
-    minDate: new Date(2010, 0, 1),
+    minDate: new Date(2009, 0, 1),
     maxDate: new Date(),
-    yearRange: [2010, 2016]
+    yearRange: [2009, 2016]
   });
 
   var getCheckedData = function() {
@@ -168,7 +168,7 @@ $(function () {
     // parent is in because user can click also on icon
     $(e.target).parent().find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
   });
-
+  
   /**
    * Pasting the names will escape them automatically. This means that a
    * name like Jon Doe will be become "John\^Doe". In the PACS the whitespace

@@ -2,16 +2,18 @@
 
 {% block table %}
 
+{#
 {% if not demo %}
   {% include 'partials/transfer-options.html' %}
   {% include 'partials/download-options.html' %}
 {% endif %}
 
+
 {% include 'paging.html' %}
+#}
 
 <div class="row">
-  <div id="table-view">
-    {% include 'facets.html' %}
+  <div id="table-view" class="w-100">
     {% include 'grouping.html' %}
   </div>
 </div>
