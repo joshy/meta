@@ -1,9 +1,7 @@
 import json
-from requests import get, RequestException
-from flask import render_template, request
 
-from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
-from meta.app import OUTPUT_DIR, DCMTK_CONFIG, PACS_CONFIG
+from requests import get, RequestException
+from flask import render_template, request, current_app, Blueprint
 
 from meta.query import query_body
 from meta.paging import calc
@@ -15,17 +13,22 @@ from meta.terms import get_terms_data
 from meta.command_creator import construct_download_command
 from meta.command_creator import construct_transfer_command
 
-from meta.queue_manager import TaskInfo, submit_task, task_status
-from meta.queue_manager_models import db
+from meta.config import dcmtk_config, pacs_config
+
+from meta.queue_manager import submit_task, task_status, flush_db
 
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
 
+bp = Blueprint('pacs_page',
+               __name__,
+               template_folder='templates')
 
-@app.route('/download', methods=['POST'])
+
+@bp.route('/download', methods=['POST'])
 def download():
     """ Ajax post to download series of images. """
-    app.logger.info("download called")
+    current_app.logger.info("download called")
     data = request.get_json(force=True)
     # list of objects with following keys
     #   -patient_id
@@ -39,31 +42,29 @@ def download():
 
     for entry in series_list:
         download_command = construct_download_command(
-            DCMTK_CONFIG,
-            PACS_CONFIG,
+            dcmtk_config(current_app.config),
+            pacs_config(current_app.config),
             entry,
-            OUTPUT_DIR,
+            current_app.config['IMAGE_FOLDER'],
             dir_name
         )
         entry['type'] = 'download'
-
-        submit_task(app, dir_name, entry, download_command)
+        submit_task(dir_name, entry, download_command)
 
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
-@app.route('/flush')
+@bp.route('/flush')
 def flush():
-    TaskInfo.query.delete()
-    db.session.commit()
+    flush_db()
     return 'Queue cleared'
 
 
-@app.route('/')
+@bp.route('/')
 def main():
     """ Renders the initial page. """
     return render_template('search.html',
-                           version=VERSION,
+                           version=current_app.config['VERSION'],
                            page=0,
                            offset=0,
                            params={'query': '*:*'})
@@ -73,76 +74,76 @@ def transfer_series(series_list, target):
     """ Transfer the series to target PACS node. """
     study_id_list = [entry['study_id'] for entry in series_list]
     study_id_set = set(study_id_list)
-    app.logger.debug('Transferring ids: %s', study_id_set)
+    current_app.logger.debug('Transferring ids: %s', study_id_set)
 
     for study_id in study_id_set:
         transfer_command = construct_transfer_command(
-            DCMTK_CONFIG,
-            PACS_CONFIG,
+            dcmtk_config(current_app.config),
+            pacs_config(current_app.config),
             target,
             study_id
         )
         entry = {'study_id': study_id, 'type': 'transfer'}
-        submit_task(app, None, entry, transfer_command)
+        submit_task(None, entry, transfer_command)
 
     return len(study_id_set)
 
 
-@app.route('/transfer', methods=['POST'])
+@bp.route('/transfer', methods=['POST'])
 def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
     data = request.get_json(force=True)
     target = data.get('target', '')
     series_list = data.get('data', '')
-    app.logger.info("transfer called and sending to %s", target)
+    current_app.logger.info("transfer called and sending to %s", target)
 
     study_size = transfer_series(series_list, target)
 
     return str(study_size)
 
 
-@app.route('/transfers')
+@bp.route('/transfers')
 def transfers():
     """ Renders the status of the transfers. """
-    return render_template('transfers.html', version=VERSION)
+    return render_template('transfers.html', version=current_app.config['VERSION'])
 
 
-@app.route('/transfers/data')
+@bp.route('/transfers/data')
 def transfersdata():
-    data = task_status(app, TRANSFER)
+    data = task_status(TRANSFER)
     return render_template('partials/transfers-status.html', tasks=data)
 
 
-@app.route('/tasks/data')
+@bp.route('/tasks/data')
 def tasksdata():
-    data = task_status(app, DOWNLOAD)
+    data = task_status(DOWNLOAD)
     return render_template('partials/tasks-status.html', tasks=data)
 
 
-@app.route('/tasks')
+@bp.route('/tasks')
 def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
     """
-    return render_template('tasks.html', version=VERSION)
+    return render_template('tasks.html', version=current_app.config['VERSION'])
 
 
-@app.route('/terms')
+@bp.route('/terms')
 def terms():
     """ Renders a page about term information. Only internal use. """
-    data = get_terms_data(app.config)
+    data = get_terms_data(current_app.config)
     return render_template('terms.html', terms=data)
 
 
-@app.route('/search', methods=['POST', 'GET'])
+@bp.route('/search', methods=['POST', 'GET'])
 def search():
     """ Renders the search results. """
     params = request.form
-    payload = query_body(params, RESULT_LIMIT)
+    payload = query_body(params, current_app.config['RESULT_LIMIT'])
     headers = {'content-type': "application/json"}
     try:
         response = get(
-            solr_url(app.config),
+            solr_url(current_app.config),
             data=json.dumps(payload),
             headers=headers
         )
@@ -150,7 +151,7 @@ def search():
         return render_template('search.html',
                                params={},
                                error='No response from Solr, is it running?',
-                               trace=solr_url(app.config))
+                               trace=solr_url(current_app.config))
 
     if response.status_code >= 400:
         return render_template('search.html',
@@ -170,8 +171,8 @@ def search():
                                error='Solr failed: ' + msg,
                                trace=trace)
     else:
-        app.logger.debug('Calling Solr with url %s', response.url)
-        app.logger.debug('Request body %s', json.dumps(payload))
+        current_app.logger.debug('Calling Solr with url %s', response.url)
+        current_app.logger.debug('Request body %s', json.dumps(payload))
         data = response.json()
         docs = data['grouped']['PatientID']
         docs = group(docs)
@@ -179,8 +180,8 @@ def search():
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
-        paging = calc(results, page, RESULT_LIMIT)
-        demo = DEMO
+        paging = calc(results, page, current_app.config['RESULT_LIMIT'])
+        demo = current_app.config['DEMO']
         return render_template('result.html',
                                docs=docs,
                                results=results,
@@ -189,8 +190,8 @@ def search():
                                facet_url=request.url,
                                params=params,
                                paging=paging,
-                               version=VERSION,
-                               report_show_url=REPORT_SHOW_URL,
+                               version=current_app.config['VERSION'],
+                               report_show_url=current_app.config['REPORT_SHOW_URL'],
                                modalities=params.getlist('Modality'),
                                page=page,
                                offset=0,

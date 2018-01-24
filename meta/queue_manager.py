@@ -1,13 +1,19 @@
 from datetime import datetime
 import shlex
-import subprocess
-from meta.queue_manager_models import TaskInfo
+from subprocess import run, PIPE
+from meta.models import TaskInfo
 from concurrent.futures import ThreadPoolExecutor
-from meta.queue_manager_models import db
+from meta.models import db
 import traceback
+from functools import partial
+from flask import current_app
 
 _executor = ThreadPoolExecutor(1)
-_global_task_id = None
+
+
+def flush_db():
+    TaskInfo.query.delete()
+    db.session.commit()
 
 
 def _store_task_info(dir_name, entry, command):
@@ -32,23 +38,22 @@ def _store_task_info(dir_name, entry, command):
     return task_info.id
 
 
-def _bash_task(app, task_id, args):
-    app.app_context().push()
-    global _global_task_id
-    _global_task_id = task_id
+def _bash_task(task_id, config, args):
+    from meta.app import create_app
 
-    print('+++++ TASK ID', task_id, db)
-    
+    create_app(db_uri=config['SQLALCHEMY_DATABASE_URI'],
+               testing=config['TESTING'],
+               server_name=config['SERVER_NAME'])
+
     task_info = TaskInfo.query.get(task_id)
     task_info.started = datetime.now()
     task_info.status = 'SUBMITTED'
     db.session.commit()
 
-    # TODO: UNCOMMENT THIS FOR PRODUCTION!
-    #output = subprocess.run(args, stderr=subprocess.PIPE, shell=False)
+    run(args, stderr=PIPE, shell=False)
 
 
-def _task_finished_callback(future):
+def _task_finished_callback(future, task_id):
     status = 'SUCCEEDED'
     exception = None
 
@@ -57,7 +62,7 @@ def _task_finished_callback(future):
         status = 'FAILED'
         exception = traceback.format_exc()
 
-    task_info = TaskInfo.query.get(_global_task_id)
+    task_info = TaskInfo.query.get(task_id)
     task_info.flag_finished = True
     task_info.finished = datetime.now()
     if task_info.started:
@@ -68,28 +73,32 @@ def _task_finished_callback(future):
     db.session.commit()
 
 
-def submit_task(app, dir_name, entry, command):
+def submit_task(dir_name, entry, command):
     task_id = _store_task_info(dir_name, entry, command)
-
     args = shlex.split(command)
 
-    app.logger.debug('Running args %s', args)
+    current_app.logger.debug('Running args %s', args)
 
     task_info = TaskInfo.query.get(task_id)
+
     task_info.status = 'SUBMITTING'
     db.session.commit()
 
-    future = _executor.submit(_bash_task, app, task_id, args)
-    future.add_done_callback(_task_finished_callback)
+    future = _executor.submit(_bash_task, task_id, current_app.config, args)
+
+    callback_fun = partial(_task_finished_callback, task_id=task_id)
+    future.add_done_callback(callback_fun)
+
+    return task_id
 
 
-def _retry_tasks(app, tasks, coerce_retry=False):
+def _retry_tasks(tasks):
     retry_status = 'RETRY'
 
     if not len(tasks):
         return
 
-    if _executor._work_queue.qsize() and not coerce_retry:
+    if _executor._work_queue.qsize() > 0:
         return
 
     for task in tasks:
@@ -102,12 +111,12 @@ def _retry_tasks(app, tasks, coerce_retry=False):
         db.session.commit()
 
         args = shlex.split(task.command)
+        future = _executor.submit(_bash_task, task.id, current_app.config, args)
+        callback_fun = partial(_task_finished_callback, task_id=task.id)
+        future.add_done_callback(callback_fun)
 
-        task = _executor.submit(_bash_task, app, task.id, args)
-        task.add_done_callback(_task_finished_callback)
 
-
-def task_status(app, task_type):
+def task_status(task_type):
     """ Returns all done tasks and open tasks.
     """
     unfinished_tasks = (
@@ -118,7 +127,7 @@ def task_status(app, task_type):
         .all()
     )
 
-    _retry_tasks(app, unfinished_tasks)
+    _retry_tasks(unfinished_tasks)
 
     finished_tasks = (
         TaskInfo.query

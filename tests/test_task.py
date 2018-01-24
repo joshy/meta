@@ -1,266 +1,225 @@
 import unittest
-import os
 import json
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
-from concurrent.futures import Future
-from meta.queue_manager import submit_task  # download_task, finish_task
+from meta.models import TaskInfo, db
+from meta.queue_manager import submit_task, _store_task_info, _bash_task
 
-import meta
-from meta.app import app
-import tempfile
-from sqlalchemy import create_engine
+from meta.app import create_app
 
-from meta.queue_manager_models import db
-from meta.queue_manager_models import TaskInfo
+from meta.views import DOWNLOAD, TRANSFER
+from meta.views import transfer_series
+
+from datetime import datetime
+from flask import current_app
 
 temp_db_name = 'meta_unittest_db'
-admin_db_name = 'postgres'
-
-ADMIN_DB_URI = (
-    'postgresql+psycopg2://postgres:postgres@localhost/' +
-    admin_db_name
-
-)
-TEST_DB_URI = (
-    'postgresql+psycopg2://postgres:postgres@localhost/' +
-    temp_db_name
-)
 
 
-class MetaTestCase(unittest.TestCase):
+def _get_test_series(series_type):
+    return [
+        {
+            'patient_id': 'pai1',
+            'accession_number': 'acn1',
+            'series_number': 'sen1',
+            'study_id': 'sti1',
+            'series_id': 'sei1',
+            'type': series_type
+        },
+        {
+            'patient_id': 'pai2',
+            'accession_number': 'acn2',
+            'series_number': 'sen2',
+            'study_id': 'sti2',
+            'series_id': 'sei2',
+            'type': series_type
+        }
+    ]
+
+
+def _get_test_task_info():
+    return TaskInfo(
+        dir_name='DIRNAME',
+        study_id='STUDID',
+        patient_id='PATID',
+        accession_number='ACCNUM',
+        series_number='SERNUM',
+        command='UNITTESTCMD',
+        running_time=None,
+        status='UNITTESTING',
+        exception=None,
+        started=datetime.now(),
+        finished=None,
+        flag_finished=False,
+        type='UNITTEST',
+    )
+
+
+class Tests(unittest.TestCase):
+    TEST_DB_URI = (
+        'postgresql+psycopg2://postgres:postgres@localhost/meta_unittest_db'
+    )
+
     def setUp(self):
-        app.testing = True
-        self.app = app.test_client()
+        self.app = create_app(
+            db_uri=self.TEST_DB_URI,
+            testing=True,
+            server_name='0.0.0.0:5558'
+        )
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        self.client = self.app.test_client()
 
-        app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB_URI
-        #app.app_context().push()
-        db.init_app(app)
+        with self.app.app_context():
+            TaskInfo
+            # This somehow sets the right context
+            # Could be a library bug
+
         db.create_all()
         db.session.commit()
 
-        #
-        # engine = create_engine(ADMIN_DB_URI)
-        # conn = engine.connect()
-        # conn.execute("commit")  # bypassing always run in transaction
-        # try:
-        #     conn.execute(
-        #         '''SELECT pg_terminate_backend(pg_stat_activity.pid)
-        #         FROM pg_stat_activity
-        #         WHERE pg_stat_activity.datname = {}
-        #         AND pid <> pg_backend_pid();
-        #         '''.format(temp_db_name))
-        # except:
-        #     conn.execute('ROLLBACK')
-        #
-        # conn.execute("DROP DATABASE IF EXISTS " + temp_db_name)
-        # conn.execute("commit")
-        #
-        # conn.execute("CREATE DATABASE " + temp_db_name)
-        # conn.close()
-        # engine.dispose()
-        #
-        # app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DB_URI #tempfile.mkstemp()
-
-
-
     def tearDown(self):
-        db.session.remove()
         db.drop_all()
-
-        # no need to destroy, it will droped on setUp every time
-        #engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-        #conn = engine.connect()
-        #conn.execute("commit")  # bypassing always run in transaction
-        #conn.execute("DROP DATABASE " + temp_db_name)
-
-        # app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-        #conn.close()
-
-        #os.unlink(app.config['SQLALCHEMY_DATABASE_URI'])
-        #pass
-
-    def test_store_task_info(self):
-        print(db)
-        pass
+        db.session.commit()
 
 
-    def test_empty_tasks(self):
-        rv = self.app.get('/tasks')
-        assert (b'<!DOCTYPE html>\n<html lang="en">\n<title>Tasks status'
-                b'</title>\n<meta name="viewport" content="width=device-width, '
-                b'initial-scale=1">\n<link rel="stylesheet" '
-                b'href="/static/css/tachyons.min.css">\n\n'
-                b'<body class="w-100">\n  '
-                b'<nav class="dt w-100 border-box pa3 ph5-ns">\n  '
-                b'<a class="dtc v-btm link w-75 link f6 f5-ns dib '
-                b'mr3 mr4-ns" href="/" title="Home">\n    '
-                b'Pacs Crawler\n    '
-                b'<div class="dib">\n        '
-                b'<small class="nowrap f6 mt2 mt3-ns pr2 '
-                b'black-70 fw2">1.5.2</small>\n'
-                b'    </div>\n  </a>\n  <div class="dtc v-btm w-50 tr">\n    '
-                b'<a class="link f6 f5-ns dib" '
-                b'href="http://www.unispital-basel.ch/'
-                b'index.php?id=1899" title="Klinik f\xc3\xbcr '
-                b'Radiologie und Nuklearmedizin">\n    '
-                b'Universit\xc3\xa4tsspital Basel<br>\n    '
-                b'Klinik f\xc3\xbcr Radiologie und Nuklearmedizin\n    '
-                b'</a>\n  </div>\n</nav>\n  <div id="container" '
-                b'class="bt b--black-10">\n'
-                b'</body>\n<script type=text/javascript '
-                b'src="/static/js/jquery-3.1.0.min.js"></script>\n'
-                b'<script type=text/javascript>\n  $(function() {\n    '
-                b'startRefresh();\n    var sec = 30;\n    '
-                b'console.log(sec);\n    setInterval(function() {\n      '
-                b'sec = sec - 1;\n      if (sec === 0) sec = 30;\n      '
-                b'$(\'#timer\').html(sec);\n    }, 1000);\n  });\n  '
-                b'function startRefresh() {\n    '
-                b'setTimeout(startRefresh, 30000);\n    '
-                b'$.get(\'/tasks/data\',\n      function(data) {\n        '
-                b'$(\'#container\').html(data);\n    });\n  }'
-                b'\n</script>\n</html>') == rv.get_data()
-        #print(rv, rv.get_data(), rv.status, sep=' :: ')
+class CommonTests(Tests):
+    def test_create_task_info_in_db(self):
+        with self.app.app_context():
+            series_dicts = _get_test_series(DOWNLOAD)
 
-    def test_empty_transfers(self):
-        rv = self.app.get('/transfers')
-        assert (b'<!DOCTYPE html>\n<html lang="en">\n'
-                b'<title>Transfer status</title>\n'
-                b'<meta name="viewport" content="width=device-width, '
-                b'initial-scale=1">\n<link rel="stylesheet" '
-                b'href="/static/css/tachyons.min.css">\n\n'
-                b'<body class="w-100">\n  '
-                b'<nav class="dt w-100 border-box pa3 ph5-ns">\n  '
-                b'<a class="dtc v-btm link w-75 link f6 f5-ns '
-                b'dib mr3 mr4-ns" href="/" title="Home">\n    '
-                b'Pacs Crawler\n    <div class="dib">\n        '
-                b'<small class="nowrap f6 mt2 mt3-ns pr2 black-70 '
-                b'fw2">1.5.2</small>\n    </div>\n  </a>\n  '
-                b'<div class="dtc v-btm w-50 tr">\n    '
-                b'<a class="link f6 f5-ns dib" href='
-                b'"http://www.unispital-basel.ch/index.php?id=1899" '
-                b'title="Klinik f\xc3\xbcr '
-                b'Radiologie und Nuklearmedizin">\n    '
-                b'Universit\xc3\xa4tsspital Basel<br>\n    '
-                b'Klinik f\xc3\xbcr Radiologie und Nuklearmedizin\n    '
-                b'</a>\n  </div>\n</nav>\n  <div id="container" '
-                b'class="bt b--black-10">\n</body>\n<script '
-                b'type=text/javascript '
-                b'src="/static/js/jquery-3.1.0.min.js"></script>\n'
-                b'<script type=text/javascript>\n  $(function() {\n    '
-                b'startRefresh();\n    var sec = 30;\n    '
-                b'console.log(sec);\n    setInterval(function() {\n      '
-                b'sec = sec - 1;\n      if (sec === 0) sec = 30;\n      '
-                b'$(\'#timer\').html(sec);\n    }, 1000);\n  });\n  '
-                b'function startRefresh() {\n    setTimeout(startRefresh, '
-                b'30000);\n    $.get(\'/transfers/data\',\n      '
-                b'function(data) {\n        '
-                b'$(\'#container\').html(data);\n    });\n  }\n'
-                b'</script>\n</html>') == rv.get_data()
+            _store_task_info('fake_dir', entry=series_dicts[0], command='fake_command')
 
-    def submit_task(self):
-        series_dicts = [
-            {
-                'patient_id': 'pai1',
-                'accession_number': 'acn1',
-                'series_number': 'sen1',
-                'study_id': 'sti1',
-                'series_id': 'sei1',
-                'type': 'DOWNLOAD'
-            },
-            {
-                'patient_id': 'pai2',
-                'accession_number': 'acn2',
-                'series_number': 'sen2',
-                'study_id': 'sti2',
-                'series_id': 'sei2',
-                'type': 'DOWNLOAD'
-            }
-        ]
-        dir_name = 'fake_path_to_dir'
+            db_task = TaskInfo.query.get(1).__dict__
+            test_task = series_dicts[0]
+            del test_task['series_id']
 
-        data = {'data': series_dicts, 'dir': dir_name}
-        json_data = json.dumps(data)
-
-        return self.app.post(
-            '/download',
-            data=json_data,
-            follow_redirects=True
-        )
+            assert set(test_task.keys()).issubset(set(db_task.keys()))
+            for key in test_task:
+                assert test_task[key] == db_task[key]
 
     def test_submit_task(self):
-        expected = {"status": "OK", "series_length": 2}
+        with self.app.app_context():
+            with patch('meta.queue_manager._executor.submit') as mock_submit:
+                mock_future = MagicMock()
+                mock_future.add_done_callback = lambda x: None
+                mock_submit.return_value = mock_future
+                task_id = submit_task('some_dir', _get_test_series('fake_type')[0], 'fake command')
+                assert task_id == 1
+            assert mock_submit.called
 
-        rv = self.submit_task()
+    def test_bash(self):
+        with patch('meta.queue_manager.run') as mock_run, patch('meta.queue_manager.TaskInfo') as mock_TaskInfo:
 
-        rv_data_str = rv.get_data().decode('utf-8')
-        rv_data_dict = json.loads(rv_data_str)
+            magic_mock = MagicMock()
+            magic_mock.query.get = _get_test_task_info()
+            mock_TaskInfo = magic_mock
 
-        assert '200 OK' == rv.status
-        for key in expected:
-            assert rv_data_dict[key] == expected[key]
-        assert len(rv_data_dict) == len(expected)
+            _bash_task(None, current_app.config, None)
 
-    def test_submit_transfer(self):
-        def submit_transfers(self):
-            series_dicts = [
-                {
-                    'patient_id': 'pai1',
-                    'accession_number': 'acn1',
-                    'series_number': 'sen1',
-                    'study_id': 'sti1',
-                    'series_id': 'sei1',
-                    'type': 'DOWNLOAD'
-                },
-                {
-                    'patient_id': 'pai2',
-                    'accession_number': 'acn2',
-                    'series_number': 'sen2',
-                    'study_id': 'sti2',
-                    'series_id': 'sei2',
-                    'type': 'DOWNLOAD'
-                }
-            ]
-            dir_name = 'fake_path_to_dir'
+        assert mock_run.called
 
-            data = {'data': series_dicts, 'dir': dir_name}
-            json_data = json.dumps(data)
 
-            return self.app.post(
-                '/download',
-                data=json_data,
-                follow_redirects=True
-            )
+class FlaskNavigationTests(Tests):
+    def test_get_root(self):
+        with self.app.app_context():
+            rv = self.client.get('/')
+            assert rv.status == '200 OK'
+
+    def test_get_tasks(self):
+        with self.app.app_context():
+            rv = self.client.get('/tasks')
+            assert rv.status == '200 OK'
+
+    def test_get_transfers(self):
+        with self.app.app_context():
+            rv = self.client.get('/transfers')
+            assert rv.status == '200 OK'
+
+
+class TransferTests(Tests):
+    def test_transfer(self):
+        with self.app.app_context():
+            with patch('meta.views.submit_task') as mock_transfer_series:
+                mock_transfer_series.return_value = 42
+
+                target = 'syngo'
+                series_dicts = _get_test_series(TRANSFER)
+                data = {'data': series_dicts, 'target': target}
+                json_data = json.dumps(data)
+
+                rv = self.client.post(
+                    '/transfer',
+                    data=json_data,
+                    follow_redirects=True
+                )
+
+                assert '200 OK' == rv.status
+        assert mock_transfer_series.called
+
+    def test_transfer_series(self):
+        with self.app.app_context():
+            with patch('meta.views.submit_task') as mock_submit_task, patch('meta.views.construct_transfer_command') as mock_construct_transfer_command:
+                mock_submit_task.return_value = 42
+                mock_construct_transfer_command.return_value = 'some lame test command'
+                series_dicts = _get_test_series(TRANSFER)
+                assert transfer_series(series_dicts, None) == 2
+        assert mock_submit_task.called
+        assert mock_construct_transfer_command.called
+
+    def test_integration_submit_transfer(self):
+        with self.app.app_context():
+            with patch('meta.queue_manager._executor.submit') as mock_submit:
+                mock_future = MagicMock()
+                mock_future.add_done_callback = lambda x: None
+                mock_submit.return_value = mock_future
+
+                target = 'syngo'
+                series_dicts = _get_test_series(TRANSFER)
+                data = {'data': series_dicts, 'target': target}
+                json_data = json.dumps(data)
+
+                rv = self.client.post(
+                    '/transfer',
+                    data=json_data,
+                    follow_redirects=True
+                )
+
+                assert '200 OK' == rv.status
+
+        assert mock_submit.called
+
+
+class DownloadTests(Tests):
+    def test_integration_submit_download_task(self):
+        with self.app.app_context():
+            with patch('meta.queue_manager._executor.submit') as mock_submit:
+                mock_future = MagicMock()
+                mock_future.add_done_callback = lambda x: None
+                mock_submit.return_value = mock_future
+
+                test_response = {"status": "OK", "series_length": 2}
+
+                dir_name = 'fake_path_to_dir'
+                series_dicts = _get_test_series(DOWNLOAD)
+                data = {'data': series_dicts, 'dir': dir_name}
+                json_data = json.dumps(data)
+                rv = self.client.post(
+                    '/download',
+                    data=json_data,
+                    follow_redirects=True
+                )
+
+                rv_data_str = rv.get_data().decode('utf-8')
+                rv_data_dict = json.loads(rv_data_str)
+
+                assert '200 OK' == rv.status
+                for key in test_response:
+                    assert rv_data_dict[key] == test_response[key]
+                assert len(rv_data_dict) == len(test_response)
+
+        assert mock_submit.called
 
     if __name__ == '__main__':
         unittest.main()
-
-#
-# class TestTask(unittest.TestCase):
-#     def test_creation(self):
-#         entry = {'patient_id': 'a',
-#                  'accession_number': 1,
-#                  'series_number': 2,
-#                  'series_id': 3}
-#         conn = MagicMock()
-#         future = submit_task(conn, 'dir', entry, 'fakse_command')
-#         future.
-#         #task = download_task(conn, entry, 'foo', '/tmp')
-#
-#         self.assertEqual(task.patient_id, 'a')
-#         self.assertEqual(task.accession_number, 1)
-#         self.assertEqual(task.series_number, 2)
-#
-#     def test_done(self):
-#         entry = {'patient_id': 'a',
-#                  'accession_number': 1,
-#                  'series_number': 2,
-#                  'series_id': 3}
-#         conn = MagicMock()
-#         task = download_task(conn, entry, 'foo', '/tmp')
-#         future = Future()
-#         future.set_result(1)
-#         future.task = task
-#         finish_task(conn, future)
-#         self.assertNotEqual(future.task.creation_time, future.task.execution_time)
