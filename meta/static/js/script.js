@@ -166,9 +166,14 @@ $(function () {
 
   $('li.list-group-item.patients a').on('click', function(e) {
     // parent is in because user can click also on icon
-    $(e.target).parent().find('span').first().toggleClass('oi-chevron-left oi-chevron-top')
+    $(e.target).parent().find('span').first().toggleClass('oi-collapse-down oi-collapse-up');
   });
-  
+
+  $('a.exam-details').on('click', function(e) {
+    // parent is in because user can click also on icon
+    $(e.target).parent().find('span').first().toggleClass('oi-collapse-down oi-collapse-up');
+  });
+
   /**
    * Pasting the names will escape them automatically. This means that a
    * name like Jon Doe will be become "John\^Doe". In the PACS the whitespace

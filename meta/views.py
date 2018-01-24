@@ -19,7 +19,7 @@ def main():
                            version=VERSION,
                            page=0,
                            offset=0,
-                           params={'query': '*:*'})
+                           params={'query': '*'})
 
 
 @app.route('/search', methods=['POST', 'GET'])
@@ -63,7 +63,7 @@ def search():
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
-        #paging = calc(results, page, RESULT_LIMIT)
+        paging = calc(results, page, RESULT_LIMIT)
         demo = DEMO
         return render_template('result.html',
                                docs=docs,
@@ -72,7 +72,7 @@ def search():
                                payload=payload,
                                facet_url=request.url,
                                params=params,
-                               #paging=paging,
+                               paging=paging,
                                version=VERSION,
                                report_show_url=REPORT_SHOW_URL,
                                modalities=params.getlist('Modality'),
