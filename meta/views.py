@@ -19,7 +19,7 @@ def main():
                            version=VERSION,
                            page=0,
                            offset=0,
-                           params={'query': '*:*'})
+                           params={'query': '*'})
 
 
 @app.route('/search', methods=['POST', 'GET'])
