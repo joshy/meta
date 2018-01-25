@@ -1,13 +1,12 @@
-<div class="row px-2 py-2">
-  <form class="form-inline float-sm-right">
+<div class="container mt-3 mb-5">
+  <form class="form-inline float-right">
     <div id="download-form" class="form-group">
-      <button id="download-button" class="btn btn-primary btn-sm float-sm-right ml-2">Download</button>
-      <div class="float-sm-right">
-        <label class="form-check-inline">Download to folder: </label>
-        <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm">
-        <div id="download-error-text" class="form-check-inline form-control-feedback"></div>
-      </div>
+      <label class="form-check-inline">Download to folder: 
+        <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm ml-2">
+        <div id="download-error-text" class="form-check-inline form-control-feedback ml-2"></div>
+        <button id="download-button" class="btn btn-primary btn-sm ml-2">Download</button>
+        <a class="ml-3" href="/tasks"> Show Progress</a>
+      </label>
     </div>
-    <a class="px-2 form-inline float-sm-right" href="/tasks"> Show Progress</a>
   </form>
-</div>
+</div><br>

@@ -1,22 +1,13 @@
-<div class="row px-2">
-  <a class="px-2 form-inline float-sm-right" href="/transfers"> Show Progress</a>
-  <form class="form-inline float-sm-right">
+<div class="container mt-3">
+  <form class="form-inline float-right mb-3">
     <div class="form-group">
-      <div class="form">
-        <button id="transfer-button" class="btn btn-primary btn-sm float-sm-right ml-2">Transfer</button>
-        <div class="float-sm-right">
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="syngoid" value="syngo" checked > Syngo.via
-          </label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="teamplayid" value="teamplay"> Teamplay
-          </label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="target" id="teamplayshareid" value="teamplayshare"> Teamplay-Share
-          </label>
-        </div>
-        <label class="form-check-inline">Choose transfer target:</label>
-      </div>
+      <label class="form-check-inline">Choose transfer target:
+        <input class="form-check-input ml-3" type="radio" name="target" id="syngoid" value="syngo" checked > Syngo.via
+        <input class="form-check-input ml-5" type="radio" name="target" id="teamplayid" value="teamplay"> Teamplay
+        <input class="form-check-input ml-5" type="radio" name="target" id="teamplayshareid" value="teamplayshare"> Teamplay-Share
+        <button id="transfer-button" class="btn btn-primary btn-sm ml-5">Transfer</button>
+        <a class="ml-3" href="/transfers"> Show Progress</a>
+      </label>
     </div>
   </form>
 </div>

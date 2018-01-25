@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 
 {% block content %}
-  <div class="container pt-3" style="background-color:#edf4f7">
+  <div class="container-fluid px-2 pt-5" style="background-color:#edf4f7">
     <div class="row">
       {% block search %}
       {% endblock %}
@@ -9,7 +9,7 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col">
+      <div class="col-sm-12">
         {% block table %}
         {% endblock %}
     </div>
