@@ -11,13 +11,13 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    body['query'] = 'RisReport:{}'.format(args.get('query', '*'))
+    body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
     body['offset'] = int(args.get('offset', 0))
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
-    #if date_range is not None:
-    #    body['query'] = body['query'] + ' AND ' + date_range
-    #body['filter'] = _create_filter_query(args)
+    if date_range is not None:
+        body['query'] = body['query'] + ' AND ' + date_range
+    body['filter'] = _create_filter_query(args)
     #print(body)
     return body
 
@@ -27,13 +27,29 @@ def _create_filter_query(args):
               _filter('PatientID', args),
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
-              _filter('Modality', args)]
+              _filter_list('Modality', args)]
     return [x for x in result if x is not None]
 
 
 def _filter(element, args):
     if args.get(element):
-        return '{0}:{1}'.format(element, args.get(element))
+        print(element)
+        print(args.get(element))
+        return element + ':(' + args.get(element) + ')'
+        # return '{0}:{1}'.format(element, args.get(element))
+
+def _filter_list(element, args):
+    if args.getlist(element):
+        a_list = args.getlist(element)
+        out = element + ':('
+        if len(a_list) > 1:
+            for i in range(0, len(a_list)-1):
+                out = out + a_list[i] + ' OR '
+            out = out + a_list[-1]
+        else:
+            out = out + a_list[0]
+
+        return out + ')'
 
 
 def _create_date_range(start_date, end_date):
