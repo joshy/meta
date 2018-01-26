@@ -33,23 +33,14 @@ def _create_filter_query(args):
 
 def _filter(element, args):
     if args.get(element):
-        print(element)
-        print(args.get(element))
         return element + ':(' + args.get(element) + ')'
-        # return '{0}:{1}'.format(element, args.get(element))
+
 
 def _filter_list(element, args):
     if args.getlist(element):
         a_list = args.getlist(element)
-        out = element + ':('
-        if len(a_list) > 1:
-            for i in range(0, len(a_list)-1):
-                out = out + a_list[i] + ' OR '
-            out = out + a_list[-1]
-        else:
-            out = out + a_list[0]
-
-        return out + ')'
+        joined = ' OR '.join(a_list)
+        return element + ':(' + joined + ')'
 
 
 def _create_date_range(start_date, end_date):

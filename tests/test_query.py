@@ -1,6 +1,6 @@
 import unittest
 import meta.query
-
+from werkzeug import MultiDict
 
 class TestQueryStuff(unittest.TestCase):
 
@@ -55,9 +55,8 @@ class TestQueryStuff(unittest.TestCase):
                          ['Modality:CT'])
 
     def test_filter_multiple_modality(self):
-        args = {'query': 'foo', 'StartDate': '1.1.2016',
-                'EndDate': '31.12.2016',
-                'Modality': ['CT', 'MR']}
+        args = MultiDict([('query', 'foo'), ('StartDate', '1.1.2016'),
+                ('EndDate', '31.12.2016'), ('Modality', 'CT'), ('Modality', 'MR')])
         result = meta.query.query_body(args)
         self.assertEqual(result['filter'],
-                         ["Modality:['CT', 'MR']"])
+                         ["Modality:(CT OR MR)"])
