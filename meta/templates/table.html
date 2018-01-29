@@ -6,8 +6,8 @@
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
       {{entry['StudyDescription']}}, {{entry['Modality']}}, {{entry['AccessionNumber'] }}
     </a></h5>
-    <h6 class="card-subtitle mb-2" style="font-size:0.8rem">{{ entry['StudyDate'] | to_date}}, {{entry['ReferringPhysicianName']}}, {{entry['InstitutionName']}}</h6>
-    <div class="container p-0 collapse" id="{{entry['AccessionNumber']}}">
+    <h6 class="card-subtitle" style="font-size:0.8rem">{{ entry['StudyDate'] | to_date}}, {{entry['ReferringPhysicianName']}}, {{entry['InstitutionName']}}</h6>
+    <div class="container p-0 pt-2 collapse" id="{{entry['AccessionNumber']}}">
       <div class="row">
         <div class="col">
           <p>
