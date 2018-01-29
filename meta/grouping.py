@@ -13,8 +13,11 @@ def group(groups):
     """
     for g in groups['groups']:
         grouped = {}
-        for key, value in groupby(g['doclist']['docs'],
-                                  lambda x: x.get('AccessionNumber', '')):
+        for key, value in groupby(
+                sorted(
+                    g['doclist']['docs'],
+                    key=lambda x: x.get('StudyDate'),
+                    reverse=True), lambda x: x.get('AccessionNumber', '')):
             grouped[key] = sorted(list(value), key=_series_nr_int)
             g['by_AccessionNumber'] = grouped
             patient = {}
