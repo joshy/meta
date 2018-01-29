@@ -12,7 +12,7 @@ def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
-    body['offset'] = int(args.get('offset', 0))
+    body['offset'] = int(args.get('offset', '0'))
 
     date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
     if date_range is not None:
