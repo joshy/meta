@@ -18,7 +18,6 @@ def query_body(args, limit=100):
     if date_range is not None:
         body['query'] = body['query'] + ' AND ' + date_range
     body['filter'] = _create_filter_query(args)
-    #print(body)
     return body
 
 
