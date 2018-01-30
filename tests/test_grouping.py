@@ -8,6 +8,7 @@ TEST_DATA_1 = {'groups': [
                         {
                             'AccessionNumber': '1',
                             'StudyID': '1',
+                            'StudyDate': '20180101'
                         }
                     ]}
         },
@@ -17,7 +18,8 @@ TEST_DATA_1 = {'groups': [
                         'docs': [
                             {
                                 'AccessionNumber': '3',
-                                'StudyID': '20725498'}
+                                'StudyID': '20725498',
+                                'StudyDate': '20180101'}
                         ]}
         }
     ]}
@@ -29,14 +31,18 @@ TEST_DATA = {'groups': [
                      {
                          'AccessionNumber': '1',
                          'StudyID': '1',
+                         'StudyDate': '20160101'
                      },
                      {
                          'AccessionNumber': '2',
                          'StudyID': '2',
+                         'StudyDate': '20160111'
                      },
                      {
                          'AccessionNumber': '2',
-                         'StudyID': '2'
+                         'StudyID': '2',
+                         'StudyDate': '20180101'
+
                      }
                  ]}
     },
@@ -46,13 +52,16 @@ TEST_DATA = {'groups': [
                     'docs': [
                         {
                             'AccessionNumber': '3',
-                            'StudyID': '20725498'},
-                        {
-                            'AccessionNumber': '3',
-                            'StudyID': '20725498'},
+                            'StudyID': '20725498',
+                            'StudyDate': '20180101'},
                         {
                             'AccessionNumber': '3',
                             'StudyID': '20725498',
+                            'StudyDate': '20180101'},
+                        {
+                            'AccessionNumber': '3',
+                            'StudyID': '20725498',
+                            'StudyDate': '20180101',
                         }
                     ]}
     }]}
