@@ -58,5 +58,3 @@ def create_app(config_object_path='meta.default_config',
 
     return app
 
-
-app = create_app()

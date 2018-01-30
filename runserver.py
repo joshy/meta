@@ -5,7 +5,9 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from meta.app import app
+from meta.app import create_app
+
+app = create_app()
 
 if not app.debug:
     LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
@@ -23,4 +25,4 @@ if not app.debug:
     app.logger.addHandler(HANDLER)
 
 
-app.run(host='0.0.0.0')
+app.run(host='0.0.0.0', threaded=True)

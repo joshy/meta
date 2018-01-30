@@ -47,7 +47,7 @@ def _bash_task(task_id, config, args):
 
     task_info = TaskInfo.query.get(task_id)
     task_info.started = datetime.now()
-    task_info.status = 'SUBMITTED'
+    task_info.status = 'RUNNING'
     db.session.commit()
 
     run(args, stderr=PIPE, shell=False)
@@ -79,11 +79,6 @@ def submit_task(dir_name, entry, command):
 
     current_app.logger.debug('Running args %s', args)
 
-    task_info = TaskInfo.query.get(task_id)
-
-    task_info.status = 'SUBMITTING'
-    db.session.commit()
-
     future = _executor.submit(_bash_task, task_id, current_app.config, args)
 
     callback_fun = partial(_task_finished_callback, task_id=task_id)
@@ -98,7 +93,7 @@ def _retry_tasks(tasks):
     if not len(tasks):
         return
 
-    if _executor._work_queue.qsize() > 0:
+    if _executor._work_queue.unfinished_tasks > 0:
         return
 
     for task in tasks:

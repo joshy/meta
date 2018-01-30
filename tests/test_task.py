@@ -57,14 +57,9 @@ def _get_test_task_info():
 
 
 class Tests(unittest.TestCase):
-    TEST_DB_URI = (
-        'postgresql+psycopg2://postgres:postgres@localhost/meta_unittest_db'
-    )
-
     def setUp(self):
         self.app = create_app(
-            db_uri=self.TEST_DB_URI,
-            testing=True,
+            config_object_path='tests.test_config',
             server_name='0.0.0.0:5558'
         )
         self.app_context = self.app.app_context()
@@ -72,9 +67,7 @@ class Tests(unittest.TestCase):
         self.client = self.app.test_client()
 
         with self.app.app_context():
-            TaskInfo
-            # This somehow sets the right context
-            # Could be a library bug
+            TaskInfo  # This somehow sets the right context
 
         db.create_all()
         db.session.commit()
@@ -109,9 +102,9 @@ class CommonTests(Tests):
                 assert task_id == 1
             assert mock_submit.called
 
+    # noinspection PyMethodMayBeStatic
     def test_bash(self):
         with patch('meta.queue_manager.run') as mock_run, patch('meta.queue_manager.TaskInfo') as mock_TaskInfo:
-
             magic_mock = MagicMock()
             magic_mock.query.get = _get_test_task_info()
             mock_TaskInfo = magic_mock

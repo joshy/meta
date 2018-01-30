@@ -11,7 +11,7 @@ import werkzeug.datastructures as w
 from requests import get
 
 import meta.query as q
-from meta.app import app
+from runserver import app
 from meta.grouping import group
 from meta.solr import solr_url
 
