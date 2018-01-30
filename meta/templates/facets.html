@@ -10,7 +10,7 @@
           {% if facets.StudyDescription.buckets | length == 1 %}
           <span class="oi oi-x small vertical-align"></span>
           {% endif %}
-          <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
+          <span class="tag tag-default tag-pill float-sm-right">{{facet.count}}</span>
           {% if facet.clear %}
             <i class="fa fa-times" aria-hidden="true"></i>
           {% endif %}
@@ -33,7 +33,7 @@
         {% if facets.SeriesDescription.buckets | length == 1 %}
         <span class="oi oi-x small vertical-align"></span>
         {% endif %}
-        <span class="tag tag-default tag-pill float-xs-right">{{facet.count}}</span>
+        <span class="tag tag-default tag-pill float-sm-right">{{facet.count}}</span>
         {% if facet.clear %}
           <i class="fa fa-times" aria-hidden="true"></i>
         {% endif %}

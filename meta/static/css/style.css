@@ -7,11 +7,12 @@ ul.result li {
     padding-left: 0;
 }
 
-.vertical-align {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 .border-bottom {
     border-bottom: 2px solid #ddd;
+}
+
+/* no ugly blue border around links on click */
+a:focus {
+    outline:0;
+    text-decoration: none;
 }

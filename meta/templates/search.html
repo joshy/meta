@@ -1,61 +1,60 @@
 {% extends "base.html" %}
 
 {% block search %}
-<div class="col-sm-2">
-  <h3><a href="/">Pacs Crawler </a></h3>
-   <small>&mdash; Search the PACS v{{ version }} &mdash;</small><br>
+<div class="col-sm-3">
+  <h1 class="h5 ml-5"><a href="/">Pacs / RIS Crawler</a>
+  </h1>
 </div>
-<div class="col-sm-7">
+<div class="col-sm-6">
 <form id="search-form" action="/search" method="POST">
   <div class="form-group row">
-    <div class="col-sm-10">
-      <div class="input-group">
-        <input class="form-control" type="text" placeholder="E.g. CT Schaedel" id="search-input" name="query" value="{{ params.query }}" autofocus>
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </span>
+    <div class="input-group input-group-sm mb-3">
+      <input type="text" class="form-control form-control-sm" placeholder="e.g. Lungenkarzinom" id="search-input" name="query"
+        value="{{ params.query }}" autofocus>
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Search in RIS Reports</button>
       </div>
     </div>
   </div>
   <div class="form-group row">
     <div>
       <a class="btn" data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
-      <a class="btn" data-toggle="collapse" data-target="#help-details" href="#">Show some examples</a>
-      <a class="btn" href="/tree" onclick="javascript:event.target.port=8888">Expert mode (Notebook)</a>
     </div>
   </div>
   {% include 'partials/help.html' %}
   <div id="search-details" class="collapse">
-    <div class="form-group row">
-      <label for="studydescription-input" class="col-sm-2 col-form-label">Study Description</label>
-      <div class="col-sm-4">
-        <input class="form-control" type="text" placeholder="e.g. CT Schaedel" id="studydescription-input" name="StudyDescription" value="{{ params.StudyDescription }}">
-      </div>
-      <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
+    <!-- <div class="form-group row"> -->
+      <!-- <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
       <div class="col-sm-4">
         <input class="form-control" type="text" placeholder="e.g. Schädel axial Weichteil" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
+      </div> -->
+    <!-- </div> -->
+    <div class="form-group row">
+      <label for="patientname-input" class="col-sm-3 col-form-label">Patient Name</label>
+      <div class="col-sm-3">
+        <input class="form-control form-control-sm" type="text" id="patientname-input" name="PatientName" value="{{ params.PatientName }}">
+      </div>
+      <label for="patientid-input" class="col-sm-2 col-form-label ml-5">Patient Id</label>
+      <div class="col-sm-3">
+        <input class="form-control form-control-sm" type="text" id="patientid-input" name="PatientID" value="{{ params.PatientID }}">
       </div>
     </div>
     <div class="form-group row">
-      <label for="patientname-input" class="col-sm-2 col-form-label">Patient Name</label>
-      <div class="col-sm-4">
-        <input class="form-control" type="text" id="patientname-input" name="PatientName" value="{{ params.PatientName }}">
-      </div>
-      <label for="patientid-input" class="col-sm-2 col-form-label">Patient Id</label>
-      <div class="col-sm-4">
-        <input class="form-control" type="text" id="patientid-input" name="PatientID" value="{{ params.PatientID }}">
+      <label for="accessionnumber-input" class="col-sm-3 col-form-label">Accession Number</label>
+      <div class="col-sm-3">
+        <input class="form-control form-control-sm" type="text" id="accessionnumber-input" name="AccessionNumber" value="{{ params.AccessionNumber }}">
       </div>
     </div>
     <div class="form-group row">
-      <label for="accessionnumber-input" class="col-sm-2 col-form-label">Accession Number</label>
-      <div class="col-sm-4">
-        <input class="form-control" type="text" id="accessionnumber-input" name="AccessionNumber" value="{{ params.AccessionNumber }}">
+      <label for="studydescription-input" class="col-sm-3 col-form-label">Study Description</label>
+      <div class="col-sm-3">
+        <input class="form-control form-control-sm" type="text" placeholder="e.g. CT Schaedel" id="studydescription-input" name="StudyDescription" value="{{ params.StudyDescription }}">
       </div>
     </div>
-
+    
     <div class="form-group row ">
-      <label for="seriesdescription-input" class="col-sm-2 col-form-label">Modality</label>
-      <div class="col-sm-5">
+      <label for="seriesdescription-input" class="col-sm-3 col-form-label mt-4">Modality</label>
+      <div class="col-sm-5 mt-4">
         <label class="form-check-inline">
         <input class="form-check-input" type="checkbox" id="modality1" name="Modality" value="CT" {% if 'CT' in modalities %} checked {% endif %}> CT</label>
         <label class="form-check-inline">
@@ -64,7 +63,7 @@
         <input class="form-check-input" type="checkbox" id="modality11" name="Modality" value="PT" {% if 'PT' in modalities %} checked {% endif %}> PT</label>
         <label class="form-check-inline">
         <input class="form-check-input" type="checkbox" id="modality3" name="Modality" value="CR" {% if 'CR' in modalities %} checked {% endif %}> CR</label>
-        <a class="btn" data-toggle="collapse" data-target="#modality-details" href="#">Show all modalities</a>
+        <a class="btn" data-toggle="collapse" href="#modality-details">Show all modalities</a>
         <div id="modality-details" class="collapse">
           <label class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="modality4" name="Modality" value="XA" {% if 'XA' in modalities %} checked {% endif %}> XA</label>
@@ -104,37 +103,31 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="start-date-picker" class="col-sm-2 col-form-label">Start Date</label>
+      <label for="start-date-picker" class="col-sm-3 col-form-label">Start Date</label>
       <div class="col-sm-2">
-        <input class="form-control" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
+        <input class="form-control form-control-sm" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
       </div>
      </div>
     <div class="form-group row">
-      <label for="end-date-picker" class="col-sm-2 col-form-label">End Date</label>
+      <label for="end-date-picker" class="col-sm-3 col-form-label">End Date</label>
       <div class="col-sm-2">
-        <input class="form-control" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
+        <input class="form-control form-control-sm" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
       </div>
     </div>
     <div class="form-group row">
-      <div class="offset-sm-2 col-sm-2 text-xs-left">
-        <button type="submit" class="btn btn-primary">Search</button>
+      <div class="offset-sm-3 col-sm-2 text-xs-left">
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
       </div>
     </div>
   </div>
 
-  <div class="alert alert-danger small {% if not error %} hidden-xs-up {% endif %}" role="alert">
+  <div class="alert alert-danger small {% if not error %} d-none {% endif %}" role="alert">
     <strong>Error:</strong> {{error}}<br>
     <small>{{trace}}</small>
   </div>
   <input type="hidden" name="offset" value="{{offset}}">
   <input type="hidden" name="page" value="{{page}}">
 </form>
-</div>
-<div class="col-sm-3">
-  <div class="row">
-  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Universitätsspital Basel"  style="height:44px">
-  <p class="pt-1 mb-0">Klinik für Radiologie und Nuklearmedizin</p>
-  </div>
 </div>
 
 {% endblock %}

@@ -9,19 +9,20 @@ DEBUG = False
 RESULT_LIMIT = 100
 
 # Don't show transfer and download options
-DEMO = True
+DEMO = False
 
 # Location of where the image data should be downloaded to (Full path!)
 IMAGE_FOLDER = '/home/giga/images'
 REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
 
 # Solr settings
-SOLR_HOSTNAME = 'localhost'
-SOLR_CORE_NAME = 'pacs'
+SOLR_HOSTNAME = 'meqpacscrllt01'
+SOLR_PORT = '8983'
+SOLR_CORE_NAME = 'grouping'
 
 # DCMTK settings
 DCMIN = '/home/giga/dev/usb/meta/dcm.in'
-DCMTK_BIN = '/usr/bin/'
+DCMTK_BIN = '/home/giga/apps/'
 
 AE_TITLE = 'SNOWFOX'
 AE_CALLED = 'AE_ARCH2_4PR'

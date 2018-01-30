@@ -1,37 +1,62 @@
-<table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}">
-  <thead>
-    <tr>
-      <th><input type="checkbox" name='select-all-accession-number'></th>
-      <th>Patient Name</th>
-      <th>Modality</th>
-      <th>Study Description</th>
-      <th>Study Date</th>
-      <th>Series Number</th>
-      <th>Series Description</th>
-      <th>Referring Physician</th>
-      <th>Institution Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for entry in doc['by_AccessionNumber'][accessionNumber] %}
-    <tr>
-      <td>
-        <input type="checkbox" name="series"
-                 data-patient-id="{{ doc['groupValue'] }}"
-                 data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
-                 data-series-id="{{ entry['SeriesInstanceUID'].strip(' \t\r\0') }}"
-                 data-accession-number="{{ entry['AccessionNumber'] }}"
-                 data-series-number="{{ entry['SeriesNumber'] }}">
-      </td>
-      <td>{{ entry['PatientName'] }} </td>
-      <td>{{ entry['Modality'] }} </td>
-      <td>{{ entry['StudyDescription'] }} </td>
-      <td>{{ entry['StudyDate'] | to_date }} </td>
-      <td>{{ entry['SeriesNumber'] }} </td>
-      <td>{{ entry['SeriesDescription'] }} </td>
-      <td>{{ entry['ReferringPhysicianName'] }} </td>
-      <td>{{ entry['InstitutionName'] }} </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% for entry in doc['by_AccessionNumber'][accessionNumber] %}
+<div class="card my-3 small rounded-0 bg-light">
+  <div class="card-body p-3">
+    <h5 class="card-title h6">
+        <a href="#{{ entry['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
+            <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
+      {{entry['StudyDescription']}}, {{entry['Modality']}}, {{entry['AccessionNumber'] }}
+    </a></h5>
+    <h6 class="card-subtitle" style="font-size:0.8rem">{{ entry['StudyDate'] | to_date}}, {{entry['ReferringPhysicianName']}}, {{entry['InstitutionName']}}</h6>
+    <div class="container p-0 pt-2 collapse" id="{{entry['AccessionNumber']}}">
+      <div class="row">
+        <div class="col">
+          <p>
+            <u>
+              <strong>Series</strong>
+            </u>
+          </p>
+          <table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" name='select-all-accession-number'>
+                </th>
+                <th>Series Number</th>
+                <th>Series Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for child in entry['_childDocuments_'] %}
+              <tr>
+                <td>
+                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ child['AccessionNumber'] }}"
+                    data-series-number="{{ child['SeriesNumber'] }}">
+                </td>
+                <td>{{ child['SeriesNumber'] }} </td>
+                <td>{{ child['SeriesDescription'] }} </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col">
+          <p class="mb-0">
+            <u>
+              <strong>RIS Report</strong>
+            </u>
+          </p>
+          <div style="white-space:pre-line">
+            {{entry['RisReport']}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+
+    </div>
+  </div>
+</div>
+
+{% endfor %}

@@ -25,6 +25,35 @@ bp = Blueprint('pacs_page',
                template_folder='templates')
 
 
+@bp.route('/')
+def main():
+    """ Renders the initial page. """
+    return render_template('search.html',
+                           version=current_app.config['VERSION'],
+                           page=0,
+                           offset=0,
+                           params={'query': '*'})
+
+
+def _transfer_series(series_list, target):
+    """ Transfer the series to target PACS node. """
+    study_id_list = [entry['study_id'] for entry in series_list]
+    study_id_set = set(study_id_list)
+    current_app.logger.debug('Transferring ids: %s', study_id_set)
+
+    for study_id in study_id_set:
+        transfer_command = construct_transfer_command(
+            dcmtk_config(current_app.config),
+            pacs_config(current_app.config),
+            target,
+            study_id
+        )
+        entry = {'study_id': study_id, 'type': 'transfer'}
+        submit_task(None, entry, transfer_command)
+
+    return len(study_id_set)
+
+
 @bp.route('/download', methods=['POST'])
 def download():
     """ Ajax post to download series of images. """
@@ -54,41 +83,6 @@ def download():
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
-@bp.route('/flush')
-def flush():
-    flush_db()
-    return 'Queue cleared'
-
-
-@bp.route('/')
-def main():
-    """ Renders the initial page. """
-    return render_template('search.html',
-                           version=current_app.config['VERSION'],
-                           page=0,
-                           offset=0,
-                           params={'query': '*:*'})
-
-
-def transfer_series(series_list, target):
-    """ Transfer the series to target PACS node. """
-    study_id_list = [entry['study_id'] for entry in series_list]
-    study_id_set = set(study_id_list)
-    current_app.logger.debug('Transferring ids: %s', study_id_set)
-
-    for study_id in study_id_set:
-        transfer_command = construct_transfer_command(
-            dcmtk_config(current_app.config),
-            pacs_config(current_app.config),
-            target,
-            study_id
-        )
-        entry = {'study_id': study_id, 'type': 'transfer'}
-        submit_task(None, entry, transfer_command)
-
-    return len(study_id_set)
-
-
 @bp.route('/transfer', methods=['POST'])
 def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
@@ -97,7 +91,7 @@ def transfer():
     series_list = data.get('data', '')
     current_app.logger.info("transfer called and sending to %s", target)
 
-    study_size = transfer_series(series_list, target)
+    study_size = _transfer_series(series_list, target)
 
     return str(study_size)
 
@@ -126,6 +120,12 @@ def tasks():
     to download or to transfer series.
     """
     return render_template('tasks.html', version=current_app.config['VERSION'])
+
+
+@bp.route('/flush')
+def flush():
+    flush_db()
+    return 'Queue cleared'
 
 
 @bp.route('/terms')
@@ -176,7 +176,7 @@ def search():
         data = response.json()
         docs = data['grouped']['PatientID']
         docs = group(docs)
-        facets = prepare_facets(data.get('facets', []), request.url)
+        #facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
@@ -185,7 +185,7 @@ def search():
         return render_template('result.html',
                                docs=docs,
                                results=results,
-                               facets=facets,
+                               #facets=facets,
                                payload=payload,
                                facet_url=request.url,
                                params=params,

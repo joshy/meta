@@ -9,7 +9,7 @@ from meta.queue_manager import submit_task, _store_task_info, _bash_task
 from meta.app import create_app
 
 from meta.views import DOWNLOAD, TRANSFER
-from meta.views import transfer_series
+from meta.views import _transfer_series
 
 from datetime import datetime
 from flask import current_app
@@ -157,7 +157,7 @@ class TransferTests(Tests):
                 mock_submit_task.return_value = 42
                 mock_construct_transfer_command.return_value = 'some lame test command'
                 series_dicts = _get_test_series(TRANSFER)
-                assert transfer_series(series_dicts, None) == 2
+                assert _transfer_series(series_dicts, None) == 2
         assert mock_submit_task.called
         assert mock_construct_transfer_command.called
 
