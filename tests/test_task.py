@@ -6,9 +6,8 @@ from unittest.mock import MagicMock, patch
 from meta.models import TaskInfo, db
 from meta.queue_manager import submit_task, _store_task_info, _bash_task
 
-from meta.app import create_app
-
 from meta.views import DOWNLOAD, TRANSFER
+from meta.app_creator import create_app
 from meta.views import _transfer_series
 
 from datetime import datetime

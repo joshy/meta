@@ -17,7 +17,7 @@ class TaskInfo(db.Model):
     study_id = db.Column(db.String)
 
     creation_time = db.Column(db.DateTime, default=datetime.now())
-    execution_time = db.Column(db.DateTime, default=datetime.now())  # execution_time # TODO: Not sure if this is used
+    execution_time = db.Column(db.DateTime, default=datetime.now())  # TODO: Not sure if this is used
     started = db.Column(db.DateTime)
     finished = db.Column(db.DateTime)
     running_time = db.Column(db.Time)

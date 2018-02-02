@@ -39,7 +39,7 @@ def _store_task_info(dir_name, entry, command):
 
 
 def _bash_task(task_id, config, args):
-    from meta.app import create_app
+    from meta.app_creator import create_app
 
     create_app(db_uri=config['SQLALCHEMY_DATABASE_URI'],
                testing=config['TESTING'],

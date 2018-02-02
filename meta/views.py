@@ -5,7 +5,6 @@ from flask import render_template, request, current_app, Blueprint
 
 from meta.query import query_body
 from meta.paging import calc
-from meta.facets import prepare_facets
 from meta.grouping import group
 from meta.solr import solr_url
 from meta.terms import get_terms_data
@@ -20,12 +19,12 @@ from meta.queue_manager import submit_task, task_status, flush_db
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
 
-bp = Blueprint('pacs_page',
-               __name__,
-               template_folder='templates')
+pacs_crawler_blueprint = Blueprint('pacs_crawler_page',
+                                   __name__,
+                                   template_folder='templates')
 
 
-@bp.route('/')
+@pacs_crawler_blueprint.route('/')
 def main():
     """ Renders the initial page. """
     return render_template('search.html',
@@ -54,7 +53,7 @@ def _transfer_series(series_list, target):
     return len(study_id_set)
 
 
-@bp.route('/download', methods=['POST'])
+@pacs_crawler_blueprint.route('/download', methods=['POST'])
 def download():
     """ Ajax post to download series of images. """
     current_app.logger.info("download called")
@@ -83,7 +82,7 @@ def download():
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
-@bp.route('/transfer', methods=['POST'])
+@pacs_crawler_blueprint.route('/transfer', methods=['POST'])
 def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
     data = request.get_json(force=True)
@@ -96,25 +95,25 @@ def transfer():
     return str(study_size)
 
 
-@bp.route('/transfers')
+@pacs_crawler_blueprint.route('/transfers')
 def transfers():
     """ Renders the status of the transfers. """
     return render_template('transfers.html', version=current_app.config['VERSION'])
 
 
-@bp.route('/transfers/data')
+@pacs_crawler_blueprint.route('/transfers/data')
 def transfersdata():
     data = task_status(TRANSFER)
     return render_template('partials/transfers-status.html', tasks=data)
 
 
-@bp.route('/tasks/data')
+@pacs_crawler_blueprint.route('/tasks/data')
 def tasksdata():
     data = task_status(DOWNLOAD)
     return render_template('partials/tasks-status.html', tasks=data)
 
 
-@bp.route('/tasks')
+@pacs_crawler_blueprint.route('/tasks')
 def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
@@ -122,20 +121,20 @@ def tasks():
     return render_template('tasks.html', version=current_app.config['VERSION'])
 
 
-@bp.route('/flush')
+@pacs_crawler_blueprint.route('/flush')
 def flush():
     flush_db()
     return 'Queue cleared'
 
 
-@bp.route('/terms')
+@pacs_crawler_blueprint.route('/terms')
 def terms():
     """ Renders a page about term information. Only internal use. """
     data = get_terms_data(current_app.config)
     return render_template('terms.html', terms=data)
 
 
-@bp.route('/search', methods=['POST', 'GET'])
+@pacs_crawler_blueprint.route('/search', methods=['POST', 'GET'])
 def search():
     """ Renders the search results. """
     params = request.form

@@ -5,7 +5,7 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from meta.app import create_app
+from meta.app_creator import create_app
 
 app = create_app()
 

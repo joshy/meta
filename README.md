@@ -126,3 +126,13 @@ coverage report
 # generate html reports
 coverage html -d coverage
 ```
+
+### uWSGI
+
+The pip install might throw an error when you try to install uwsgi.
+Installation from conda-forge works for now without any issues. To install
+from conda-forge run:
+```bash
+conda install -c conda-forge uwsgi
+```
+Be careful that it does not break your pip dependencies.
