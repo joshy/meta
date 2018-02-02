@@ -98,13 +98,13 @@ $(function () {
     regex = /^[a-zA-Z0-9_-]+$/
     console.log('fooo');
     if (!dirName) {
-      setError('Check directory name, it seems empty');
+      setError('Directory name is empty');
       return
     } else if (dirName.indexOf(' ') >= 0) {
-      setError('Check directory name, no spaces are allowed');
+      setError('No spaces are allowed');
       return
     } else if (!regex.test(dirName)) {
-      setError('Check directory name, only following characters are allowed: a-Z,0-9,_,-) ');
+      setError('Allowed characters are: a-Z,0-9,_,-');
       return
     } else {
       clearError();
@@ -135,13 +135,13 @@ $(function () {
   });
 
   setError = function(text) {
-    $('#download-form').addClass('has-danger');
+    $('#download-dir').addClass('is-invalid');
     $('#download-error-text').text(text);
-    $('input[name=download-dir]').addClass("form-control-danger");
+    $('input[name=download-dir]').addClass("invalid");
   }
 
   clearError = function() {
-    $('#download-form').removeClass('has-danger');
+    $('#download-dir').removeClass('is-invalid');
     $('#download-error-text').text('');
     $('input[name=download-dir]').removeClass("form-control-danger");
   }

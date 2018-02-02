@@ -16,8 +16,11 @@
               </div>
             </div>
         <small class="form-text text-muted">
-          <a data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
+          <div class="d-inline"><a data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a></div>
+          <div class="d-inline pl-4"><a class="text-dark" target="_blank" href="/transfers">Transfer progress <span class="oi oi-external-link small"></span></a></div>
+          <div class="d-inline pl-4"><a class="text-dark" target="_blank" href="/tasks">Download progress <span class="oi oi-external-link small"></span></a></div>
         </small>
+
       </div>
     </div>
     <div class="col-sm-3">
@@ -25,14 +28,7 @@
         <small class="pt-1 mb-0"><p>Klinik für Radiologie und Nuklearmedizin</p></small>
       </div>
   </div>
-  {% include 'partials/help.html' %}
   <div id="search-details" class="pb-2 small collapse">
-    <!-- <div class="form-group row"> -->
-    <!-- <label for="seriesdescription-input" class="col-sm-2 col-form-label">Series Description</label>
-      <div class="col-sm-4">
-        <input class="form-control" type="text" placeholder="e.g. Schädel axial Weichteil" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
-      </div> -->
-    <!-- </div> -->
     <div class="form-group row col-sm-10">
       <div class="col">
         <label for="patientname-input">Patient Name</label>
@@ -67,6 +63,12 @@
             {% endif %}>
           <label class="form-check-label">CT</label>
         </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="modality2" name="Modality" value="MR" {% if 'MR' in modalities %} checked
+            {% endif %}>
+          <label class="form-check-label">MR</label>
+        </div>
+
         <label class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="modality2" name="Modality" value="MR" {% if 'MR' in modalities %} checked
             {% endif %}> MR</label>
@@ -76,7 +78,6 @@
         <label class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="modality3" name="Modality" value="CR" {% if 'CR' in modalities %} checked
             {% endif %}> CR</label>
-
         <label class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="modality4" name="Modality" value="XA" {% if 'XA' in modalities %} checked
             {% endif %}> XA</label>

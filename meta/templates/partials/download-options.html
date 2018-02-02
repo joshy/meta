@@ -1,12 +1,10 @@
-<div class="container mt-3 mb-5">
-  <form class="form-inline float-right">
-    <div id="download-form" class="form-group">
-        <label class="form-check-inline">Download to folder:</label>
-        <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm ml-2">
-        <div id="download-error-text" class="form-check-inline form-control-feedback ml-2"></div>
-        <button id="download-button" class="btn btn-primary btn-sm ml-2">Download</button>
-        <a class="ml-3" href="/tasks"> Show Progress</a>
-      </label>
-    </div>
+<div class="container pt-5 pb-5 pr-0">
+  <form id="download-form" class="form-inline float-right">
+      <label for="download-dir" class="col col-form-label">Download to folder:</label>
+      <div class="col">
+        <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm">
+        <div id="download-error-text" class="invalid-feedback"></div>
+      </div>
+      <button id="download-button" class="btn btn-primary btn-sm">Download</button>
   </form>
-</div><br>
+</div>
