@@ -32,7 +32,7 @@
           <th class="pl0 pa1 bb b--navy bw1 tl">PatientID</th>
           <th class="pa1 bb b--navy bw1 tl">Accession No. / Series No.</th>
           <th class="pa1 bb b--navy bw1 tl">Download folder</th>
-          <th class="pa1 bb b--navy bw1 tr">Running time</th>
+          <th class="pa1 bb b--navy bw1 tr">Running time (sec)</th>
           <th class="pa1 bb b--navy bw1 tl">Status</th>
           <th class="pa1 bb b--navy bw1 tl">Exception</th>
         </tr>
@@ -43,7 +43,7 @@
           <td class="pl0 pa1 v-top">{{ task.patient_id }} </td>
           <td class="pa1 v-top">{{ task.accession_number }} / {{ task.series_number }}</td>
           <td class="pa1 v-top">{{ task.dir_name }}</td>
-          <td class="pa1 v-top tr">{{ task.running_time }} </td>
+          <td class="pa1 v-top tr">{{ task.running_time.total_seconds() | round(2) }} </td>
           <td class="pa1 v-top">{{ task.status }} </td>
           <td class="pa1 v-top">{{ task.exception }} </td>
         </tr>

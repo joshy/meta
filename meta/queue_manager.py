@@ -30,7 +30,7 @@ def _store_task_info(dir_name, entry, command):
         started=None,
         finished=None,
         flag_finished=False,
-        type=entry['type']
+        task_type=entry['type']
     )
     db.session.add(task_info)
     db.session.commit()
@@ -112,7 +112,7 @@ def task_status(task_type):
     unfinished_tasks = (
         TaskInfo.query
         .filter(~TaskInfo.flag_finished)
-        .filter(TaskInfo.type == task_type)
+        .filter(TaskInfo.task_type == task_type)
         .order_by(TaskInfo.creation_time.desc())
         .limit(10000)
         .all()
@@ -123,7 +123,7 @@ def task_status(task_type):
     finished_tasks = (
         TaskInfo.query
         .filter(TaskInfo.flag_finished)
-        .filter(TaskInfo.type == task_type)
+        .filter(TaskInfo.task_type == task_type)
         .order_by(TaskInfo.finished.desc())
         .limit(10000)
         .all()
