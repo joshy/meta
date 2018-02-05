@@ -5,4 +5,3 @@ jsmin==2.2.1
 pandas==0.19.2
 psycopg2==2.7.3.2
 requests==2.13.0
-sqlalchemy_pygresql==1.0.1

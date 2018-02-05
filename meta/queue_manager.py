@@ -44,13 +44,11 @@ def _bash_task(task_id, config, args):
     create_app(db_uri=config['SQLALCHEMY_DATABASE_URI'],
                testing=config['TESTING'],
                server_name=config['SERVER_NAME'])
-
     task_info = TaskInfo.query.get(task_id)
     task_info.started = datetime.now()
     task_info.status = 'RUNNING'
     db.session.commit()
-
-    run(args, stderr=PIPE, shell=False)
+    run(args, stderr=PIPE, shell=False, check=True)
 
 
 def _task_finished_callback(future, task_id):
@@ -76,11 +74,8 @@ def _task_finished_callback(future, task_id):
 def submit_task(dir_name, entry, command):
     task_id = _store_task_info(dir_name, entry, command)
     args = shlex.split(command)
-
     current_app.logger.debug('Running args %s', args)
-
     future = _executor.submit(_bash_task, task_id, current_app.config, args)
-
     callback_fun = partial(_task_finished_callback, task_id=task_id)
     future.add_done_callback(callback_fun)
 

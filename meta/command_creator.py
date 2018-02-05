@@ -45,15 +45,10 @@ def construct_download_command(dcmtk_config, pacs_config, entry, path_to_dir, di
     study_instance_uid = entry['study_id']
     series_instance_uid = entry['series_id']
 
-    return ' '.join(
-        [
-            base_command,
-            ' --output-directory ', image_dir,
-            ' -k StudyInstanceUID=', study_instance_uid,
-            ' -k SeriesInstanceUID=', series_instance_uid,
-            dcmtk_config.dcmin
-        ]
-    )
+    return (base_command +
+        ' --output-directory ' + image_dir +
+        ' -k StudyInstanceUID=' + study_instance_uid +
+        ' -k SeriesInstanceUID=' + series_instance_uid + ' ' + dcmtk_config.dcmin)
 
 
 def construct_transfer_command(dcmkt_config, pacs_config, target, study_id):
@@ -62,7 +57,7 @@ def construct_transfer_command(dcmkt_config, pacs_config, target, study_id):
 
     return (
         dcmkt_config.dcmtk_bin +
-        'movescu -v -S '    
+        'movescu -v -S '
         '-aem {} '
         '-aet {} '
         '-aec {} {} {} '
