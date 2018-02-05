@@ -114,6 +114,7 @@ def task_status(task_type):
         .filter(~TaskInfo.flag_finished)
         .filter(TaskInfo.type == task_type)
         .order_by(TaskInfo.creation_time.desc())
+        .limit(10000)
         .all()
     )
 
@@ -123,7 +124,8 @@ def task_status(task_type):
         TaskInfo.query
         .filter(TaskInfo.flag_finished)
         .filter(TaskInfo.type == task_type)
-        .order_by(TaskInfo.finished)
+        .order_by(TaskInfo.finished.desc())
+        .limit(10000)
         .all()
     )
 
