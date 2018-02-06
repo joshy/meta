@@ -32,10 +32,10 @@ Python libraries needed are noted in the requirements.txt
 ### Postgres
 
 ```bash
-sudo apt-get install postgresql postgresql-contrib 
+sudo apt-get install postgresql postgresql-contrib
 
-``` 
-Also, dev package needs to be installed, so pip can install 
+```
+Also, dev package needs to be installed, so pip can install
 needed packages as well. The code is given for the current version 9.5.
 ```bash
 sudo apt-get install postgresql-server-dev-9.5
@@ -49,8 +49,8 @@ e.g.
 sudo su postgres
 createuser --interactive
 ```
-Follow the dialog and create a user with your desired username 
-(can be same as the system username). 
+Follow the dialog and create a user with your desired username
+(can be same as the system username).
 
 You can also do this instead first step, if just want to be able
 to create databases:
@@ -58,11 +58,17 @@ to create databases:
 createuser desired_username --createdb
 ```
 
+To set the password for the new created user do:
+```bash
+psql -U postgres
+ALTER USER desired_username with password 'desired_password';
+```
+
 If you set it up
 as admin, maybe you would like to create a DB with the same name.
 
 ```bash
-psql postgres -U desired_username
+psql postgres -U desired_username --host localhost
 ```
 and then
 ```postgresql
@@ -74,8 +80,8 @@ There is a `settings.py` file which holds all configuration options to setup
  * Solr Url (default: http://localhost:8983/solr/pacs/query)
  * DCMTK settings (only needed for Download/Transfer)
 
-Create a directory called `instance` in the projects root directory 
-and create a file called config.cfg. This holds all instance 
+Create a directory called `instance` in the projects root directory
+and create a file called config.cfg. This holds all instance
 specifying configuration options.
 
 An example would be:
@@ -87,16 +93,16 @@ SOLR_HOSTNAME='solr'
 SOLR_CORE_NAME='grouping'
 ```
 
-Don't forget to set `DEMO` to `False` if you want to see the download options. 
+Don't forget to set `DEMO` to `False` if you want to see the download options.
 Without this you will not be able to download the data.
 
 You will also need to get dcm.in DICOM query file from somewhere.
 
 You will also have to fill it with data.
 
-Please note that you will only be able to download images if your machine is 
-on the list of allowed machines on the PACS. This means that if you select 
-your local machine to be an aet machine, it will act as SCP to receive the 
+Please note that you will only be able to download images if your machine is
+on the list of allowed machines on the PACS. This means that if you select
+your local machine to be an aet machine, it will act as SCP to receive the
 data. If this is not possible, consider using a remote machine.
 
 ### Run
