@@ -26,7 +26,7 @@ def create_app(config_object_path='meta.default_config',
     app.config.from_object(config_object_path)
     app.config.from_pyfile(config_pyfile_path, silent=True)
 
-    app.config['VERSION'] = '1.5.2'
+    app.config['VERSION'] = '2.0.0'
 
     if server_name is not None:
         app.config['SERVER_NAME'] = server_name

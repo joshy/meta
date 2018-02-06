@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.0.0 - 06.02.2017
+ * PacsCrawler becomes PACS/RIS Crawler
+ * RisReports are now part of the exams, so users will be able to search them
+ * Series are children of the exam, currently searching on children is not
+   supported right now (because it is not clear how to do it in solr)
+ * Facets where removed, unclear if someone is really missing it
+ * Download and transfers are now backed up in the database (PostgreSQL)
+
 ## v1.5.2 - 24.10.2017
  * Downloading a series creates a additional file called `download_done.txt`
    to indicate the finishing of a download. Needed for consumers of meta to
