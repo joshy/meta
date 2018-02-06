@@ -1,2 +1,2 @@
 #!/bin/sh
-nodemon --exec "python3" runserver.py
+nodemon --ignore image_data --exec "python3" runserver.py
