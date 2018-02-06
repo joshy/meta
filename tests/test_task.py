@@ -24,7 +24,7 @@ def _get_test_series(series_type):
             'series_number': 'sen1',
             'study_id': 'sti1',
             'series_id': 'sei1',
-            'type': series_type
+            'task_type': series_type
         },
         {
             'patient_id': 'pai2',
@@ -32,7 +32,7 @@ def _get_test_series(series_type):
             'series_number': 'sen2',
             'study_id': 'sti2',
             'series_id': 'sei2',
-            'type': series_type
+            'task_type': series_type
         }
     ]
 
@@ -51,7 +51,7 @@ def _get_test_task_info():
         started=datetime.now(),
         finished=None,
         flag_finished=False,
-        type='UNITTEST',
+        task_type='UNITTEST',
     )
 
 

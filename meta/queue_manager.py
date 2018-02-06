@@ -30,7 +30,7 @@ def _store_task_info(dir_name, entry, command):
         started=None,
         finished=None,
         flag_finished=False,
-        task_type=entry['type']
+        task_type=entry['task_type']
     )
     db.session.add(task_info)
     db.session.commit()

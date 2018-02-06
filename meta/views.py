@@ -47,7 +47,7 @@ def _transfer_series(series_list, target):
             target,
             study_id
         )
-        entry = {'study_id': study_id, 'type': 'transfer'}
+        entry = {'study_id': study_id, 'task_type': 'transfer'}
         submit_task(None, entry, transfer_command)
 
     return len(study_id_set)
@@ -76,7 +76,7 @@ def download():
             current_app.config['IMAGE_FOLDER'],
             dir_name
         )
-        entry['type'] = 'download'
+        entry['task_type'] = 'download'
         submit_task(dir_name, entry, download_command)
 
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
