@@ -114,3 +114,4 @@ tasks.db
 .mypy_cache
 
 .DS_Store
+luigi.cfg

@@ -1,0 +1,19 @@
+[dcmtk]
+dcmin = '/dcm.in'
+movescu = '/usr/bin/movescu'
+
+[MoveTask]
+aet = ''
+aec = ''
+aem = ''
+peer_address = ''
+peer_port =
+incoming_port =
+
+[DownloadTask]
+aet = ''
+aec = ''
+peer_address = ''
+peer_port =
+incoming_port =
+output_dir = '/tmp/123'
