@@ -1,17 +1,17 @@
 import json
+import subprocess
 
-from requests import get, RequestException
-from flask import render_template, request, current_app, Blueprint, redirect
-from meta.query import query_body
-from meta.paging import calc
+from flask import Blueprint, current_app, redirect, render_template, request
+from requests import RequestException, get
+
+from meta.command_creator import (construct_download_command,
+                                  construct_transfer_command)
+from meta.config import dcmtk_config, pacs_config
 from meta.grouping import group
+from meta.paging import calc
+from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
-
-from meta.command_creator import construct_download_command
-from meta.command_creator import construct_transfer_command
-
-from meta.config import dcmtk_config, pacs_config
 
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
@@ -69,8 +69,6 @@ def download():
     series_list = data.get('data', '')
     dir_name = data.get('dir', '')
 
-    from tasks.download import DownloadTask
-
     for entry in series_list:
         download_command = construct_download_command(
             dcmtk_config(current_app.config),
@@ -80,7 +78,6 @@ def download():
             dir_name
         )
         entry['task_type'] = 'download'
-        import subprocess
         subprocess.run(["python3", "-m", "luigi", "--module", "tasks.download", "DownloadTask", "--command", download_command])
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
