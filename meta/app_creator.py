@@ -5,7 +5,6 @@ from flask_assets import Environment
 from webassets import Bundle
 
 from meta.views import pacs_crawler_blueprint
-from meta.models import db
 
 
 def _to_date(date_as_int):
@@ -38,8 +37,6 @@ def create_app(config_object_path='meta.default_config',
     if db_uri is not None:
         app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
-    db.init_app(app)
-
     app.register_blueprint(pacs_crawler_blueprint)
 
     # JS Assets part
@@ -54,8 +51,5 @@ def create_app(config_object_path='meta.default_config',
     app.jinja_env.filters['to_date'] = _to_date
 
     app.app_context().push()
-
-    db.create_all()
-    db.session.commit()
 
     return app

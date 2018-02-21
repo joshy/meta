@@ -3,15 +3,9 @@ import json
 
 from unittest.mock import MagicMock, patch
 
-from meta.models import TaskInfo, db
-from meta.queue_manager import submit_task, _store_task_info, _bash_task
-
 from meta.views import DOWNLOAD, TRANSFER
 from meta.app_creator import create_app
 from meta.views import _transfer_series
-
-from datetime import datetime
-from flask import current_app
 
 temp_db_name = 'meta_unittest_db'
 
@@ -37,24 +31,6 @@ def _get_test_series(series_type):
     ]
 
 
-def _get_test_task_info():
-    return TaskInfo(
-        dir_name='DIRNAME',
-        study_id='STUDID',
-        patient_id='PATID',
-        accession_number='ACCNUM',
-        series_number='SERNUM',
-        command='UNITTESTCMD',
-        running_time=None,
-        status='UNITTESTING',
-        exception=None,
-        started=datetime.now(),
-        finished=None,
-        flag_finished=False,
-        task_type='UNITTEST',
-    )
-
-
 class Tests(unittest.TestCase):
     def setUp(self):
         self.app = create_app(
@@ -65,69 +41,22 @@ class Tests(unittest.TestCase):
         self.app_context.push()
         self.client = self.app.test_client()
 
-        with self.app.app_context():
-            TaskInfo  # This somehow sets the right context
-
-        db.create_all()
-        db.session.commit()
-
-    def tearDown(self):
-        db.drop_all()
-        db.session.commit()
-
-
-class CommonTests(Tests):
-    def test_create_task_info_in_db(self):
-        with self.app.app_context():
-            series_dicts = _get_test_series(DOWNLOAD)
-
-            _store_task_info('fake_dir', entry=series_dicts[0], command='fake_command')
-
-            db_task = TaskInfo.query.get(1).__dict__
-            test_task = series_dicts[0]
-            del test_task['series_id']
-
-            assert set(test_task.keys()).issubset(set(db_task.keys()))
-            for key in test_task:
-                assert test_task[key] == db_task[key]
-
-    def test_submit_task(self):
-        with self.app.app_context():
-            with patch('meta.queue_manager._executor.submit') as mock_submit:
-                mock_future = MagicMock()
-                mock_future.add_done_callback = lambda x: None
-                mock_submit.return_value = mock_future
-                task_id = submit_task('some_dir', _get_test_series('fake_type')[0], 'fake command')
-                assert task_id == 1
-            assert mock_submit.called
-
-    # noinspection PyMethodMayBeStatic
-    def test_bash(self):
-        with patch('meta.queue_manager.run') as mock_run, patch('meta.queue_manager.TaskInfo') as mock_TaskInfo:
-            magic_mock = MagicMock()
-            magic_mock.query.get = _get_test_task_info()
-            mock_TaskInfo = magic_mock
-
-            _bash_task(None, current_app.config, None)
-
-        assert mock_run.called
-
 
 class FlaskNavigationTests(Tests):
     def test_get_root(self):
         with self.app.app_context():
             rv = self.client.get('/')
-            assert rv.status == '200 OK'
+            assert rv.status_code == 200
 
     def test_get_tasks(self):
         with self.app.app_context():
             rv = self.client.get('/tasks')
-            assert rv.status == '200 OK'
+            assert rv.status_code == 302
 
     def test_get_transfers(self):
         with self.app.app_context():
             rv = self.client.get('/transfers')
-            assert rv.status == '200 OK'
+            assert rv.status_code == 302
 
 
 class TransferTests(Tests):
@@ -147,7 +76,7 @@ class TransferTests(Tests):
                     follow_redirects=True
                 )
 
-                assert '200 OK' == rv.status
+                assert rv.status_code == 200
         assert mock_transfer_series.called
 
     def test_transfer_series(self):
@@ -178,7 +107,7 @@ class TransferTests(Tests):
                     follow_redirects=True
                 )
 
-                assert '200 OK' == rv.status
+                assert rv.status_code == 200
 
         assert mock_submit.called
 

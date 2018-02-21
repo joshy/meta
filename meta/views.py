@@ -1,8 +1,7 @@
 import json
 
 from requests import get, RequestException
-from flask import render_template, request, current_app, Blueprint
-
+from flask import render_template, request, current_app, Blueprint, redirect
 from meta.query import query_body
 from meta.paging import calc
 from meta.grouping import group
@@ -14,14 +13,16 @@ from meta.command_creator import construct_transfer_command
 
 from meta.config import dcmtk_config, pacs_config
 
-from meta.queue_manager import submit_task, task_status, flush_db
-
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
 
 pacs_crawler_blueprint = Blueprint('pacs_crawler_page',
                                    __name__,
                                    template_folder='templates')
+
+
+def submit_task(dir_name, entry, command):
+    raise NotImplementedError
 
 
 @pacs_crawler_blueprint.route('/')
@@ -97,20 +98,9 @@ def transfer():
 
 @pacs_crawler_blueprint.route('/transfers')
 def transfers():
+
     """ Renders the status of the transfers. """
-    return render_template('transfers.html', version=current_app.config['VERSION'])
-
-
-@pacs_crawler_blueprint.route('/transfers/data')
-def transfersdata():
-    data = task_status(TRANSFER)
-    return render_template('partials/transfers-status.html', tasks=data)
-
-
-@pacs_crawler_blueprint.route('/tasks/data')
-def tasksdata():
-    data = task_status(DOWNLOAD)
-    return render_template('partials/tasks-status.html', tasks=data)
+    return redirect('http://example.com')
 
 
 @pacs_crawler_blueprint.route('/tasks')
@@ -118,13 +108,7 @@ def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
     """
-    return render_template('tasks.html', version=current_app.config['VERSION'])
-
-
-@pacs_crawler_blueprint.route('/flush')
-def flush():
-    flush_db()
-    return 'Queue cleared'
+    return redirect('http://example.com')
 
 
 @pacs_crawler_blueprint.route('/terms')
