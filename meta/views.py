@@ -69,6 +69,8 @@ def download():
     series_list = data.get('data', '')
     dir_name = data.get('dir', '')
 
+    from tasks.download import DownloadTask
+
     for entry in series_list:
         download_command = construct_download_command(
             dcmtk_config(current_app.config),
@@ -78,8 +80,8 @@ def download():
             dir_name
         )
         entry['task_type'] = 'download'
-        submit_task(dir_name, entry, download_command)
-
+        import subprocess
+        subprocess.run(["python3", "-m", "luigi", "--module", "tasks.download", "DownloadTask", "--command", download_command])
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
