@@ -4,8 +4,8 @@ import subprocess
 from flask import Blueprint, current_app, redirect, render_template, request
 from requests import RequestException, get
 
-from meta.command_creator import (construct_download_command,
-                                  construct_transfer_command)
+from meta.command_creator import construct_transfer_command
+
 from meta.config import dcmtk_config, pacs_config
 from meta.grouping import group
 from meta.paging import calc
@@ -70,15 +70,20 @@ def download():
     dir_name = data.get('dir', '')
 
     for entry in series_list:
-        download_command = construct_download_command(
-            dcmtk_config(current_app.config),
-            pacs_config(current_app.config),
-            entry,
-            current_app.config['IMAGE_FOLDER'],
-            dir_name
+        subprocess.Popen(
+            [
+                "python3",
+                "-m", "luigi",
+                "--module", "tasks.download",
+                "DownloadTask",
+                "--patient-id", entry['patient_id'],
+                "--accession-number", entry['accession_number'],
+                "--series-number", entry['series_number'],
+                "--study-instance-uid", entry['study_id'],
+                "--series-instance-uid", entry['series_id'],
+                "--dir-name", dir_name
+            ]
         )
-        entry['task_type'] = 'download'
-        subprocess.run(["python3", "-m", "luigi", "--module", "tasks.download", "DownloadTask", "--command", download_command])
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
@@ -99,7 +104,7 @@ def transfer():
 def transfers():
 
     """ Renders the status of the transfers. """
-    return redirect('http://example.com')
+    return redirect('http://' + current_app.config['LUIGI_SCHEDULER'])
 
 
 @pacs_crawler_blueprint.route('/tasks')
@@ -107,7 +112,7 @@ def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
     """
-    return redirect('http://example.com')
+    return redirect('http://' + current_app.config['LUIGI_SCHEDULER'])
 
 
 @pacs_crawler_blueprint.route('/terms')

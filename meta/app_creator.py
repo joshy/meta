@@ -1,4 +1,5 @@
 from datetime import datetime
+import configparser
 
 from flask import Flask
 from flask_assets import Environment
@@ -36,6 +37,14 @@ def create_app(config_object_path='meta.default_config',
 
     if db_uri is not None:
         app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+
+    config = configparser.ConfigParser()
+    config.read_file(open('luigi.cfg'))
+    app.config['LUIGI_SCHEDULER'] = (
+            config['core']['default-scheduler-host'] +
+            ':' +
+            config['core']['default-scheduler-port']
+    )
 
     app.register_blueprint(pacs_crawler_blueprint)
 

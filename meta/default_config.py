@@ -16,12 +16,12 @@ IMAGE_FOLDER = '/home/giga/images'
 REPORT_SHOW_URL = 'http://meqpacscrllt01.uhbs.ch:9000/show?accession_number='
 
 # Solr settings
-SOLR_HOSTNAME = 'localhost'
+SOLR_HOSTNAME = 'meqpacscrllt01'
 SOLR_PORT = '8983'
 SOLR_CORE_NAME = 'ris_pacs'
 
 # DCMTK settings
-DCMIN = '/home/giga/dev/usb/meta/dcm.in'
+DCMIN = '/home/giga/dev/python/meta/meta/dcm.in'
 DCMTK_BIN = '/home/giga/apps/'
 
 AE_TITLE = 'SNOWFOX'
@@ -30,6 +30,3 @@ PEER_ADDRESS = '10.5.66.74'
 PEER_PORT = 104
 INCOMING_PORT = 11110
 
-# SQLAlchemy and Postgres settings
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://username:password@localhost/database_name'
-SQLALCHEMY_TRACK_MODIFICATIONS = False

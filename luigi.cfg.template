@@ -17,3 +17,7 @@ peer_address = ''
 peer_port =
 incoming_port =
 output_dir = '/tmp/123'
+
+[core]
+scheduler_host = localhost
+default-scheduler-port = 8082
