@@ -60,10 +60,10 @@ sudo apt-get install postgresql-server-dev-9.5
 
 You will be able to connect to the database with the username `postgres` and an emtpy password.
 
-If your empty password produces and error, try setting the password to something e.g. `postgres` 
+If your empty password produces and error, try setting the password to something e.g. `postgres`
 (see [changing the password](#changing-the-password)).
 
-After this, the connection string should contain 'postgres:postgres' as the user and the password 
+After this, the connection string should contain 'postgres:postgres' as the user and the password
 and the database `postgres`.
 
 
@@ -107,8 +107,8 @@ CREATE DATABASE username;
 ```
 
 ### Luigi
-We are using Luigi to schedule tasks. You need to run the local scheduler first. 
-Navigate to the root of the project or wherever your `luigi.cfg` file is, and run: 
+We are using Luigi to schedule tasks. You need to run the local scheduler first.
+Navigate to the root of the project or wherever your `luigi.cfg` file is, and run:
 ```bash
 luigid
 ```
@@ -138,7 +138,7 @@ SOLR_CORE_NAME='grouping'
 Don't forget to set `DEMO` to `False` if you want to see the download options.
 Without this you will not be able to download the data.
 
-You will also need to get dcm.in DICOM query file from somewhere 
+You will also need to get dcm.in DICOM query file from somewhere
 and you will have to fill it with data.
 
 Please note that you will only be able to download images if your machine is
@@ -150,13 +150,13 @@ data. If this is not possible, consider using a remote machine.
 
 Luigi config file, named `luigi.cfg`, is located in the root of the project.
 
-By default the config is set to store history. It is using SQLAlchemy for that, 
-so you can provide any of the supported connection strings. 
+By default the config is set to store history. It is using SQLAlchemy for that,
+so you can provide any of the supported connection strings.
 The template already contains an example for the postgres connection string.
 
 Please note that databases other than postgres might require you to take care of dependencies.
 
-Core information is also used by flask, so that you are redirected correctly to the 
+Core information is also used by flask, so that you are redirected correctly to the
 luigi scheduler web page.
 
 
@@ -207,3 +207,7 @@ Be careful that it does not break your pip dependencies.
 
 You can now call `uwsgi` with the accompanying `meta.ini` file.
 
+
+### Production
+Increase open file limit
+https://easyengine.io/tutorials/linux/increase-open-files-limit/

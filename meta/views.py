@@ -4,22 +4,16 @@ import subprocess
 from flask import current_app, redirect, render_template, request
 from requests import RequestException, get
 
-from meta.command_creator import construct_transfer_command
-
+from meta.app_creator import create_app
 from meta.config import dcmtk_config, pacs_config
 from meta.grouping import group
 from meta.paging import calc
 from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
-from meta.app_creator import create_app
 
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
-
-
-def submit_task(dir_name, entry, command):
-    raise NotImplementedError
 
 
 app = create_app()
@@ -42,14 +36,17 @@ def _transfer_series(series_list, target):
     current_app.logger.debug('Transferring ids: %s', study_id_set)
 
     for study_id in study_id_set:
-        transfer_command = construct_transfer_command(
-            dcmtk_config(current_app.config),
-            pacs_config(current_app.config),
-            target,
-            study_id
+        subprocess.Popen(
+            [
+                "python3",
+                "-m", "luigi",
+                "--module", "tasks.move",
+                "MoveTask",
+                "--series-instance-uid", entry['series_id'],
+                "--target", target
+            ]
         )
         entry = {'study_id': study_id, 'task_type': 'transfer'}
-        submit_task(None, entry, transfer_command)
 
     return len(study_id_set)
 

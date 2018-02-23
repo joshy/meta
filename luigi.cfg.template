@@ -24,7 +24,6 @@ default-scheduler-port = 8082
 
 [worker]
 retry_external_tasks = True
-keep-alive=True
 
 [scheduler]
 record_task_history = True
@@ -32,3 +31,6 @@ state_path = /some/path/luigi-state.pickle
 
 [task_history]
 db_connection=postgresql+psycopg2://username:password@localhost/database
+
+[resources]
+pacs=1
