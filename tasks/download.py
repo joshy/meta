@@ -27,8 +27,7 @@ class DownloadTask(luigi.contrib.external_program.ExternalProgramTask):
 
     dir_name = luigi.Parameter()
 
-
-    resources = { 'pacs': 1}
+    resources = {'pacs': 1}
     max_batch_size = 1
 
     def get_image_dir(self):

@@ -1,7 +1,8 @@
 import json
 import subprocess
+from os.path import dirname, join
 
-from flask import Blueprint, current_app, redirect, render_template, request
+from flask import Flask, current_app, redirect, render_template, request
 from requests import RequestException, get
 
 from meta.command_creator import construct_transfer_command
@@ -13,19 +14,86 @@ from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
 
+from flask_assets import Environment
+from webassets import Bundle
+
+from datetime import datetime
+import configparser
+
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
 
-pacs_crawler_blueprint = Blueprint('pacs_crawler_page',
-                                   __name__,
-                                   template_folder='templates')
+# pacs_crawler_blueprint = Blueprint('pacs_crawler_page',
+#                                    __name__,
+#                                    template_folder='templates')
 
 
 def submit_task(dir_name, entry, command):
     raise NotImplementedError
 
 
-@pacs_crawler_blueprint.route('/')
+def _to_date(date_as_int):
+    if date_as_int:
+        return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
+    else:
+        return ''
+
+
+def create_app(config_object_path='meta.default_config',
+               config_pyfile_path='config.cfg',
+               db_uri=None,
+               testing=None,
+               server_name=None):
+
+    app = Flask(__name__, instance_relative_config=True)
+
+    app.config.from_object(config_object_path)
+    app.config.from_pyfile(config_pyfile_path, silent=True)
+
+    app.config['VERSION'] = '2.0.0'
+
+    if server_name is not None:
+        app.config['SERVER_NAME'] = server_name
+
+    if testing:
+        app.config['TESTING'] = testing
+        app.test_client()
+
+    if db_uri is not None:
+        app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+
+    config = configparser.ConfigParser()
+    files_dir = dirname(__file__)
+    with open(join(files_dir, '..', 'luigi.cfg')) as f:
+        config.read_file(f)
+    app.config['LUIGI_SCHEDULER'] = (
+            config['core']['default-scheduler-host'] +
+            ':' +
+            config['core']['default-scheduler-port']
+    )
+
+    #app.register_blueprint(pacs_crawler_blueprint)
+
+    # JS Assets part
+    assets = Environment(app)
+    js = Bundle("js/jquery-3.1.0.min.js", "js/tether.min.js",
+                "js/bootstrap.min.js", "js/moment.min.js", "js/pikaday.js",
+                "js/pikaday.jquery.js", "js/jquery.noty.packaged.min.js",
+                "js/script.js",
+                filters='jsmin', output='gen/packed.js')
+    assets.register('js_all', js)
+
+    app.jinja_env.filters['to_date'] = _to_date
+
+    app.app_context().push()
+
+    return app
+
+
+app = create_app()
+
+
+@app.route('/')
 def main():
     """ Renders the initial page. """
     return render_template('search.html',
@@ -54,7 +122,7 @@ def _transfer_series(series_list, target):
     return len(study_id_set)
 
 
-@pacs_crawler_blueprint.route('/download', methods=['POST'])
+@app.route('/download', methods=['POST'])
 def download():
     """ Ajax post to download series of images. """
     current_app.logger.info("download called")
@@ -87,7 +155,7 @@ def download():
     return json.dumps({'status': 'OK', 'series_length': len(series_list)})
 
 
-@pacs_crawler_blueprint.route('/transfer', methods=['POST'])
+@app.route('/transfer', methods=['POST'])
 def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
     data = request.get_json(force=True)
@@ -100,14 +168,14 @@ def transfer():
     return str(study_size)
 
 
-@pacs_crawler_blueprint.route('/transfers')
+@app.route('/transfers')
 def transfers():
 
     """ Renders the status of the transfers. """
     return redirect('http://' + current_app.config['LUIGI_SCHEDULER'])
 
 
-@pacs_crawler_blueprint.route('/tasks')
+@app.route('/tasks')
 def tasks():
     """ Renders a status page on the current tasks. A tasks is either
     to download or to transfer series.
@@ -115,14 +183,14 @@ def tasks():
     return redirect('http://' + current_app.config['LUIGI_SCHEDULER'])
 
 
-@pacs_crawler_blueprint.route('/terms')
+@app.route('/terms')
 def terms():
     """ Renders a page about term information. Only internal use. """
     data = get_terms_data(current_app.config)
     return render_template('terms.html', terms=data)
 
 
-@pacs_crawler_blueprint.route('/search', methods=['POST', 'GET'])
+@app.route('/search', methods=['POST', 'GET'])
 def search():
     """ Renders the search results. """
     params = request.form

@@ -5,9 +5,7 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-from meta.app_creator import create_app
-
-app = create_app()
+from meta.views import app
 
 if not app.debug:
     LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')

@@ -1,7 +1,8 @@
 Flask-Assets==0.12
-Flask-SQLAlchemy==2.3.2
 Flask==0.12
 jsmin==2.2.1
+luigi=2.7.2
 pandas==0.19.2
-psycopg2==2.7.3.2
+psycopg2-binary==2.7.4
 requests==2.13.0
+sqlalchemy==1.2.4
