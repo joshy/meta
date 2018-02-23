@@ -1,8 +1,7 @@
 import json
 import subprocess
-from os.path import dirname, join
 
-from flask import Flask, current_app, redirect, render_template, request
+from flask import current_app, redirect, render_template, request
 from requests import RequestException, get
 
 from meta.command_creator import construct_transfer_command
@@ -13,81 +12,14 @@ from meta.paging import calc
 from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
-
-from flask_assets import Environment
-from webassets import Bundle
-
-from datetime import datetime
-import configparser
+from meta.app_creator import create_app
 
 DOWNLOAD = 'download'
 TRANSFER = 'transfer'
 
-# pacs_crawler_blueprint = Blueprint('pacs_crawler_page',
-#                                    __name__,
-#                                    template_folder='templates')
-
 
 def submit_task(dir_name, entry, command):
     raise NotImplementedError
-
-
-def _to_date(date_as_int):
-    if date_as_int:
-        return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
-    else:
-        return ''
-
-
-def create_app(config_object_path='meta.default_config',
-               config_pyfile_path='config.cfg',
-               db_uri=None,
-               testing=None,
-               server_name=None):
-
-    app = Flask(__name__, instance_relative_config=True)
-
-    app.config.from_object(config_object_path)
-    app.config.from_pyfile(config_pyfile_path, silent=True)
-
-    app.config['VERSION'] = '2.0.0'
-
-    if server_name is not None:
-        app.config['SERVER_NAME'] = server_name
-
-    if testing:
-        app.config['TESTING'] = testing
-        app.test_client()
-
-    if db_uri is not None:
-        app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-
-    config = configparser.ConfigParser()
-    files_dir = dirname(__file__)
-    with open(join(files_dir, '..', 'luigi.cfg')) as f:
-        config.read_file(f)
-    app.config['LUIGI_SCHEDULER'] = (
-            config['core']['default-scheduler-host'] +
-            ':' +
-            config['core']['default-scheduler-port']
-    )
-
-    #app.register_blueprint(pacs_crawler_blueprint)
-
-    # JS Assets part
-    assets = Environment(app)
-    js = Bundle("js/jquery-3.1.0.min.js", "js/tether.min.js",
-                "js/bootstrap.min.js", "js/moment.min.js", "js/pikaday.js",
-                "js/pikaday.jquery.js", "js/jquery.noty.packaged.min.js",
-                "js/script.js",
-                filters='jsmin', output='gen/packed.js')
-    assets.register('js_all', js)
-
-    app.jinja_env.filters['to_date'] = _to_date
-
-    app.app_context().push()
-
-    return app
 
 
 app = create_app()

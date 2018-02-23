@@ -1,6 +1,6 @@
 import unittest
 
-from meta.views import _to_date
+from meta.app_creator import _to_date
 
 
 class TestToDate(unittest.TestCase):
