@@ -27,6 +27,10 @@ class DownloadTask(luigi.contrib.external_program.ExternalProgramTask):
 
     dir_name = luigi.Parameter()
 
+
+    resources = { 'pacs': 1}
+    max_batch_size = 1
+
     def get_image_dir(self):
         return join(self.output_dir, self.dir_name, self.patient_id, self.accession_number, self.series_number)
 
@@ -54,15 +58,4 @@ class DownloadTask(luigi.contrib.external_program.ExternalProgramTask):
             ' -k SeriesInstanceUID=' + self.series_instance_uid +
             ' ' + self.dcmin
         )
-
-        print(command)
         return shlex.split(command)
-
-    def run(self):
-        subprocess.run(self.program_args())
-        with self.output().open('w') as output:
-            output.write('Done')
-
-    def output(self):
-        name = str(self.get_image_dir()).rstrip() + '.run_success'
-        return luigi.LocalTarget(name)

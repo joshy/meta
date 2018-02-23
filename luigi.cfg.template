@@ -19,5 +19,9 @@ incoming_port =
 output_dir = '/tmp/123'
 
 [core]
-scheduler_host = localhost
+default-scheduler-host = localhost
 default-scheduler-port = 8082
+
+[worker]
+retry_external_tasks = True
+keep-alive=True
