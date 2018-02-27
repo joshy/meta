@@ -30,7 +30,7 @@
               <tr>
                 <td>
                   <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
-                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ child['AccessionNumber'] }}"
+                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ entry['AccessionNumber'] }}"
                     data-series-number="{{ child['SeriesNumber'] }}">
                 </td>
                 <td>{{ child['SeriesNumber'] }} </td>

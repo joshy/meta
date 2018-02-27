@@ -37,6 +37,15 @@ $(function () {
       .get();
   };
 
+  var getUniqueAccessionNumbers = function(data) {
+    var set = new Set();
+    for (i = 0; i < data.length; ++i) {
+        set.add(data[i].accession_number);
+    };
+    return set;
+  };
+
+
   /**
    * Whenever a user clicks on a facet links the field in the search
    * form get populated by the clicked facet value. The form is then
@@ -91,6 +100,26 @@ $(function () {
       console.error("Post failed");
     });
   });
+
+  $("#download-ris-reports").on('click', function(e) {
+    e.preventDefault();
+    var data = getCheckedData();
+    console.log(data);
+    var aNum_set = getUniqueAccessionNumbers(data);
+    console.log(aNum_set);
+    var zip = new JSZip();
+    for (let item of aNum_set) {
+      name = item + '-report';
+      console.log(name);
+      text = document.getElementById(name).innerText;
+      zip.file(name+'.txt', text);
+    };
+    zip.generateAsync({type:"blob"})
+      .then(function(content) {
+        saveAs(content, "reports.zip");
+    });
+  });
+
 
   $('#download-button').on('click', function (e) {
     e.preventDefault();
@@ -155,7 +184,7 @@ $(function () {
   $('input[name=select-all-patient').on('click', function(e) {
     var value = $(this).prop("checked")
     var patientId = $(e.target).attr('data-patient-id');
-    var selector = 'table[data-patient-id="' + patientId + '"]'
+    var selector = 'table[data-patient-id="' + patientId + '"]'
     $(selector).find('input:checkbox').prop('checked', value)
   });
 
