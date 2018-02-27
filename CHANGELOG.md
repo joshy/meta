@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.0 - 27.02.2017
+ * Ris integrated
+ * Download reports integrated
+
 ## v1.5.2 - 24.10.2017
  * Downloading a series creates a additional file called `download_done.txt`
    to indicate the finishing of a download. Needed for consumers of meta to
