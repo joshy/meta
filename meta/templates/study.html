@@ -1,13 +1,12 @@
-{% for entry in doc['by_AccessionNumber'][accessionNumber] %}
 <div class="card my-3 small rounded-0 bg-light">
   <div class="card-body p-3">
     <h5 class="card-title h6">
-        <a href="#{{ entry['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
+        <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-      {{entry['StudyDescription']}}, {{entry['Modality']}}, {{entry['AccessionNumber'] }}
+      {{study['StudyDescription']}}, {{study['Modality']}}, {{study['AccessionNumber'] }}
     </a></h5>
-    <h6 class="card-subtitle" style="font-size:0.8rem">{{ entry['StudyDate'] | to_date}}, {{entry['ReferringPhysicianName']}}, {{entry['InstitutionName']}}</h6>
-    <div class="container p-0 pt-2 collapse" id="{{entry['AccessionNumber']}}">
+    <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
+    <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
       <div class="row">
         <div class="col">
           <p>
@@ -26,11 +25,11 @@
               </tr>
             </thead>
             <tbody>
-              {% for child in entry['_childDocuments_'] %}
+              {% for child in study['_childDocuments_'] %}
               <tr>
                 <td>
-                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ entry['StudyInstanceUID'].strip(' \t\r\0') }}"
-                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ entry['AccessionNumber'] }}"
+                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ study['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ study['AccessionNumber'] }}"
                     data-series-number="{{ child['SeriesNumber'] }}">
                 </td>
                 <td>{{ child['SeriesNumber'] }} </td>
@@ -46,8 +45,8 @@
               <strong>RIS Report</strong>
             </u>
           </p>
-          <div id="{{ entry['AccessionNumber'] }}-report" style="white-space:pre-line">
-            {{entry['RisReport']}}
+          <div id="{{ study['AccessionNumber'] }}-report" style="white-space:pre-line">
+            {{study['RisReport']}}
           </div>
         </div>
       </div>
@@ -55,4 +54,3 @@
   </div>
 </div>
 
-{% endfor %}

@@ -58,7 +58,6 @@ def search():
         app.logger.debug('Request body %s', json.dumps(payload))
         data = response.json()
         docs = data['grouped']['PatientID']
-        docs = group(docs)
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
