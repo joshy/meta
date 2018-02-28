@@ -9,7 +9,7 @@ class TestQueryStuff(unittest.TestCase):
                 ('StartDate', '1.1.2016'), ('EndDate', '31.12.2016')])
         result = meta.query.query_body(args)
         self.assertEqual(result['query'],
-                         'RisReport:(foo) AND StudyDate:[20160101 TO 20161231]')
+                         'RisReport:(foo)')
 
     def test_filter_single(self):
         args = MultiDict([('query', 'foo'),
@@ -17,15 +17,17 @@ class TestQueryStuff(unittest.TestCase):
                 ('StudyDescription', 'lorem ipsum')])
         result = meta.query.query_body(args)
         self.assertEqual(result['filter'],
-                         ['StudyDescription:(lorem ipsum)'])
+                         ['StudyDescription:(lorem ipsum)',
+                          'StudyDate:[20160101 TO 20161231]'])
 
-#     def test_filter_multiple(self):
-#         args = MultiDict([('query', 'foo'),
-#                 ('StartDate', '1.1.2016'), ('EndDate', '31.12.2016'),
-#                 ('StudyDescription', 'lorem ipsum')])
-#         result = meta.query.query_body(args)
-#         self.assertEqual(result['filter'],
-#                          ['StudyDescription:(lorem ipsum)'])
+    def test_filter_multiple(self):
+        args = MultiDict([('query', 'foo'),
+                ('StartDate', '1.1.2016'), ('EndDate', '31.12.2016'),
+                ('StudyDescription', 'lorem ipsum')])
+        result = meta.query.query_body(args)
+        self.assertEqual(result['filter'],
+                         ['StudyDescription:(lorem ipsum)',
+                          'StudyDate:[20160101 TO 20161231]'])
 
     def test_filter_all(self):
         args = MultiDict([('query', 'foo'),
@@ -39,7 +41,8 @@ class TestQueryStuff(unittest.TestCase):
                          ['StudyDescription:(lorem ipsum)',
                           'PatientID:(123)',
                           'PatientName:(Hans Mueller)',
-                          'AccessionNumber:(A123456789)'])
+                          'AccessionNumber:(A123456789)',
+                          'StudyDate:[20160101 TO 20161231]'])
 
     def test_filter_single_modality(self):
         args = MultiDict([('query', 'foo'), ('StartDate', '1.1.2016'),
@@ -47,11 +50,11 @@ class TestQueryStuff(unittest.TestCase):
                 ('Modality', 'CT')])
         result = meta.query.query_body(args)
         self.assertEqual(result['filter'],
-                         ["Modality:(CT)"])
+                         ["Modality:(CT)", 'StudyDate:[20160101 TO 20161231]'])
 
     def test_filter_multiple_modality(self):
         args = MultiDict([('query', 'foo'), ('StartDate', '1.1.2016'),
                 ('EndDate', '31.12.2016'), ('Modality', 'CT'), ('Modality', 'MR')])
         result = meta.query.query_body(args)
         self.assertEqual(result['filter'],
-                         ["Modality:(CT OR MR)"])
+                         ["Modality:(CT OR MR)", 'StudyDate:[20160101 TO 20161231]'])

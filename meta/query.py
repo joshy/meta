@@ -12,7 +12,10 @@ def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     if args.get('SeriesDescription'):
-        body['query'] = '+RisReport:({})'.format(args.get('query', '*')) + '+{!parent which=Category:parent}SeriesDescription:' + args.get('SeriesDescription')
+        body['query'] = '+RisReport:({})'.format(
+            args.get('query', '*')
+        ) + '+{!parent which=Category:parent}SeriesDescription:' + args.get(
+            'SeriesDescription')
     else:
         body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
 

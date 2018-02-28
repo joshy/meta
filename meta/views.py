@@ -7,7 +7,6 @@ from meta.query import query_body
 from meta.paging import calc
 from meta.pull import download_series, transfer_series, download_status, transfer_status
 from meta.facets import prepare_facets
-from meta.grouping import group
 from meta.solr import solr_url
 from meta.terms import get_terms_data
 
