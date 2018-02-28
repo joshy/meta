@@ -35,11 +35,11 @@ def search():
                                params={},
                                error='No response from Solr, is it running?',
                                trace=solr_url(app.config))
-
-    if response.status_code >= 400:
+    if response.status_code >= 400 and response.status_code < 500:
         return render_template('search.html',
                                params={},
                                page=0,
+                               offset=0,
                                error=response.reason,
                                trace=response.url)
     elif response.status_code >= 500:
@@ -59,7 +59,6 @@ def search():
         data = response.json()
         docs = data['grouped']['PatientID']
         docs = group(docs)
-        #facets = prepare_facets(data.get('facets', []), request.url)
         results = data['grouped']['PatientID']['ngroups']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
@@ -68,7 +67,6 @@ def search():
         return render_template('result.html',
                                docs=docs,
                                results=results,
-                               #facets=facets,
                                payload=payload,
                                facet_url=request.url,
                                params=params,

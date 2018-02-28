@@ -31,7 +31,7 @@
   <div id="search-details" class="pb-2 small collapse">
     <div class="form-group row col-sm-10">
       <div class="col">
-        <label for="patientname-input">Patient Name</label>
+        <label for="patientname-input" class="col-form-label">Patient Name</label>
         <input class="form-control form-control-sm" type="text" id="patientname-input" name="PatientName" value="{{ params.PatientName }}">
       </div>
       <div class="col">
@@ -161,17 +161,20 @@
       </div>
     </div>
     <div class="form-group row col-sm-10">
+      <div class="col-sm-6">
+        <label for="seriesdescription-input" class="col-form-label">Series Description</label>
+        <input class="form-control form-control-sm" type="text" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
+      </div>
       <div class="col-sm-2">
-        <label for="start-date-picker" class="col-form-label form-control-sm">Start Date</label>
+        <label for="start-date-picker" class="col-form-label">Start Date</label>
         <input class="form-control form-control-sm" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
       </div>
       <div class="col-sm-2">
-        <label for="end-date-picker" class="col-form-label form-control-sm">End Date</label>
+        <label for="end-date-picker" class="col-form-label">End Date</label>
         <input class="form-control form-control-sm" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
       </div>
-
-      <div class="col justify-content-end align-self-end">
-        <button type="submit" class="btn btn-primary btn-sm mr-3">Search</button>
+      <div class="col d-flex">
+          <button type="submit" class="btn btn-primary btn-sm align-self-end ml-auto">Search</button>
       </div>
     </div>
   </div>

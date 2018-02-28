@@ -4,20 +4,21 @@ from datetime import datetime
 DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 1000, 'group.ngroups': 'true',
-                              'fl': '*,[child parentFilter=Category:parent childFilter=Category:child]'}
+                              'fl': '*,[child parentFilter=Category:parent]'}
                   }
 
 
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
-    body['offset'] = int(args.get('offset', '0'))
+    if args.get('SeriesDescription'):
+        body['query'] = '+RisReport:({})'.format(args.get('query', '*')) + '+{!parent which=Category:parent}SeriesDescription:' + args.get('SeriesDescription')
+    else:
+        body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
 
-    date_range = _create_date_range(args.get('StartDate'), args.get('EndDate'))
-    if date_range is not None:
-        body['query'] = body['query'] + ' AND ' + date_range
+    body['offset'] = int(args.get('offset', '0'))
     body['filter'] = _create_filter_query(args)
+    print(body)
     return body
 
 
@@ -26,7 +27,8 @@ def _create_filter_query(args):
               _filter('PatientID', args),
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
-              _filter_list('Modality', args)]
+              _filter_list('Modality', args),
+              _create_date_range(args.get('StartDate'), args.get('EndDate'))]
     return [x for x in result if x is not None]
 
 
