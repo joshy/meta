@@ -3,8 +3,8 @@ from datetime import datetime
 
 DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
                    'params': {'group': 'true', 'group.field': 'PatientID',
-                              'group.limit': 1000, 'group.ngroups': 'true',
-                              'fl': '*,[child parentFilter=Category:parent {}]'}
+                              'group.limit': 100, 'group.ngroups': 'true',
+                              'fl': '*,[child parentFilter=Category:parent limit=200]'}
                   }
 
 
@@ -12,15 +12,19 @@ def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
     if args.get('SeriesDescription'):
+        user_input = args.get('SeriesDescription').split(' ')
+        series_descriptions = [x.strip() for x in user_input]
+        # A block join query, search all parents which have a child with
+        # the specific series description, can be multiple
+        filters = ''.join([
+            '+{!parent which=Category:parent}SeriesDescription:%s' % x
+            for x in series_descriptions
+        ])
         body['query'] = '+RisReport:({})'.format(
             args.get('query', '*')
-        ) + '+{!parent which=Category:parent}SeriesDescription:' + args.get(
-            'SeriesDescription')
-        condition = 'childFilter=SeriesDescription:' + args['SeriesDescription']
-        body['params']['fl'] = body['params']['fl'].format(condition)
+        ) + filters
     else:
         body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
-        body['params']['fl'] = body['params']['fl'].format('')
     body['offset'] = int(args.get('offset', '0'))
     body['filter'] = _create_filter_query(args)
     logging.debug(body)
