@@ -3,23 +3,22 @@ Module to run the application. Defines also logging configuration.
 """
 import os
 import logging
-from logging.handlers import TimedRotatingFileHandler
+import daiquiri
 
 from meta.app import app
 
-if not app.debug:
-    LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
-    LOG_FILE = os.path.join(LOG_DIR, 'server.log')
+LOG_DIR = 'logs'
 
-    if not os.path.isdir(LOG_DIR):
-        os.makedirs(LOG_DIR)
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
 
-    HANDLER = TimedRotatingFileHandler(LOG_FILE, when='midnight', backupCount=10)
-    HANDLER.setLevel(logging.DEBUG)
-
-    FORMATTER = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    HANDLER.setFormatter(FORMATTER)
-    app.logger.addHandler(HANDLER)
-
+daiquiri.setup(level=logging.DEBUG,
+    outputs=(
+        daiquiri.output.File('logs/meta-errors.log', level=logging.ERROR),
+        daiquiri.output.RotatingFile(
+            'logs/meta-debug.log',
+            level=logging.DEBUG,
+            # 10 MB
+            max_size_bytes=10000000)
+    ))
 app.run(host='0.0.0.0')
