@@ -101,16 +101,25 @@ $(function () {
     });
   });
 
+  $("#download-accession-numbers").on('click', function(e) {
+    e.preventDefault();
+    var data = getCheckedData();
+    var aNum_set = getUniqueAccessionNumbers(data);
+    var rows = 'accession_number\n'
+    aNum_set.forEach(function(item) {
+      rows += item + '\n'
+    });
+    var blob = new Blob([rows], {tpye:"text/plain;charset=utf8;"})
+    saveAs(blob, "accession_numbers.csv");
+  });
+
   $("#download-ris-reports").on('click', function(e) {
     e.preventDefault();
     var data = getCheckedData();
-    console.log(data);
     var aNum_set = getUniqueAccessionNumbers(data);
-    console.log(aNum_set);
     var zip = new JSZip();
     for (let item of aNum_set) {
       name = item + '-report';
-      console.log(name);
       text = document.getElementById(name).innerText;
       zip.file(name+'.txt', text);
     };
