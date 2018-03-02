@@ -4,7 +4,7 @@ from datetime import datetime
 DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
                    'params': {'group': 'true', 'group.field': 'PatientID',
                               'group.limit': 1000, 'group.ngroups': 'true',
-                              'fl': '*,[child parentFilter=Category:parent]'}
+                              'fl': '*,[child parentFilter=Category:parent {}]'}
                   }
 
 
@@ -16,12 +16,14 @@ def query_body(args, limit=100):
             args.get('query', '*')
         ) + '+{!parent which=Category:parent}SeriesDescription:' + args.get(
             'SeriesDescription')
+        condition = 'childFilter=SeriesDescription:' + args['SeriesDescription']
+        body['params']['fl'] = body['params']['fl'].format(condition)
     else:
         body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
-
+        body['params']['fl'] = body['params']['fl'].format('')
     body['offset'] = int(args.get('offset', '0'))
     body['filter'] = _create_filter_query(args)
-    print(body)
+    logging.debug(body)
     return body
 
 

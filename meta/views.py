@@ -31,12 +31,13 @@ def search():
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
     except RequestException:
         return render_template('search.html',
-                               params={},
+                               params=params,
                                error='No response from Solr, is it running?',
                                trace=solr_url(app.config))
     if response.status_code >= 400 and response.status_code < 500:
+        print(response)
         return render_template('search.html',
-                               params={},
+                               params=params,
                                page=0,
                                offset=0,
                                error=response.reason,
@@ -47,7 +48,7 @@ def search():
         msg = result['error']['msg']
         trace = error.get('trace', '')
         return render_template('search.html',
-                               params={},
+                               params=params,
                                page=0,
                                offset=0,
                                error='Solr failed: ' + msg,
