@@ -1,9 +1,10 @@
 <div class="card my-3 small rounded-0 bg-light">
   <div class="card-body p-3">
     <h5 class="card-title h6">
-        <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
+      <input type="checkbox" name='select-all-accession-number' data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
+      <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-      {{study['StudyDescription']}}, {{study['Modality']}}, {{study['AccessionNumber'] }}
+            {{study['StudyDescription']}}, {{study['Modality']}}, {{study['AccessionNumber'] }}
     </a></h5>
     <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
@@ -14,11 +15,11 @@
               <strong>Series</strong>
             </u>
           </p>
-          <table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}">
+          <table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" name='select-all-accession-number'>
+
                 </th>
                 <th>Series Number</th>
                 <th>Series Description</th>

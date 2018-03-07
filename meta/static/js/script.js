@@ -185,7 +185,8 @@ $(function () {
   }
 
   $('input[name=select-all-accession-number').on('click', function(e) {
-    var table = $(e.target).closest('table')
+    var accession_number = $(e.target).data('accession-number');
+    var table = $('table[data-accession-number="' + accession_number + '"]')[0];
     var value = $(this).prop("checked")
     $("td input:checkbox", table).prop('checked', value);
   });
@@ -195,6 +196,8 @@ $(function () {
     var patientId = $(e.target).attr('data-patient-id');
     var selector = 'table[data-patient-id="' + patientId + '"]'
     $(selector).find('input:checkbox').prop('checked', value)
+    var selector2 = 'input[data-patient-id="' + patientId + '"]'[0]
+    $(selector2).prop('checked', value)
   });
 
   $('input[name=select-all-page').on('click', function(e) {
