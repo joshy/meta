@@ -25,6 +25,10 @@ def query_body(args, limit=100):
         ) + filters
     else:
         body['query'] = 'RisReport:({})'.format(args.get('query', '*'))
+
+    if args.get('SeriesDescriptionFilter'):
+        body['params']['fl'] = '*,[child parentFilter=Category:parent childFilter="SeriesDescription:{}" limit=200]'.format(args.get('SeriesDescriptionFilter'))
+
     body['offset'] = int(args.get('offset', '0'))
     body['filter'] = _create_filter_query(args)
     logging.debug(body)

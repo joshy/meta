@@ -199,7 +199,7 @@ $(function () {
 
   $('input[name=select-all-page').on('click', function(e) {
     var value = $(this).prop("checked")
-    $("input:checkbox").prop('checked', value);
+    $("input:checkbox").not('.modality').prop('checked', value);
   });
 
   $('li.list-group-item.patients a').on('click', function(e) {

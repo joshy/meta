@@ -35,132 +35,137 @@
         <input class="form-control form-control-sm" type="text" id="patientname-input" name="PatientName" value="{{ params.PatientName }}">
       </div>
       <div class="col">
-        <label for="patientid-input" class="col-form-label">Patient Id</label>
+        <label for="patientid-input" class="col-form-label" title="Patient ID to search for, multiples are split by space">Patient Id</label>
         <input class="form-control form-control-sm" type="text" id="patientid-input" name="PatientID" value="{{ params.PatientID }}">
       </div>
     </div>
     <div class="form-group row col-sm-10 ">
       <div class="col">
-        <label for="accessionnumber-input" class="col-form-label">Accession Number</label>
+        <label for="accessionnumber-input" class="col-form-label" title="Accession Number to search for, multiples are split by space">Accession Number</label>
         <input class="form-control form-control-sm" type="text" id="accessionnumber-input" name="AccessionNumber" value="{{ params.AccessionNumber }}">
       </div>
       <div class="col">
-        <label for="studydescription-input" class="col-form-label">Study Description</label>
+        <label for="studydescription-input" class="col-form-label" title="Study Description to search for">Study Description</label>
         <input class="form-control form-control-sm" type="text" placeholder="e.g. CT Schaedel" id="studydescription-input" name="StudyDescription"
           value="{{ params.StudyDescription }}">
       </div>
     </div>
-
+    <div class="form-group row col-sm-10">
+      <div class="col-sm-6">
+        <label for="seriesdescription-input" class="col-form-label" title="Series Description to search for">Series Description</label>
+        <input class="form-control form-control-sm" type="text" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
+      </div>
+      <div class="col-sm-6">
+        <label for="seriesdescriptionfilter-input" class="col-form-label" title="Filter out series which matches this name, only one description is allowed">Series Description Filter</label>
+        <input class="form-control form-control-sm" type="text" id="seriesdescriptionfilter-input" name="SeriesDescriptionFilter" value="{{ params.SeriesDescriptionFilter }}">
+      </div>
+    </div>
     <div class="form-group row col-sm-10 ">
       <div class="col">
-        <label for="modality1" class="col-form-label">Modality</label>
+        <label for="modality1" class="col-form-label" title="Modality to search for">Modality</label>
       </div>
     </div>
     <div class="form-group row col-sm-10">
       <div class="col">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality1" name="Modality" value="CT" {% if 'CT' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality1" name="Modality" value="CT" {% if 'CT' in modalities %} checked
             {% endif %}>
           <label class="form-check-label" title="Computer Tomography">CT</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality2" name="Modality" value="MR" {% if 'MR' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality2" name="Modality" value="MR" {% if 'MR' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Magnetic Resonance">MR</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality11" name="Modality" value="PT" {% if 'PT' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality11" name="Modality" value="PT" {% if 'PT' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Positron emission tomography (PET)">PT</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality3" name="Modality" value="CR" {% if 'CR' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality3" name="Modality" value="CR" {% if 'CR' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Computed Radiography">CR</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality4" name="Modality" value="XA" {% if 'XA' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality4" name="Modality" value="XA" {% if 'XA' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="X Ray Angiography">XA</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality5" name="Modality" value="SR" {% if 'SR' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality5" name="Modality" value="SR" {% if 'SR' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="SR Document">SR</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality6" name="Modality" value="NM" {% if 'NM' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality6" name="Modality" value="NM" {% if 'NM' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Nuclear Medicine">NM</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality7" name="Modality" value="MG" {% if 'MG' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality7" name="Modality" value="MG" {% if 'MG' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Mammography">MG</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality8" name="Modality" value="US" {% if 'US' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality8" name="Modality" value="US" {% if 'US' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Mammography">US</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality9" name="Modality" value="DX" {% if 'DX' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality9" name="Modality" value="DX" {% if 'DX' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Digital Radiography">DX</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality10" name="Modality" value="RF" {% if 'RF' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality10" name="Modality" value="RF" {% if 'RF' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Radio Fluoroscopy">RF</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality12" name="Modality" value="OT" {% if 'OT' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality12" name="Modality" value="OT" {% if 'OT' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Other">OT</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality13" name="Modality" value="PR" {% if 'PR' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality13" name="Modality" value="PR" {% if 'PR' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Presentation State">PR</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality14" name="Modality" value="KO" {% if 'KO' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality14" name="Modality" value="KO" {% if 'KO' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Key Object Selection">KO</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality15" name="Modality" value="SC" {% if 'SC' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality15" name="Modality" value="SC" {% if 'SC' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Second Capture">SC</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality16" name="Modality" value="SD" {% if 'SD' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality16" name="Modality" value="SD" {% if 'SD' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Nicht Normiert">SD</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality17" name="Modality" value="PX" {% if 'PX' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality17" name="Modality" value="PX" {% if 'PX' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Panoramic X-Ray">PX</label>
         </div>
         <div class="form-check-inline">
-          <input class="form-check-input" type="checkbox" id="modality20" name="Modality" value="DR" {% if 'DR' in modalities %} checked
+          <input class="form-check-input modality" type="checkbox" id="modality20" name="Modality" value="DR" {% if 'DR' in modalities %} checked
             {% endif %}>
             <label class="form-check-label" title="Digital Radiography ">DR</label>
         </div>
       </div>
     </div>
     <div class="form-group row col-sm-10">
-      <div class="col-sm-6">
-        <label for="seriesdescription-input" class="col-form-label">Series Description</label>
-        <input class="form-control form-control-sm" type="text" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
-      </div>
       <div class="col-sm-2">
-        <label for="start-date-picker" class="col-form-label">Start Date</label>
+        <label for="start-date-picker" class="col-form-label" title="Start date of exam">Start Date</label>
         <input class="form-control form-control-sm" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
       </div>
       <div class="col-sm-2">
-        <label for="end-date-picker" class="col-form-label">End Date</label>
+        <label for="end-date-picker" class="col-form-label" title="End date of exam">End Date</label>
         <input class="form-control form-control-sm" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
       </div>
       <div class="col d-flex">
