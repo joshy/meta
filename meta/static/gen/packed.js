@@ -257,7 +257,7 @@ console.log('fooo');if(!dirName){setError('Directory name is empty');return}else
 var checkedData=getCheckedData();var data={'data':checkedData,'dir':dirName}
 $.ajax({type:'POST',url:'download',data:JSON.stringify(data),dataType:'json'}).done(function(data){noty({text:'Successfully added '+data.series_length+' series',layout:'centerRight',timeout:'3000',closeWith:['click','hover'],type:'success'});}).fail(function(error){console.log(error);console.error("Post failed");});});setError=function(text){$('#download-dir').addClass('is-invalid');$('#download-error-text').text(text);$('input[name=download-dir]').addClass("invalid");}
 clearError=function(){$('#download-dir').removeClass('is-invalid');$('#download-error-text').text('');$('input[name=download-dir]').removeClass("form-control-danger");}
-$('input[name=select-all-accession-number').on('click',function(e){console.log(e.target);var accession_number=$(e.target).data('accession-number');var table=$('table[data-accession-number="'+accession_number+'"]')[0];var value=$(this).prop("checked")
+$('input[name=select-all-accession-number').on('click',function(e){var accession_number=$(e.target).data('accession-number');var table=$('table[data-accession-number="'+accession_number+'"]')[0];var value=$(this).prop("checked")
 $("td input:checkbox",table).prop('checked',value);});$('input[name=select-all-patient').on('click',function(e){var value=$(this).prop("checked")
 var patientId=$(e.target).attr('data-patient-id');var selector='table[data-patient-id="'+patientId+'"]'
 $(selector).find('input:checkbox').prop('checked',value)
