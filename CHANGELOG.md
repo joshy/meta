@@ -1,6 +1,10 @@
 # Changelog
 
-## v2.0.0 - 27.02.2017
+## v2.1.0 - 09.03.2018
+ * Added SeriesDescription search and filter functionality
+ * Increased child limit to 200 (default 10
+ )
+## v2.0.0 - 27.02.2018
  * Ris integrated
  * Download reports integrated
 
