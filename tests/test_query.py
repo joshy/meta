@@ -5,7 +5,7 @@ from werkzeug import MultiDict
 class TestQueryStuff(unittest.TestCase):
 
     def test_date(self):
-        args = MultiDict([('query', 'foo'),
+        args = MultiDict([('RisReport', 'foo'),
                 ('StartDate', '1.1.2016'), ('EndDate', '31.12.2016')])
         result = meta.query.query_body(args)
         self.assertEqual(result['query'],
