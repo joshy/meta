@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1 - 13.03.2018
+ * Clear SeriesDescriptionFilter if not set
+ * RisReport should have now the '*'
+ 
 ## v2.1.0 - 09.03.2018
  * Added SeriesDescription search and filter functionality
  * Increased child limit to 200 (default 10

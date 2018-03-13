@@ -1,4 +1,5 @@
 import json
+import logging
 from requests import get, RequestException
 from flask import render_template, request
 
@@ -18,7 +19,7 @@ def main():
                            version=VERSION,
                            page=0,
                            offset=0,
-                           params={'query': '*'})
+                           params={'RisReport': '*'})
 
 
 @app.route('/search', methods=['POST', 'GET'])
@@ -27,6 +28,7 @@ def search():
     params = request.form
     payload = query_body(params, RESULT_LIMIT)
     headers = {'content-type': "application/json"}
+    logging.debug(payload)
     try:
         response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
     except RequestException:
@@ -35,7 +37,6 @@ def search():
                                error='No response from Solr, is it running?',
                                trace=solr_url(app.config))
     if response.status_code >= 400 and response.status_code < 500:
-        print(response)
         return render_template('search.html',
                                params=params,
                                page=0,
