@@ -10,20 +10,19 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
+    filters = []
     if args.get('SeriesDescription'):
         user_input = args.get('SeriesDescription').split(' ')
-        series_descriptions = [x.strip() for x in user_input]
+        series_descriptions = [x for x in user_input if x]
+        logging.debug(series_descriptions)
         # A block join query, search all parents which have a child with
         # the specific series description, can be multiple
-        filters = ''.join([
-            '+{!parent which=Category:parent}SeriesDescription:%s' % x
+        filters = [
+            '{!parent which=Category:parent}(+SeriesDescription:%s)' % x
             for x in series_descriptions
-        ])
-        body['query'] = '+RisReport:({})'.format(
-            args.get('RisReport', '*')
-        ) + filters
-    else:
-        body['query'] = 'RisReport:({})'.format(args.get('RisReport', '*'))
+        ]
+
+    body['query'] = 'RisReport:({})'.format(args.get('RisReport', '*'))
 
     if args.get('SeriesDescriptionFilter'):
         body['params']['fl'] = '*,[child parentFilter=Category:parent childFilter="SeriesDescription:{}" limit=200]'.format(args.get('SeriesDescriptionFilter'))
@@ -31,8 +30,8 @@ def query_body(args, limit=100):
         body['params']['fl'] = '*,[child parentFilter=Category:parent limit=200]'
 
     body['offset'] = int(args.get('offset', '0'))
-    body['filter'] = _create_filter_query(args)
-    logging.debug(body)
+    body['filter'] = _create_filter_query(args) + filters
+
     return body
 
 
