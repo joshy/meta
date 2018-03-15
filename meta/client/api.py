@@ -37,6 +37,10 @@ class SearchParams(object):
         self.args.add('StudyDescription', study_description)
         return self
 
+    def series_dscription(self, series_description):
+        self.args.add('SeriesDescription', series_description)
+        return self
+
     def start_date(self, start_date: str):
         """ start_date format is dd.mm.yyyy """
         self.args.add('StartDate', start_date)
