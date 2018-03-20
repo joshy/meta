@@ -10,6 +10,7 @@ DownloadTask = namedtuple('DownloadTasks',
                            'accession_number',
                            'series_number',
                            'series_instance_uid',
+                           'study_instance_uid',
                            'creation_time',
                            'execution_time',
                            'running_time',
@@ -35,9 +36,11 @@ def download_task(conn, entry: Dict[str, str], dir_name: str, path: str) -> Down
     accession_number = entry['accession_number']
     series_number = entry['series_number']
     series_instance_uid = entry['series_id']
+    study_instance_uid = entry['study_id']
     task = DownloadTask(patient_id=patient_id,
                         accession_number=accession_number,
                         series_instance_uid=series_instance_uid,
+                        study_instance_uid=study_instance_uid,
                         series_number=series_number,
                         dir_name=dir_name,
                         path=path,
@@ -107,11 +110,12 @@ def select_download(conn):
 def _insert_download(conn, download):
     cursor = conn.cursor()
     # Cursor, Task -> None
-    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)',
+    cursor.execute('INSERT INTO DOWNLOAD_TASKS VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)',
                    (download.patient_id,
                     download.accession_number,
                     download.series_number,
                     download.series_instance_uid,
+                    download.study_instance_uid,
                     download.dir_name,
                     download.creation_time,
                     download.execution_time,

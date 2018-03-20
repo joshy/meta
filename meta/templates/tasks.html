@@ -4,28 +4,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/tachyons.min.css') }}">
 
-<body class="w-100">
+<body class="w-100" data-page="download-status">
   {% include 'partials/header.html' %}
   <div id="container" class="bt b--black-10">
 </body>
 <script type=text/javascript src="{{url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
+{% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 <script type=text/javascript>
   $(function() {
-    startRefresh();
-    var sec = 30;
-    console.log(sec);
-    setInterval(function() {
-      sec = sec - 1;
-      if (sec === 0) sec = 30;
-      $('#timer').html(sec);
-    }, 1000);
-  });
-  function startRefresh() {
-    setTimeout(startRefresh, 30000);
     $.get('/tasks/data',
       function(data) {
         $('#container').html(data);
     });
-  }
+  });
 </script>
 </html>

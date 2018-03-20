@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS DOWNLOAD_TASKS
      accession_number text,
      series_number text,
      series_instance_uid text,
+     study_instance_uid text,
      dir_name text,
      path text,
      creation_time text,

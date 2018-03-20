@@ -45,7 +45,6 @@ $(function () {
     return set;
   };
 
-
   /**
    * Whenever a user clicks on a facet links the field in the search
    * form get populated by the clicked facet value. The form is then
@@ -171,6 +170,41 @@ $(function () {
       console.error("Post failed");
     });
   });
+
+  if ('download-status' == $('body').data('page')) {
+    $.get('/tasks/data',
+      function(data) {
+        $('#container').html(data);
+        var foo = $('#resend');
+        $(document).on('click', '#resend', function (e) {
+          var checkedData = getCheckedData();
+          var dir_name_element = $('input:checked[name=series]')//[0].data('dir_name')
+          var dir_name = $(dir_name_element[0]).data('dir');
+          var data = {
+            'data': checkedData,
+            'dir': dir_name
+          }
+          $.ajax({
+            type: 'POST',
+            url: 'download',
+            data: JSON.stringify(data),
+            dataType: 'json'
+          }).done(function (data) {
+            noty({
+              text: 'Successfully added ' + data.series_length + ' series',
+              layout: 'centerRight',
+              timeout: '3000',
+              closeWith: ['click', 'hover'],
+              type: 'success'
+            });
+          }).fail(function (error) {
+            console.log(error);
+            console.error("Post failed");
+          });
+        });
+      });
+  }
+
 
   setError = function(text) {
     $('#download-dir').addClass('is-invalid');
