@@ -9,6 +9,7 @@ class TestTask(unittest.TestCase):
         entry = {'patient_id': 'a',
                  'accession_number': 1,
                  'series_number': 2,
+                 'study_id': 4,
                  'series_id': 3}
         conn = MagicMock()
         task = download_task(conn, entry, 'foo', '/tmp')
@@ -20,6 +21,7 @@ class TestTask(unittest.TestCase):
         entry = {'patient_id': 'a',
                  'accession_number': 1,
                  'series_number': 2,
+                 'study_id': 4,
                  'series_id': 3}
         conn = MagicMock()
         task = download_task(conn, entry, 'foo', '/tmp')
