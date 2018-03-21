@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.3 - 21.03.2018
+ * Added resend on the status page
+ * Removed automatically refresh
+ * More result size information is shown and collapse/expand all
+ 
 ## v2.1.2 - 15.03.2018
  * Added API for search
  * changed again filtering for children (now done with fq aka filter)
