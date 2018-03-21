@@ -175,10 +175,13 @@ $(function () {
     $.get('/tasks/data',
       function(data) {
         $('#container').html(data);
-        var foo = $('#resend');
+        $(document).on('click', 'input[name=select-all-resend]', function(e) {
+          var value = $(this).prop("checked")
+          $("input:checkbox").prop('checked', value);
+        });
         $(document).on('click', '#resend', function (e) {
           var checkedData = getCheckedData();
-          var dir_name_element = $('input:checked[name=series]')//[0].data('dir_name')
+          var dir_name_element = $('input:checked[name=series]')
           var dir_name = $(dir_name_element[0]).data('dir');
           var data = {
             'data': checkedData,
