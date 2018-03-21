@@ -6,7 +6,7 @@ $(function () {
     firstDay: 1,
     minDate: new Date(2009, 0, 1),
     maxDate: new Date(),
-    yearRange: [2009, 2016]
+    yearRange: [2009, 2018]
   });
 
   var endDatePicker = $('#end-date-picker').pikaday({
@@ -14,7 +14,7 @@ $(function () {
     firstDay: 1,
     minDate: new Date(2009, 0, 1),
     maxDate: new Date(),
-    yearRange: [2009, 2016]
+    yearRange: [2009, 2018]
   });
 
   var getCheckedData = function() {
@@ -44,6 +44,14 @@ $(function () {
     };
     return set;
   };
+
+  $('#expand-all').on('click', function(e) {
+    $('.collapse').slice(1).collapse('show');
+  });
+
+  $('#collapse-all').on('click', function(e) {
+    $('.collapse').slice(1).collapse('hide');
+  });
 
   /**
    * Whenever a user clicks on a facet links the field in the search

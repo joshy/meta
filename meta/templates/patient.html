@@ -1,7 +1,16 @@
-<div class="col">
+<div class="col px-0">
   <div class="border-bottom py-3">
+    <div class="float-sm-right">
+      <a href="#" id="expand-all"><span class="oi oi-collapse-down" title="Expand all"></span></a>
+    </div>
+    <div class="float-sm-right mr-3">
+      <a href="#" id="collapse-all"><span class="oi oi-collapse-up" title="Collapse all"></span></a>
+    </div>
     <input type="checkbox" name="select-all-page"> Select all
-    <span class="float-sm-right">Patients found: {{ results }}</span>
+    <span class="float-sm-right mr-5">Patients found: {{ results }}</span>
+  </div>
+
+
   </div>
   <ul class="list-group result">
     {% for doc in docs['groups'] %}
