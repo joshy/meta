@@ -60,6 +60,7 @@ def search():
         data = response.json()
         docs = data['grouped']['PatientID']
         results = data['grouped']['PatientID']['ngroups']
+        studies_result = data['grouped']['PatientID']['matches']
         page = params.get('page', 0)
         offset = params.get('offset', 0)
         paging = calc(results, page, RESULT_LIMIT)
@@ -67,6 +68,7 @@ def search():
         return render_template('result.html',
                                docs=docs,
                                results=results,
+                               studies_result=studies_result,
                                payload=payload,
                                facet_url=request.url,
                                params=params,
