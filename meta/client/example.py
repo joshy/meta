@@ -5,8 +5,8 @@ import typing
 import pandas as pd
 from werkzeug.datastructures import MultiDict
 
-from meta.client.api import SearchParams, query_solr
-
+from meta.client.api import SearchParams
+from meta.query_all import query_all
 
 ##
 # Example how to use the api to search for someting
@@ -22,7 +22,7 @@ accs=list(map(str, accs))
 result_df = []
 for i in accs:
     params = SearchParams().accession_number(i).build()
-    result_df.append(query_solr(params))
+    result_df.append(query_all(params))
 
 
 writer = pd.ExcelWriter('result.xlsx')

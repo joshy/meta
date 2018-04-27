@@ -5,8 +5,8 @@ import typing
 import pandas as pd
 from werkzeug.datastructures import MultiDict
 
-from meta.client.api import SearchParams, query_solr
-
+from meta.client.api import SearchParams
+from meta.query_all import query_all
 
 ##
 # Example how to use the api to search for someting
@@ -15,12 +15,12 @@ from meta.client.api import SearchParams, query_solr
 
 
 
-params = SearchParams().study_description("MRI Herz").start_date(
-    '01.07.2016').end_date('31.01.2018').series_dscription(
-        '*_KM_MOCO_T1').build()
-result_df = query_solr(params)
+params = SearchParams().start_date('01.01.2016').end_date('31.12.2017').study_description('"schaedel"').build()
+print(params)
+result_df = query_all(params)
 
-
-writer = pd.ExcelWriter('result.xlsx')
-result_df.to_excel(writer,'Sheet1', index=False)
-writer.save()
+for row in result_df.itertuples():
+    acc = row.AccessionNumber
+    report = row.RisReport
+    with open('reports/' + acc + '.txt', 'w') as f:
+        f.write(report)

@@ -1,13 +1,18 @@
+import io
 import json
 import logging
-from requests import get, RequestException
-from flask import render_template, request
 
-from meta.app import app, VERSION, DEMO, RESULT_LIMIT, REPORT_SHOW_URL
-from meta.query import query_body
-from meta.paging import calc
-from meta.pull import download_series, transfer_series, download_status, transfer_status
+import pandas as pd
+from flask import make_response, render_template, request, send_file
+from requests import RequestException, get
+
+from meta.app import DEMO, REPORT_SHOW_URL, RESULT_LIMIT, VERSION, app
+from meta.query_all import query_all
 from meta.facets import prepare_facets
+from meta.paging import calc
+from meta.pull import (download_series, download_status, transfer_series,
+                       transfer_status)
+from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
 
@@ -79,6 +84,19 @@ def search():
                                page=page,
                                offset=0,
                                demo=demo)
+
+
+@app.route('/export', methods=['POST'])
+def export():
+    q = request.form
+    df = query_all(q)
+    out = io.BytesIO()
+    writer = pd.ExcelWriter(out)
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.save()
+    writer.close()
+    out.seek(0)
+    return send_file(out, attachment_filename="export.xlsx", as_attachment=True)
 
 
 @app.route('/download', methods=['POST'])

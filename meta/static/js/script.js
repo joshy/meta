@@ -108,16 +108,33 @@ $(function () {
     });
   });
 
-  $("#download-accession-numbers").on('click', function(e) {
+  $("#export").on('click', function(e) {
     e.preventDefault();
-    var data = getCheckedData();
-    var aNum_set = getUniqueAccessionNumbers(data);
-    var rows = 'accession_number\n'
-    aNum_set.forEach(function(item) {
-      rows += item + '\n'
-    });
-    var blob = new Blob([rows], {tpye:"text/plain;charset=utf8;"})
-    saveAs(blob, "accession_numbers.csv");
+    e.stopPropagation();
+    if (parseInt($('#studies_result').html()) >= 10000) {
+      noty({
+        text: 'Too many results to export (Studies >= 10000',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'error'
+      });
+      return
+    }
+    q=$('#search-form').serialize();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/export', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.responseType = 'blob';
+    xhr.onload = function(e) {
+      if (this.status == 200) {
+        var blob = this.response;
+        saveAs(blob, 'download.xlsx');
+      }
+    };
+
+    xhr.send(q);
+    return false;
   });
 
   $("#download-ris-reports").on('click', function(e) {
@@ -215,7 +232,6 @@ $(function () {
         });
       });
   }
-
 
   setError = function(text) {
     $('#download-dir').addClass('is-invalid');

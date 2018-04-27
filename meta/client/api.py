@@ -9,6 +9,7 @@ from meta.solr import solr_url
 from meta.query import query_body, DEFAULT_PAYLOAD
 from meta.app import app
 
+
 class SearchParams(object):
     def __init__(self):
         self.args = MultiDict(DEFAULT_PAYLOAD)
@@ -58,33 +59,3 @@ class SearchParams(object):
     def build(self):
         return self.args
 
-
-def query_solr(search_params: MultiDict):
-    limit = search_params.get('Limit', 100)
-    query = query_body(search_params, limit=limit)
-    query['params']['group'] = False
-    query, docs, results_size = _query(query)
-    requests_needed = ceil(results_size / limit)
-    offsets = [x*limit for x in range(0, requests_needed)]
-    result = []
-    for i in offsets:
-        query['offset'] = i
-        _, docs, results_size = _query(query)
-        result.append(pd.DataFrame.from_dict(docs))
-    if result:
-        return pd.concat(result)
-    else:
-        None
-
-
-def _query(query):
-    headers = {'content-type': "application/json"}
-    try:
-        response = get(
-            solr_url(app.config), data=json.dumps(query), headers=headers)
-        data = response.json()
-        docs = data['response']['docs']
-        results = data['response']['numFound']
-        return query, docs, results
-    except RequestException as e:
-        print(e)
