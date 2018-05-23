@@ -160,16 +160,26 @@
       </div>
     </div>
     <div class="form-group row mx-auto px-4">
-      <div class="col-sm-2">
-        <label for="start-date-picker" class="col-form-label" title="Start date of exam">Start Date</label>
+      <div class="col">
+        <label class="col-form-label" for="start-date-picker" title="Start date of exam">Start Date</label>
         <input class="form-control form-control-sm" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
       </div>
-      <div class="col-sm-2">
-        <label for="end-date-picker" class="col-form-label" title="End date of exam">End Date</label>
+      <div class="col">
+        <label class="col-form-label" for="end-date-picker" title="End date of exam">End Date</label>
         <input class="form-control form-control-sm" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
       </div>
+      <div class="col">
+        <label class="col-form-label">Patient age: From</label>
+        <input class="form-control form-control-sm" type="number" min="0" id="start-age-picker" name="AgeFrom" value="{{ params.AgeFrom }}">
+      </div>
+      <div class="col">
+        <label class="col-form-label">To</label>
+        <input class="form-control form-control-sm" type="number" min="0" id="end-age-picker" name="AgeTo" value="{{ params.AgeTo }}">
+      </div>
+    </div>
+    <div class="form-group row mx-auto px-4">
       <div class="col d-flex">
-          <button type="submit" class="btn btn-primary btn-sm align-self-end ml-auto">Search</button>
+        <button type="submit" class="btn btn-primary btn-sm align-self-end ml-auto">Search</button>
       </div>
     </div>
   </div>

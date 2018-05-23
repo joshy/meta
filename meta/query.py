@@ -41,7 +41,8 @@ def _create_filter_query(args):
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
               _filter_list('Modality', args),
-              _create_date_range(args.get('StartDate'), args.get('EndDate'))]
+              _create_date_range(args.get('StartDate'), args.get('EndDate')),
+              _create_age_range(args.get('AgeFrom'), args.get('AgeTo')) ]
     return [x for x in result if x is not None]
 
 
@@ -63,6 +64,12 @@ def _create_date_range(start_date, end_date):
     _start_date = _convert(start_date)
     _end_date = _convert(end_date)
     return 'StudyDate:[' + _start_date + ' TO ' + _end_date + ']'
+
+
+def _create_age_range(age_from, age_to):
+    if not (age_from or age_to):
+        return None
+    return 'PatientAge:[' + age_from + ' TO ' + age_to + ']'
 
 
 def _convert(date):
