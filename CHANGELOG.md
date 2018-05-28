@@ -1,6 +1,11 @@
 # Changelog
 
-## v2.2.0 - 27.04.208
+## v2.3.0 - 28.05.2018
+ * Changed Id of parent from 'StudyInstanceUID' to 'PatientID - AccessionNumber'
+ * Moved StudyInstanceUID to series level
+ * Added query possibility for the Patient age
+
+## v2.2.0 - 27.04.2018
  * Added excel export
 
 ## v2.1.3 - 21.03.2018
@@ -18,8 +23,8 @@
 
 ## v2.1.0 - 09.03.2018
  * Added SeriesDescription search and filter functionality
- * Increased child limit to 200 (default 10
- )
+ * Increased child limit to 200 (default 10)
+
 ## v2.0.0 - 27.02.2018
  * Ris integrated
  * Download reports integrated
