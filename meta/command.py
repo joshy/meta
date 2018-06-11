@@ -2,12 +2,6 @@
 DCMTK command generation.
 """
 
-TARGET_MAPPING = {
-    'syngo': 'SRSYVMS01',
-    'teamplay': 'TEAMPLAY',
-    'teamplayshare': 'TEAMPLAY-ISHARE'
-}
-
 
 def transfer_command(dcmkt_config, pacs_config, target, study_id):
     """ Constructs the first part of the transfer command to a PACS node. """
@@ -25,8 +19,7 @@ def base_command(dcmtk_config, pacs_config):
 
 
 def _transfer(dcmkt_config, pacs_config, target, study_id):
-    node = TARGET_MAPPING[target]
-    return '-aem {} -aet {} -aec {} {} {} +P {} -k StudyInstanceUID={} {}' \
-            .format(node, pacs_config.ae_title, pacs_config.ae_called, \
-            pacs_config.peer_address, pacs_config.peer_port, \
-            pacs_config.incoming_port, study_id, dcmkt_config.dcmin)
+    return '-aem {} -aet {} -aec {} {} {} -k StudyInstanceUID={} {}' \
+            .format(target, pacs_config.ae_title, pacs_config.ae_called, \
+            pacs_config.peer_address, pacs_config.peer_port,
+            study_id, dcmkt_config.dcmin)

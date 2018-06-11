@@ -8,9 +8,6 @@ a configuration. The configuration file needs to be named 'config.cfg'.
 DEBUG = False
 RESULT_LIMIT = 100
 
-## Don't show transfer and download options
-DEMO = True
-
 ## Location of where the image data should be donwloaded to (Full path!)
 IMAGE_FOLDER = '/Users/joshy/github/meta/image_data'
 TASKS_DB = 'tasks.db'
@@ -30,3 +27,9 @@ AE_CALLED = 'AE_CALLED'
 PEER_ADDRESS = '127.0.0.1'
 PEER_PORT = 104
 INCOMING_PORT = 11110
+
+
+SHOW_DOWNLOAD_OPTIONS = True
+
+SHOW_TRANSFER_TARGETS = True
+TRANSFER_TARGETS = [{'AE_TITLE': 'AE_TITLE', 'DISPLAY_NAME': 'Foo'}]

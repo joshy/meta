@@ -29,7 +29,7 @@ def query_all(search_params: MultiDict):
         query['params']['group'] = True
         return pd.concat(result)
     else:
-        None
+        return pd.DataFrame()
 
 
 def _query(query):

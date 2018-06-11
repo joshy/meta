@@ -2,16 +2,17 @@
 
 {% block table %}
 
-{% if not demo %}
-<div class="container mt-3 pr-0 clearfix">
-  {% include 'partials/transfer-options.html' %}
-  {% include 'partials/download-options.html' %}
-</div>
-{% endif %}
 
+<div class="container mt-3 pr-0 clearfix">
+  {% if show_transfer_targets %}
+    {% include 'partials/transfer-options.html' %}
+  {% endif %}
+  {% if show_download_options %}
+    {% include 'partials/download-options.html' %}
+  {% endif %}
+</div>
 
 {% include 'paging.html' %}
-
 
 <div class="row">
   <div id="table-view" class="w-100">

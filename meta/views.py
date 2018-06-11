@@ -6,7 +6,7 @@ import pandas as pd
 from flask import make_response, render_template, request, send_file
 from requests import RequestException, get
 
-from meta.app import DEMO, REPORT_SHOW_URL, RESULT_LIMIT, VERSION, app
+from meta.app import SHOW_DOWNLOAD_OPTIONS, SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, REPORT_SHOW_URL, RESULT_LIMIT, VERSION, app
 from meta.query_all import query_all
 from meta.facets import prepare_facets
 from meta.paging import calc
@@ -20,11 +20,12 @@ from meta.terms import get_terms_data
 @app.route('/')
 def main():
     """ Renders the initial page. """
-    return render_template('search.html',
-                           version=VERSION,
-                           page=0,
-                           offset=0,
-                           params={'RisReport': '*'})
+    return render_template(
+        'search.html',
+        version=VERSION,
+        page=0,
+        offset=0,
+        params={'RisReport': '*'})
 
 
 @app.route('/search', methods=['POST', 'GET'])
@@ -35,30 +36,34 @@ def search():
     headers = {'content-type': "application/json"}
     logging.debug(payload)
     try:
-        response = get(solr_url(app.config), data=json.dumps(payload), headers=headers)
+        response = get(
+            solr_url(app.config), data=json.dumps(payload), headers=headers)
     except RequestException:
-        return render_template('search.html',
-                               params=params,
-                               error='No response from Solr, is it running?',
-                               trace=solr_url(app.config))
+        return render_template(
+            'search.html',
+            params=params,
+            error='No response from Solr, is it running?',
+            trace=solr_url(app.config))
     if response.status_code >= 400 and response.status_code < 500:
-        return render_template('search.html',
-                               params=params,
-                               page=0,
-                               offset=0,
-                               error=response.reason,
-                               trace=response.url)
+        return render_template(
+            'search.html',
+            params=params,
+            page=0,
+            offset=0,
+            error=response.reason,
+            trace=response.url)
     elif response.status_code >= 500:
         result = response.json()
         error = result['error']
         msg = result['error']['msg']
         trace = error.get('trace', '')
-        return render_template('search.html',
-                               params=params,
-                               page=0,
-                               offset=0,
-                               error='Solr failed: ' + msg,
-                               trace=trace)
+        return render_template(
+            'search.html',
+            params=params,
+            page=0,
+            offset=0,
+            error='Solr failed: ' + msg,
+            trace=trace)
     else:
         app.logger.debug('Calling Solr with url %s', response.url)
         app.logger.debug('Request body %s', json.dumps(payload))
@@ -69,21 +74,23 @@ def search():
         page = params.get('page', 0)
         offset = params.get('offset', 0)
         paging = calc(results, page, RESULT_LIMIT)
-        demo = DEMO
-        return render_template('result.html',
-                               docs=docs,
-                               results=results,
-                               studies_result=studies_result,
-                               payload=payload,
-                               facet_url=request.url,
-                               params=params,
-                               paging=paging,
-                               version=VERSION,
-                               report_show_url=REPORT_SHOW_URL,
-                               modalities=params.getlist('Modality'),
-                               page=page,
-                               offset=0,
-                               demo=demo)
+        return render_template(
+            'result.html',
+            docs=docs,
+            results=results,
+            studies_result=studies_result,
+            payload=payload,
+            facet_url=request.url,
+            params=params,
+            paging=paging,
+            version=VERSION,
+            report_show_url=REPORT_SHOW_URL,
+            modalities=params.getlist('Modality'),
+            page=page,
+            offset=0,
+            show_download_options=SHOW_DOWNLOAD_OPTIONS,
+            show_transfer_targets=SHOW_TRANSFER_TARGETS,
+            transfer_targets=TRANSFER_TARGETS)
 
 
 @app.route('/export', methods=['POST'])
@@ -96,7 +103,8 @@ def export():
     writer.save()
     writer.close()
     out.seek(0)
-    return send_file(out, attachment_filename="export.xlsx", as_attachment=True)
+    return send_file(
+        out, attachment_filename="export.xlsx", as_attachment=True)
 
 
 @app.route('/download', methods=['POST'])
@@ -111,7 +119,7 @@ def download():
     series_list = data.get('data', '')
     dir_name = data.get('dir', '')
     length = download_series(series_list, dir_name)
-    return json.dumps({'status':'OK', 'series_length': length})
+    return json.dumps({'status': 'OK', 'series_length': length})
 
 
 @app.route('/transfer', methods=['POST'])
@@ -121,9 +129,13 @@ def transfer():
     target = data.get('target', '')
     series_list = data.get('data', '')
     app.logger.info("transfer called and sending to %s", target)
-    study_size = transfer_series(series_list, target)
-    return str(study_size)
-
+    t = [t for t in TRANSFER_TARGETS if t['DISPLAY_NAME'] == target]
+    if t:
+        destination = t[0]['AE_TITLE']
+        study_size = transfer_series(series_list, destination)
+        return str(study_size)
+    else:
+        return 'Error: Could not find destination AE_TITLE'
 
 @app.route('/transfers')
 def transfers():

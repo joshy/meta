@@ -10,7 +10,7 @@ app.config.from_object('meta.default_config')
 app.config.from_pyfile('config.cfg', silent=True)
 
 # Exposing constants to use
-DEMO = app.config['DEMO']
+
 VERSION = app.config['VERSION'] = '2.3.0'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
@@ -21,6 +21,10 @@ PACS_CONFIG = pacs_config(app.config)
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
 TASKS_DB = app.config['TASKS_DB']
 REPORT_SHOW_URL = app.config['REPORT_SHOW_URL']
+
+SHOW_DOWNLOAD_OPTIONS = app.config['SHOW_DOWNLOAD_OPTIONS']
+SHOW_TRANSFER_TARGETS = app.config['SHOW_TRANSFER_TARGETS']
+TRANSFER_TARGETS = app.config['TRANSFER_TARGETS']
 
 def get_db():
     """ Returns a connection to sqllite db. """
