@@ -4,9 +4,9 @@
       <input type="checkbox" name='select-all-accession-number' data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
       <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-            {{study['StudyDescription']}}, {{study['Modality']}}, {{study['AccessionNumber']}}, {{study['PatientAge']}} Years
+            {{study['StudyDescription']}}, {{study['Modality']}}
     </a></h5>
-    <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
+    <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
       <div class="row">
         <div class="col">
@@ -18,9 +18,7 @@
           <table class="table table-sm" data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
             <thead>
               <tr>
-                <th>
-
-                </th>
+                <th></th>
                 <th>Series Number</th>
                 <th>Series Description</th>
               </tr>
@@ -32,7 +30,7 @@
               {% for child in study['_childDocuments_'] | sort(attribute='series_int') %}
               <tr>
                 <td>
-                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"  
+                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"
                     data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ study['AccessionNumber'] }}"
                     data-series-number="{{ child['SeriesNumber'] }}">
                 </td>
@@ -57,4 +55,3 @@
     </div>
   </div>
 </div>
-
