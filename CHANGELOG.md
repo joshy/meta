@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.3.1 - 19.06.2018
+ * Transfer targets are configurable
+ * Reorganized information shown
+
 ## v2.3.0 - 28.05.2018
  * Changed Id of parent from 'StudyInstanceUID' to 'PatientID - AccessionNumber'
  * Moved StudyInstanceUID to series level
