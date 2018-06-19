@@ -17,5 +17,5 @@ class TestCommand(unittest.TestCase):
         self.assertEqual(expected, base_command(DCMTK_CONFIG, PACS_CONFIG))
 
     def test_tranfer(self):
-        expected = '/usr/local/bin/movescu -v -S -aem SRSYVMS01 -aet AE_TITLE -aec AE_CALLED 127.0.0.1 104 +P 11110 -k StudyInstanceUID=12345 /opt/dcm.in'
+        expected = '/usr/local/bin/movescu -v -S -aem syngo -aet AE_TITLE -aec AE_CALLED 127.0.0.1 104 -k StudyInstanceUID=12345 /opt/dcm.in'
         self.assertEqual(expected, transfer_command(DCMTK_CONFIG, PACS_CONFIG, 'syngo', '12345'))
