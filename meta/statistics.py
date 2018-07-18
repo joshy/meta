@@ -15,18 +15,18 @@ def calculate(df):
 
 
 def mapping(input):
-    test_string = input.strip()
-    if test_string in Main:
+    institution_name = input.strip()
+    if institution_name in Main:
         return 'Main'
-    elif 'USB' in test_string:
+    elif 'USB' in institution_name:
         return 'Main'
-    elif 'UKBB' in test_string:
+    elif 'UKBB' in institution_name:
         return 'Pediatric'
-    elif 'Universitaetsspital' and 'Basel' in test_string:
+    elif 'Universitaetsspital' and 'Basel' in institution_name:
         return 'Main'
-    elif test_string in Pediatric:
+    elif institution_name in Pediatric:
         return 'Pediatric'
-    elif test_string in Geriatric:
+    elif institution_name in Geriatric:
         return 'Geriatric'
     else:
         return 'Extern'
