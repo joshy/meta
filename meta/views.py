@@ -16,6 +16,7 @@ from meta.pull import (download_series, download_status, transfer_series,
 from meta.query import query_body
 from meta.solr import solr_url
 from meta.terms import get_terms_data
+from meta.statistics import calculate
 
 
 @app.route('/')
