@@ -168,3 +168,28 @@ def terms():
     """ Renders a page about term information. Only internal use. """
     data = get_terms_data(app.config)
     return render_template('terms.html', terms=data)
+
+
+@app.route('/statistics')
+def statistics():
+    return render_template('statistics.html')
+
+
+@app.route('/statistics/data.csv')
+def statistics_data():
+    if not os.path.exists('institute_statistics.csv'):
+        data = get_statistics()
+        df = pd.DataFrame.from_dict(data['response']['docs'])
+        df = calculate(df)
+        df.to_csv('institute_statistics.csv')
+
+    df = pd.read_csv('institute_statistics.csv')
+    return df.to_csv()
+
+
+def get_statistics():
+    payload = {'q':'*', 'rows':'100000000', 'fq':['Category:parent'], 'fl':'InstitutionName, StudyDate'}
+    headers = {'content-type': "application/json"}
+    response = get(solr_url(app.config), payload, headers=headers)
+    data = response.json()
+    return data

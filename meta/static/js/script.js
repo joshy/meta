@@ -294,4 +294,49 @@ $(function () {
     value = names.join(',');
     $('#patientname-input').val(value);
   });
+
+  if ('statistics' == $('body').data('page')) {
+    function draw_statistics() {
+      // Assign the specification to a local variable vlSpec.
+      var vlSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+        "data": { "url": "statistics/data.csv" },
+        "mark": {
+          "type": "line",
+          "point":"true"
+        },
+        "title":"PACS Study Distribution",
+        "width": 420,
+        "height": 380,
+        "transform": [{
+          "filter": {"field":"year", "timeUnit":"year", "range":[2007,2017]}
+        }],
+        "encoding": {
+          "x": {
+            "field": "year",
+            "type": "temporal",
+            "axis": {
+              "format": "%Y",
+              "title": "Years"
+            }
+          },
+          "y": {
+            "field": "InstitutionName",
+            "type": "quantitative",
+            "axis": {
+              "title":"Number of Studies"
+            }
+          },
+          "color": {
+            "field": "institution_type",
+            "type": "nominal",
+            "legend": {"title":"Type"}
+          }
+        }
+      }
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed("#vis", vlSpec, { "actions": false });
+    };
+    draw_statistics()
+  }
 });
