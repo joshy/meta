@@ -77,6 +77,9 @@ def _convert(date):
     Converts a date from the frontend which is passed in the following format
     31.12.2016 to 20161231. This is how it is stored in solr.
     """
+    if date is None:
+        return '*'
+
     try:
         return datetime.strptime(date, '%d.%m.%Y').strftime('%Y%m%d')
     except ValueError:
