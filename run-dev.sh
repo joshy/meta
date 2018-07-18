@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nodemon --exec "python3" runserver.py
+nodemon -e py,html,js --exec "python3" runserver.py
