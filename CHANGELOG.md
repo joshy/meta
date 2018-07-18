@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.3.2 - 18.07.2018
+ * Added simple institution distribution statistics
+
 ## v2.3.1 - 19.06.2018
  * Transfer targets are configurable
  * Reorganized information shown
