@@ -11,7 +11,7 @@ app.config.from_pyfile('config.cfg', silent=True)
 
 # Exposing constants to use
 
-VERSION = app.config['VERSION'] = '2.3.2'
+VERSION = app.config['VERSION'] = '2.3.3'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
 # DCMTK settings

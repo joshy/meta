@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.3.3 - 19.07.2018
+ * Name needs to be upper case when pasting from Excel
+
 ## v2.3.2 - 18.07.2018
  * Added simple institution distribution statistics
 
