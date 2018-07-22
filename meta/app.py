@@ -26,11 +26,17 @@ SHOW_DOWNLOAD_OPTIONS = app.config['SHOW_DOWNLOAD_OPTIONS']
 SHOW_TRANSFER_TARGETS = app.config['SHOW_TRANSFER_TARGETS']
 TRANSFER_TARGETS = app.config['TRANSFER_TARGETS']
 
+
+MOVA_DASHBOARD_URL = app.config['MOVA_DASHBOARD_URL']
+MOVA_DOWNLOAD_URL = app.config['MOVA_DOWNLOAD_URL']
+
+
 def get_db():
     """ Returns a connection to sqllite db. """
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(TASKS_DB, detect_types=sqlite3.PARSE_DECLTYPES)
+        db = g._database = sqlite3.connect(
+            TASKS_DB, detect_types=sqlite3.PARSE_DECLTYPES)
     return g._database
 
 
@@ -41,6 +47,7 @@ def teardown_db(exception):
     if db is not None:
         db.close()
 
+
 def init_db():
     with app.app_context():
         db = get_db()
@@ -48,24 +55,34 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
+
 init_db()
 
 
 @app.template_filter('to_date')
 def to_date(date_as_int):
     if date_as_int:
-        return datetime.strptime(str(date_as_int), '%Y%m%d').strftime('%d.%m.%Y')
+        return datetime.strptime(str(date_as_int),
+                                 '%Y%m%d').strftime('%d.%m.%Y')
     else:
         return ''
 
 
 # JS Assets part
 assets = Environment(app)
-js = Bundle("js/jquery-3.1.0.min.js", "js/tether.min.js",
-            "js/bootstrap.min.js", "js/moment.min.js", "js/pikaday.js",
-            "js/pikaday.jquery.js", "js/jquery.noty.packaged.min.js",
-            "js/jszip.min.js", "js/FileSaver.js", "js/script.js",
-            filters='jsmin', output='gen/packed.js')
+js = Bundle(
+    "js/jquery-3.1.0.min.js",
+    "js/tether.min.js",
+    "js/bootstrap.min.js",
+    "js/moment.min.js",
+    "js/pikaday.js",
+    "js/pikaday.jquery.js",
+    "js/jquery.noty.packaged.min.js",
+    "js/jszip.min.js",
+    "js/FileSaver.js",
+    "js/script.js",
+    filters='jsmin',
+    output='gen/packed.js')
 assets.register('js_all', js)
 
 import meta.views

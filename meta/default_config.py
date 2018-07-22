@@ -30,6 +30,10 @@ INCOMING_PORT = 11110
 
 
 SHOW_DOWNLOAD_OPTIONS = True
-
 SHOW_TRANSFER_TARGETS = True
+
 TRANSFER_TARGETS = [{'AE_TITLE': 'AE_TITLE', 'DISPLAY_NAME': 'Foo'}]
+
+MOVA_DASHBOARD_URL = ''
+# Mova download url example would be: 'http://localhost:9001/download'
+MOVA_DOWNLOAD_URL = ''

@@ -5,10 +5,11 @@ import os
 
 import pandas as pd
 from flask import make_response, render_template, request, send_file
-from requests import RequestException, get
+from requests import RequestException, get, post
 
-from meta.app import SHOW_DOWNLOAD_OPTIONS, SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, REPORT_SHOW_URL, RESULT_LIMIT, VERSION, app
-from meta.query_all import query_all
+from meta.app import (REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
+                      SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION,
+                      MOVA_DOWNLOAD_URL, MOVA_DASHBOARD_URL, app)
 from meta.facets import prepare_facets
 from meta.paging import calc
 from meta.pull import (download_series, download_status, transfer_series,
@@ -92,7 +93,8 @@ def search():
             offset=0,
             show_download_options=SHOW_DOWNLOAD_OPTIONS,
             show_transfer_targets=SHOW_TRANSFER_TARGETS,
-            transfer_targets=TRANSFER_TARGETS)
+            transfer_targets=TRANSFER_TARGETS,
+            mova_dashboard_url=MOVA_DASHBOARD_URL)
 
 
 @app.route('/export', methods=['POST'])
@@ -114,13 +116,8 @@ def download():
     """ Ajax post to download series of images. """
     app.logger.info("download called")
     data = request.get_json(force=True)
-    # list of objects with following keys
-    # "patient_id", "study_id", "series_id",
-    # "accession_number", "series_number"
-    # see script.js
-    series_list = data.get('data', '')
-    dir_name = data.get('dir', '')
-    length = download_series(series_list, dir_name)
+    headers = {'content-type': "application/json"}
+    length = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
     return json.dumps({'status': 'OK', 'series_length': length})
 
 
