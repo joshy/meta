@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.4.0 - 22.07.2018
+ * Use [Mova](https://github.com/joshy/mova) for downloading stuff
+
 ## v2.3.3 - 19.07.2018
  * Name needs to be upper case when pasting from Excel
 
