@@ -9,12 +9,11 @@ from requests import RequestException, get, post
 
 from meta.app import (REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
                       SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION,
-                      MOVA_DOWNLOAD_URL, MOVA_DASHBOARD_URL, app)
-from meta.facets import prepare_facets
+                      MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL, MOVA_DASHBOARD_URL,
+                      app)
 from meta.paging import calc
-from meta.pull import (download_series, download_status, transfer_series,
-                       transfer_status)
 from meta.query import query_body
+from meta.query_all import query_all
 from meta.solr import solr_url
 from meta.terms import get_terms_data
 from meta.statistics import calculate
@@ -100,7 +99,7 @@ def search():
 @app.route('/export', methods=['POST'])
 def export():
     q = request.form
-    df = query_all(q)
+    df = query_all(q, solr_url(app.config))
     out = io.BytesIO()
     writer = pd.ExcelWriter(out)
     df.to_excel(writer, index=False, sheet_name='Sheet1')
@@ -131,35 +130,12 @@ def transfer():
     t = [t for t in TRANSFER_TARGETS if t['DISPLAY_NAME'] == target]
     if t:
         destination = t[0]['AE_TITLE']
-        study_size = transfer_series(series_list, destination)
-        return str(study_size)
+        headers = {'content-type': "application/json"}
+        data['target'] = destination
+        response = post(MOVA_TRANSFER_URL, json=data, headers=headers)
+        return json.dumps(response.json())
     else:
         return 'Error: Could not find destination AE_TITLE'
-
-@app.route('/transfers')
-def transfers():
-    """ Renders the status of the transfers. """
-    return render_template('transfers.html', version=VERSION)
-
-
-@app.route('/transfers/data')
-def transfersdata():
-    data = transfer_status()
-    return render_template('partials/transfers-status.html', tasks=data)
-
-
-@app.route('/tasks')
-def tasks():
-    """ Renders a status page on the current tasks. A tasks is either
-    to download or to transfer series.
-    """
-    return render_template('tasks.html', version=VERSION)
-
-
-@app.route('/tasks/data')
-def tasksdata():
-    data = download_status()
-    return render_template('partials/tasks-status.html', tasks=data)
 
 
 @app.route('/terms')
@@ -181,13 +157,17 @@ def statistics_data():
         df = pd.DataFrame.from_dict(data['response']['docs'])
         df = calculate(df)
         df.to_csv('institute_statistics.csv')
-
     df = pd.read_csv('institute_statistics.csv')
     return df.to_csv()
 
 
 def get_statistics():
-    payload = {'q':'*', 'rows':'100000000', 'fq':['Category:parent'], 'fl':'InstitutionName, StudyDate'}
+    payload = {
+        'q': '*',
+        'rows': '100000000',
+        'fq': ['Category:parent'],
+        'fl': 'InstitutionName, StudyDate'
+    }
     headers = {'content-type': "application/json"}
     response = get(solr_url(app.config), payload, headers=headers)
     data = response.json()

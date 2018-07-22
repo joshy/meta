@@ -5,9 +5,7 @@ import pandas as pd
 from requests import RequestException, get
 from werkzeug.datastructures import MultiDict
 
-from meta.solr import solr_url
-from meta.query import query_body, DEFAULT_PAYLOAD
-from meta.app import app
+from meta.query import DEFAULT_PAYLOAD
 
 
 class SearchParams(object):
@@ -58,4 +56,3 @@ class SearchParams(object):
 
     def build(self):
         return self.args
-

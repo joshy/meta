@@ -1,4 +1,3 @@
-import sqlite3
 from datetime import datetime
 from flask import Flask, g
 from flask_assets import Environment, Bundle
@@ -14,49 +13,16 @@ app.config.from_pyfile('config.cfg', silent=True)
 VERSION = app.config['VERSION'] = '2.4.0'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
-# DCMTK settings
-DCMTK_CONFIG = dcmtk_config(app.config)
-PACS_CONFIG = pacs_config(app.config)
-
 OUTPUT_DIR = app.config['IMAGE_FOLDER']
-TASKS_DB = app.config['TASKS_DB']
 REPORT_SHOW_URL = app.config['REPORT_SHOW_URL']
 
 SHOW_DOWNLOAD_OPTIONS = app.config['SHOW_DOWNLOAD_OPTIONS']
 SHOW_TRANSFER_TARGETS = app.config['SHOW_TRANSFER_TARGETS']
 TRANSFER_TARGETS = app.config['TRANSFER_TARGETS']
 
-
 MOVA_DASHBOARD_URL = app.config['MOVA_DASHBOARD_URL']
 MOVA_DOWNLOAD_URL = app.config['MOVA_DOWNLOAD_URL']
-
-
-def get_db():
-    """ Returns a connection to sqllite db. """
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(
-            TASKS_DB, detect_types=sqlite3.PARSE_DECLTYPES)
-    return g._database
-
-
-@app.teardown_appcontext
-def teardown_db(exception):
-    """ Closes DB connection when app context is done. """
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-
-init_db()
+MOVA_TRANSFER_URL = app.config['MOVA_TRANSFER_URL']
 
 
 @app.template_filter('to_date')
