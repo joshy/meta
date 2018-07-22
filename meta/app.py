@@ -13,7 +13,6 @@ app.config.from_pyfile('config.cfg', silent=True)
 VERSION = app.config['VERSION'] = '2.4.0'
 RESULT_LIMIT = app.config['RESULT_LIMIT']
 
-OUTPUT_DIR = app.config['IMAGE_FOLDER']
 REPORT_SHOW_URL = app.config['REPORT_SHOW_URL']
 
 SHOW_DOWNLOAD_OPTIONS = app.config['SHOW_DOWNLOAD_OPTIONS']
