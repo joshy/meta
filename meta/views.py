@@ -27,7 +27,8 @@ def main():
         version=VERSION,
         page=0,
         offset=0,
-        params={'RisReport': '*'})
+        params={'RisReport': '*'},
+        mova_dashboard_url=MOVA_DASHBOARD_URL)
 
 
 @app.route('/search', methods=['POST', 'GET'])
