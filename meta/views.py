@@ -117,8 +117,8 @@ def download():
     app.logger.info("download called")
     data = request.get_json(force=True)
     headers = {'content-type': "application/json"}
-    length = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    return json.dumps({'status': 'OK', 'series_length': length})
+    response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
+    return json.dumps(response.json())
 
 
 @app.route('/transfer', methods=['POST'])
