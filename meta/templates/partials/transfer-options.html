@@ -5,7 +5,7 @@
     </div>
     {% for i in transfer_targets %}
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="{{ i.DISPLAY_NAME }}" id="{{ i.DISPLAY_NAME }}" value="{{ i.DISPLAY_NAME }}">
+      <input class="form-check-input" type="radio" name="target" id="{{ i.DISPLAY_NAME }}" value="{{ i.DISPLAY_NAME }}">
       <label class="form-check-label" for="{{ i.DISPLAY_NAME }}">{{ i.DISPLAY_NAME }}</label>
     </div>
     {% endfor %}
