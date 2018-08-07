@@ -22,11 +22,11 @@ def query_body(args, limit=100):
             for x in series_descriptions
         ]
 
-    if args.get('RisReport') == '*':
+    if 'RisReport' in args and args.get('RisReport') == '*':
         # Old exams have no report that is why it is just '*'.
         body['query'] = '*'
     else:
-        body['query'] = 'RisReport:({})'.format(args['RisReport'])
+        body['query'] = 'RisReport:({})'.format(args.get('RisReport','*'))
 
     if args.get('SeriesDescriptionFilter'):
         body['params']['fl'] = '*,[child parentFilter=Category:parent childFilter="SeriesDescription:{}" limit=200]'.format(args.get('SeriesDescriptionFilter'))
