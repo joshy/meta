@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.4.1 - 07.08.2018
+ * Using wildcard in report search should just use '*' instead of RisReport:*
+   because for old reports we don't have any reports and the search would then
+   exclude those.
+
 ## v2.4.0 - 22.07.2018
  * Use [Mova](https://github.com/joshy/mova) for downloading stuff
 
