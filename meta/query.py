@@ -23,8 +23,8 @@ def query_body(args, limit=100):
         ]
 
     if 'RisReport' in args and args.get('RisReport') == '*':
-        # Old exams have no report that is why it is just '*'.
-        body['query'] = '*'
+        # Old exams have no report that is why we must match all documents.
+        body['query'] = 'Category:parent'
     else:
         body['query'] = 'RisReport:({})'.format(args.get('RisReport','*'))
 
