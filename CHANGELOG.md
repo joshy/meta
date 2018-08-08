@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.2 - 08.08.2018
+ * Empty search was broken, need to use parent filter "Category:parent" instead
+   of '*'
+
 ## v2.4.1 - 07.08.2018
  * Using wildcard in report search should just use '*' instead of RisReport:*
    because for old reports we don't have any reports and the search would then
