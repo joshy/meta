@@ -80,8 +80,8 @@ def search():
         return render_template(
             'result.html',
             docs=docs,
-            results=results,
-            studies_result=studies_result,
+            results="{:,}".format(results),
+            studies_result="{:,}".format(studies_result),
             payload=payload,
             facet_url=request.url,
             params=params,
