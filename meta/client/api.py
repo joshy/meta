@@ -16,6 +16,14 @@ class SearchParams(object):
         self.args.add('PatientID', patient_id)
         return self
 
+    def patient_birthdate(self, patient_birthdate):
+        self.args.add('PatientBirthDate', patient_birthdate)
+        return self
+
+    def study_date(self, study_date):
+        self.args.add('StudyDate', study_date)
+        return self
+
     def modality(self, modality):
         self.args.add('Modality', modality)
         return self
@@ -25,7 +33,7 @@ class SearchParams(object):
         return self
 
     def patient_name(self, patient_name):
-        self.args.add('PatientName', patient_name)
+        self.args.add('PatientName', '(\"' + patient_name + '\")')
         return self
 
     def accession_number(self, accession_number):

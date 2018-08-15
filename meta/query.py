@@ -22,7 +22,7 @@ def query_body(args, limit=100):
             for x in series_descriptions
         ]
 
-    if 'RisReport' in args and args.get('RisReport') == '*':
+    if ('RisReport' not in args) or ('RisReport' in args and args.get('RisReport') == '*'):
         # Old exams have no report that is why we must match all documents.
         body['query'] = 'Category:parent'
     else:
@@ -45,6 +45,8 @@ def _create_filter_query(args):
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
               _filter_list('Modality', args),
+              _create_date('PatientBirthDate', args),
+              _create_date('StudyDate', args),
               _create_date_range(args.get('StartDate'), args.get('EndDate')),
               _create_age_range(args.get('AgeFrom'), args.get('AgeTo')) ]
     return [x for x in result if x is not None]
@@ -60,6 +62,11 @@ def _filter_list(element, args):
         a_list = args.getlist(element)
         joined = ' OR '.join(a_list)
         return element + ':(' + joined + ')'
+
+
+def _create_date(element, args):
+    if args.get(element):
+        return element + ':' + args.get(element)
 
 
 def _create_date_range(start_date, end_date):
