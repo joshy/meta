@@ -18,10 +18,10 @@ SOLR_CORE_NAME = 'grouping'
 
 SHOW_DOWNLOAD_OPTIONS = True
 SHOW_TRANSFER_TARGETS = True
+SHOW_ANALYSIS_OPTIONS = True
 
 TRANSFER_TARGETS = [{'AE_TITLE': 'AE_TITLE', 'DISPLAY_NAME': 'Foo'}]
 
 MOVA_DASHBOARD_URL = 'http://localhost:9001/rq'
-# Mova download url example would be: 'http://localhost:9001/download'
 MOVA_DOWNLOAD_URL = 'http://localhost:9001/download'
 MOVA_TRANSFER_URL = 'http://localhost:9001/transfer'

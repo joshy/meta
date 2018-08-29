@@ -2,6 +2,7 @@ import io
 import json
 import logging
 import os
+import requests
 
 import pandas as pd
 from flask import make_response, render_template, request, send_file
@@ -10,7 +11,7 @@ from requests import RequestException, get, post
 from meta.app import (REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
                       SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION,
                       MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL, MOVA_DASHBOARD_URL,
-                      app)
+                      RIMA_URL, RIMA_ANALYZE_URL, SHOW_ANALYSIS_OPTIONS, app)
 from meta.paging import calc
 from meta.query import query_body
 from meta.query_all import query_all
@@ -94,7 +95,9 @@ def search():
             show_download_options=SHOW_DOWNLOAD_OPTIONS,
             show_transfer_targets=SHOW_TRANSFER_TARGETS,
             transfer_targets=TRANSFER_TARGETS,
-            mova_dashboard_url=MOVA_DASHBOARD_URL)
+            mova_dashboard_url=MOVA_DASHBOARD_URL,
+            show_analysis_options=SHOW_ANALYSIS_OPTIONS,
+            rima_url=RIMA_URL)
 
 
 @app.route('/export', methods=['POST'])
@@ -137,6 +140,19 @@ def transfer():
         return json.dumps(response.json())
     else:
         return 'Error: Could not find destination AE_TITLE'
+
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    """ Ajax post to RIMA Server for analyzing series of images """
+    data = request.get_json(force=True)
+    response = post(RIMA_ANALYZE_URL, json=data, headers = {'content-type': "application/json"})
+    if response.status_code == requests.codes.ok:
+        return json.dumps(response.json())
+    else:
+        print(response)
+        print(response.text)
+        return json.dumps({'status':'error', 'message': 'POST to RIMA failed'})
 
 
 @app.route('/terms')

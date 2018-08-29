@@ -108,6 +108,42 @@ $(function () {
     });
   });
 
+  $('#analyze-button').on('click', function (e) {
+    e.preventDefault();
+    var data = getCheckedData();
+    var target = $("input[type='radio']:checked").val();
+    var data = {
+      'data': data,
+      'target': target,
+      'queue': target,
+      'dir': new Date().toISOString()
+    }
+    $.ajax({
+      type: 'POST',
+      url: 'analyze',
+      data: JSON.stringify(data),
+      dataType: 'json'
+    }).done(function (data) {
+      noty({
+        text: 'Successfully added ' + data + ' studies to analyze',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'success'
+      });
+    }).fail(function (error) {
+      console.log(error);
+      console.error("Post failed");
+      noty({
+        text: 'Failed to analyze',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'error'
+      });
+    });
+  });
+
   $("#export").on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
