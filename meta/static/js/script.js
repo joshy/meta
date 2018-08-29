@@ -114,9 +114,9 @@ $(function () {
     var target = $("input[type='radio']:checked").val();
     var data = {
       'data': data,
-      'target': target,
       'queue': target,
-      'dir': new Date().toISOString()
+      'dir': target,
+      'id': new Date().getTime()
     }
     $.ajax({
       type: 'POST',
