@@ -25,12 +25,14 @@ $(function () {
         var series_uid =  $(this).attr('data-series-id');
         var accession_number =  $(this).attr('data-accession-number');
         var series_number =  $(this).attr('data-series-number');
+        var series_description =  $(this).attr('data-series-description');
         result = {
           "patient_id": patient_id,
           "study_uid" : study_uid,
           "series_uid" : series_uid,
           "accession_number" : accession_number,
-          "series_number": series_number
+          "series_number": series_number,
+          "series_description": series_description
         };
         return result;
        })
