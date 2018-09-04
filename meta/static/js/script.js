@@ -22,6 +22,7 @@ $(function () {
       .map(function() {
         var patient_id = $(this).attr('data-patient-id');
         var study_uid = $(this).attr('data-study-id');
+        var study_description = $(this).attr('data-study-description')
         var series_uid =  $(this).attr('data-series-id');
         var accession_number =  $(this).attr('data-accession-number');
         var series_number =  $(this).attr('data-series-number');
@@ -29,6 +30,7 @@ $(function () {
         result = {
           "patient_id": patient_id,
           "study_uid" : study_uid,
+          "study_description": study_description,
           "series_uid" : series_uid,
           "accession_number" : accession_number,
           "series_number": series_number,
@@ -117,17 +119,16 @@ $(function () {
     var data = {
       'data': data,
       'queue': target,
-      'dir': target,
-      'id': new Date().getTime()
+      'dir': target
     }
     $.ajax({
       type: 'POST',
       url: 'analyze',
       data: JSON.stringify(data),
       dataType: 'json'
-    }).done(function (data) {
+    }).done(function (series_length) {
       noty({
-        text: 'Successfully added ' + data + ' studies to analyze',
+        text: 'Successfully added ' + series_length + ' studies to analyze',
         layout: 'centerRight',
         timeout: '3000',
         closeWith: ['click', 'hover'],
