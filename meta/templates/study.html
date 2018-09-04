@@ -30,9 +30,16 @@
               {% for child in study['_childDocuments_'] | sort(attribute='series_int') %}
               <tr>
                 <td>
-                  <input type="checkbox" name="series" data-patient-id="{{ doc['groupValue'] }}" data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"
-                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}" data-accession-number="{{ study['AccessionNumber'] }}"
-                    data-series-number="{{ child['SeriesNumber'] }}" data-study-description="{{study['StudyDescription']}}" data-series-description="{{ child['SeriesDescription'] }}">
+                  <input type="checkbox" name="series"
+                    data-patient-id="{{ doc['groupValue'] }}"
+                    data-patient-birthdate="{{ doc.doclist.docs[0]['PatientBirthDate'] }}"
+                    data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}"
+                    data-accession-number="{{ study['AccessionNumber'] }}"
+                    data-series-number="{{ child['SeriesNumber'] }}"
+                    data-study-description="{{study['StudyDescription']}}"
+                    data-study-date="{{ study['StudyDate'] }}"
+                    data-series-description="{{ child['SeriesDescription'] }}">
                 </td>
                 <td>{{ child['SeriesNumber'] }} </td>
                 <td>{{ child['SeriesDescription'] }} </td>

@@ -21,16 +21,20 @@ $(function () {
     return $('input:checked[name=series]')
       .map(function() {
         var patient_id = $(this).attr('data-patient-id');
+        var patient_birth_date = $(this).attr('data-patient-birthdate');
         var study_uid = $(this).attr('data-study-id');
         var study_description = $(this).attr('data-study-description')
+        var study_date = $(this).attr('data-study-date');
         var series_uid =  $(this).attr('data-series-id');
         var accession_number =  $(this).attr('data-accession-number');
         var series_number =  $(this).attr('data-series-number');
         var series_description =  $(this).attr('data-series-description');
         result = {
           "patient_id": patient_id,
+          "patient_birth_date":patient_birth_date,
           "study_uid" : study_uid,
           "study_description": study_description,
+          "study_date": study_date,
           "series_uid" : series_uid,
           "accession_number" : accession_number,
           "series_number": series_number,
