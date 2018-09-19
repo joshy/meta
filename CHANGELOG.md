@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.5.0 - 19.09.2018
+ * Finally exact series description works now
+
 ## v2.4.2 - 08.08.2018
  * Empty search was broken, need to use parent filter "Category:parent" instead
    of '*'
