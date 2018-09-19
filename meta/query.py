@@ -29,6 +29,10 @@ def query_body(args, limit=100):
     else:
         body['filter'] = _create_filter_query(args)
 
+    sort_field = args.get('sort_field')
+    if sort_field and sort_field != 'Default':
+        body['sort'] = '{} desc'.format(sort_field)
+    print(body)
     return body
 
 
