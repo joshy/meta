@@ -4,7 +4,7 @@
       <input type="checkbox" name='select-all-accession-number' data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
       <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-            {{study['StudyDescription']}}, {{study['Modality']}}
+            {{study['StudyDescription']}}, {{study['AccessionNumber']}} 
     </a></h5>
     <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
