@@ -10,31 +10,24 @@ DEFAULT_PAYLOAD = {'offset': 0, 'limit': 1,
 def query_body(args, limit=100):
     body = DEFAULT_PAYLOAD.copy()
     body['limit'] = limit
-    filters = []
-    if args.get('SeriesDescription'):
-        user_input = args.get('SeriesDescription').split(' ')
-        series_descriptions = [x for x in user_input if x]
-        logging.debug(series_descriptions)
-        # A block join query, search all parents which have a child with
-        # the specific series description, can be multiple
-        filters = [
-            '{!parent which=Category:parent}(+SeriesDescription:%s)' % x
-            for x in series_descriptions
-        ]
-
     if ('RisReport' not in args) or ('RisReport' in args and args.get('RisReport') == '*'):
         # Old exams have no report that is why we must match all documents.
         body['query'] = 'Category:parent'
     else:
         body['query'] = 'RisReport:({})'.format(args.get('RisReport','*'))
 
-    if args.get('SeriesDescriptionFilter'):
-        body['params']['fl'] = '*,[child parentFilter=Category:parent childFilter="SeriesDescription:{}" limit=200]'.format(args.get('SeriesDescriptionFilter'))
+    if args.get('SeriesDescription'):
+        body['params']['fl'] = "*,[child parentFilter=Category:parent childFilter='SeriesDescription:{}' limit=200]".format(args.get('SeriesDescription'))
     else:
         body['params']['fl'] = '*,[child parentFilter=Category:parent limit=200]'
 
     body['offset'] = int(args.get('offset', '0'))
-    body['filter'] = _create_filter_query(args) + filters
+
+    if args.get('SeriesDescription'):
+        filters = '{!parent which=Category:parent}(+SeriesDescription:%s)' % args.get('SeriesDescription')
+        body['filter'] = _create_filter_query(args) + [filters]
+    else:
+        body['filter'] = _create_filter_query(args)
 
     return body
 
