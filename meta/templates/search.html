@@ -54,12 +54,25 @@
     </div>
     <div class="form-group row mx-auto px-4">
       <div class="col-sm-6">
-        <label for="seriesdescription-input" class="col-form-label" title="Series Description to search for, AND/OR not supported multiple descriptions can be separated by a space character">Series Description</label>
+        <label for="seriesdescription-input" class="col-form-label" title="Series Description to search for, AND is *not* supported">Series Description</label>
         <input class="form-control form-control-sm" type="text" id="seriesdescription-input" name="SeriesDescription" value="{{ params.SeriesDescription }}">
       </div>
       <div class="col-sm-6">
-        <label for="seriesdescriptionfilter-input" class="col-form-label" title="Filter out one serie which matches this name, only one description is allowed">Series Description Filter</label>
-        <input class="form-control form-control-sm" type="text" id="seriesdescriptionfilter-input" name="SeriesDescriptionFilter" value="{{ params.SeriesDescriptionFilter }}">
+        <label for="sort-field" class="col-form-label" title="On which field to sort the results">Sort field </label>
+        <div>
+          <div class="custom-control custom-radio custom-control-inline align-items-center">
+              <input type="radio" id="customRadioInline1" name="sort_field" class="custom-control-input" value="Default" {% if 'Default' == params.sort_field %} checked="checked" {% endif %}>
+              <label class="custom-control-label" for="customRadioInline1">Default</label>
+            </div>
+          <div class="custom-control custom-radio custom-control-inline align-items-center">
+            <input type="radio" id="customRadioInline2" name="sort_field" class="custom-control-input" value="PatientID" {% if 'PatientID' == params.sort_field %} checked="checked" {% endif %}>
+            <label class="custom-control-label" for="customRadioInline2">PatientID</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline align-items-center">
+            <input type="radio" id="customRadioInline3" name="sort_field" class="custom-control-input" value="AccessionNumber" {% if 'AccessionNumber' == params.sort_field %} checked="checked" {% endif %}>
+            <label class="custom-control-label" for="customRadioInline3">AccessionNumber</label>
+          </div>
+        </div>
       </div>
     </div>
     <div class="form-group row mx-auto px-4 ">
@@ -163,11 +176,11 @@
     </div>
     <div class="form-group row mx-auto px-4">
       <div class="col">
-        <label class="col-form-label" for="start-date-picker" title="Start date of exam">Start Date</label>
+        <label class="col-form-label" for="start-date-picker" title="Start date of exam">StudyDate: Start</label>
         <input class="form-control form-control-sm" type="text" id="start-date-picker" name="StartDate" value="{{ params.StartDate }}">
       </div>
       <div class="col">
-        <label class="col-form-label" for="end-date-picker" title="End date of exam">End Date</label>
+        <label class="col-form-label" for="end-date-picker" title="End date of exam">End</label>
         <input class="form-control form-control-sm" type="text" id="end-date-picker" name="EndDate" value="{{ params.EndDate}}">
       </div>
       <div class="col">

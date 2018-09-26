@@ -185,11 +185,11 @@ $(function () {
     var data = getCheckedData();
     var aNum_set = getUniqueAccessionNumbers(data);
     var zip = new JSZip();
-    for (let item of aNum_set) {
+    for (var it = aNum_set.values(), item= null; item=it.next().value; ) {
       name = item + '-report';
       text = document.getElementById(name).innerText;
       zip.file(name+'.txt', text);
-    };
+    }
     zip.generateAsync({type:"blob"})
       .then(function(content) {
         saveAs(content, "reports.zip");
