@@ -4,7 +4,7 @@
       <input type="checkbox" name='select-all-accession-number' data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
       <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-            {{study['StudyDescription']}}, {{study['AccessionNumber']}} 
+            {{study['StudyDescription']}}, {{study['AccessionNumber']}}
     </a></h5>
     <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
@@ -34,7 +34,7 @@
                   <input type="checkbox" name="series"
                     data-patient-id="{{ doc['groupValue'] }}"
                     data-patient-birthdate="{{ doc.doclist.docs[0]['PatientBirthDate'] }}"
-                    data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    data-study-id="{{ study['StudyInstanceUID'].strip(' \t\r\0') }}"
                     data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}"
                     data-accession-number="{{ study['AccessionNumber'] }}"
                     data-series-number="{{ child['SeriesNumber'] }}"
