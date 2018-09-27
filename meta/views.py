@@ -49,6 +49,7 @@ def search():
             error='No response from Solr, is it running?',
             trace=solr_url(app.config))
     if response.status_code >= 400 and response.status_code < 500:
+        logging.error(response.text)
         return render_template(
             'search.html',
             params=params,
@@ -61,6 +62,7 @@ def search():
         error = result['error']
         msg = result['error']['msg']
         trace = error.get('trace', '')
+        logging.error(reposonse.text)
         return render_template(
             'search.html',
             params=params,
