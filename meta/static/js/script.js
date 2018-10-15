@@ -154,9 +154,9 @@ $(function () {
   $("#export").on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (parseInt($('#studies_result').html()) >= 10000) {
+    if (parseInt($('#studies_result').html()) > 10000) {
       noty({
-        text: 'Too many results to export (Studies >= 10000',
+        text: 'Too many results to export (Studies > 10000)',
         layout: 'centerRight',
         timeout: '3000',
         closeWith: ['click', 'hover'],
@@ -164,6 +164,7 @@ $(function () {
       });
       return
     }
+    $('#loading').removeClass('d-none');
     q=$('#search-form').serialize();
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/export', true);
@@ -171,12 +172,15 @@ $(function () {
     xhr.responseType = 'blob';
     xhr.onload = function(e) {
       if (this.status == 200) {
+        $('#loading').addClass('d-none');
         var blob = this.response;
         saveAs(blob, 'download.xlsx');
+      } else if (this.status >= 400 || this.status == 500) {
+        $('#loading').addClass('d-none');
       }
     };
-
     xhr.send(q);
+
     return false;
   });
 
