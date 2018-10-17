@@ -6,7 +6,7 @@
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
             {{study['StudyDescription']}}, {{study['AccessionNumber']}}
     </a></h5>
-    <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
+    <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ProtocolName']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
       <div class="row">
         <div class="col">
