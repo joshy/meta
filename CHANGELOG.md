@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.6.1 - ProtocolName and ReferringPhysician added
+ * New query parameter added
+
+## v2.6.0 - StationName and ProtocolName added
+ * New attributes added, new data fetch was needed
+
 ## v2.5.0 - 19.09.2018
  * Finally exact series description works now
 

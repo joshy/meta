@@ -52,6 +52,17 @@
           value="{{ params.StudyDescription }}">
       </div>
     </div>
+    <div class="form-group row mx-auto px-4 ">
+        <div class="col">
+          <label for="protocolname-input" class="col-form-label" title="ProtocolName">Protocol Name</label>
+          <input class="form-control form-control-sm" type="text" id="protocolname-input" name="ProtocolName" value="{{ params.ProtocolName }}">
+        </div>
+        <div class="col">
+          <label for="referringphysicianname-input" class="col-form-label" title="Referring Physician ">Referring Physician</label>
+          <input class="form-control form-control-sm" type="text" id="referringphysicianname-input" name="ReferringPhysicianName"
+            value="{{ params.ReferringPhysicianName }}">
+        </div>
+      </div>
     <div class="form-group row mx-auto px-4">
       <div class="col-sm-6">
         <label for="seriesdescription-input" class="col-form-label" title="Series Description to search for, AND is *not* supported">Series Description</label>

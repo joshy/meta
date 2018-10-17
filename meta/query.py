@@ -16,11 +16,6 @@ def query_body(args, limit=100):
     else:
         body['query'] = 'RisReport:({})'.format(args.get('RisReport','*'))
 
-    # if args.get('SeriesDescription'):
-    #     body['params']['fl'] = "*,[child parentFilter=Category:parent childFilter='SeriesDescription:{}' childFilter='Modality:MG' limit=200]".format(args.get('SeriesDescription'))
-    
-    # elif args.getlist('Modality'):
-    #     body['params']['fl'] = "*,[child parentFilter=Category:parent childFilter='Modality:CT' limit=200]" 
     if args.getlist('Modality'):
         blu = args.getlist('Modality')
         modalities = '(' + args.get('Modality')
@@ -45,16 +40,9 @@ def query_body(args, limit=100):
         body['params']['fl'] = '*,[child parentFilter=Category:parent limit=200]'
         body['filter'] = _create_filter_query(args)
 
-    
+
     body['offset'] = int(args.get('offset', '0'))
 
-    # if args.get('SeriesDescription'):
-    # if args.getlist('Modality') and args.get('SeriesDescription'):#args.get('Modality'):
-    #     filters1 = '{!parent which=Category:parent}(+SeriesDescription:%s)' % args.get('SeriesDescription')
-    #     # filters2 = '{!parent which=Category:parent}(+Modality:(DX OR US))'# % args.get('Modality')
-    #     body['filter'] = _create_filter_query(args) + [filters1] + [filters2]
-    # else:
-    #     body['filter'] = _create_filter_query(args)
 
     sort_field = args.get('sort_field')
     if sort_field and sort_field != 'Default':
@@ -68,6 +56,8 @@ def _create_filter_query(args):
               _filter('PatientID', args),
               _filter('PatientName', args),
               _filter('AccessionNumber', args),
+              _filter('ReferringPhysicianName', args),
+              _filter('ProtocolName', args),
               _create_date('PatientBirthDate', args),
               _create_date('StudyDate', args),
               _create_date_range(args.get('StartDate'), args.get('EndDate')),
