@@ -6,7 +6,10 @@
     <div class="col-sm-2">
       <a class="pl-3" href="/">Pacs / RIS Crawler</a>
       <div class="pl-3 dib">
-          <small class="nowrap f6 mt2 mt3-ns pr2 black-70 fw2">v{{ version }}</small>
+          <small class="nowrap f6 mt2 mt3-ns pr2 black-70 fw2">v{{ version }}</small><br>
+          {% if indexed_start_date %}
+            <small>{{indexed_start_date | int | to_date }} - {{indexed_end_date | int | to_date}}</small>
+          {% endif %}
       </div>
     </div>
     <div class="col">

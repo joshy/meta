@@ -13,7 +13,7 @@ from meta.app import (REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
                       MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL, MOVA_DASHBOARD_URL,
                       RIMA_URL, RIMA_ANALYZE_URL, SHOW_ANALYSIS_OPTIONS, app)
 from meta.paging import calc
-from meta.query import query_body
+from meta.query import query_body, query_indexed_dates
 from meta.query_all import query_all
 from meta.solr import solr_url
 from meta.terms import get_terms_data
@@ -23,12 +23,29 @@ from meta.statistics import calculate
 @app.route('/')
 def main():
     """ Renders the initial page. """
+    url = query_indexed_dates(solr_url(app.config))
+    try:
+        response = get(url)
+    except RequestException:
+        return render_template(
+            'search.html',
+            params=params,
+            error='No response from Solr, is it running?',
+            trace=solr_url(app.config))
+
+    stats = response.json()['stats']
+    indexed_start_date = stats['stats_fields']['StudyDate']['min']
+    indexed_end_date = stats['stats_fields']['StudyDate']['max']
+
+
     return render_template(
         'search.html',
         version=VERSION,
         page=0,
         offset=0,
         params={'RisReport': '*'},
+        indexed_start_date=indexed_start_date,
+        indexed_end_date=indexed_end_date,
         mova_dashboard_url=MOVA_DASHBOARD_URL)
 
 

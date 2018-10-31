@@ -109,3 +109,7 @@ def _convert(date):
     except ValueError:
         logging.warning('Could not parse date %s, setting it to "*"', date)
         return '*'
+
+
+def query_indexed_dates(base_query):
+    return base_query + "?fl=StudyDate&q=*:*&stats.field=StudyDate&stats=true"
