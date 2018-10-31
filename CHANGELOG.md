@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.6.2 - Indexed day range
+ * Start and End of indexed days information added
+
 ## v2.6.1 - ProtocolName and ReferringPhysician added
  * New query parameter added
 
