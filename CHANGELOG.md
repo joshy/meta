@@ -1,13 +1,13 @@
 # Changelog
 
-## v2.6.2 - Indexed day range
+## v2.6.2 - 31.10.2018
  * Start and End of indexed days information added
 
-## v2.6.1 - ProtocolName and ReferringPhysician added
- * New query parameter added
+## v2.6.1 - 17.10.2018
+ * New query parameter added (ProtocolName and ReferringPhysician added)
 
-## v2.6.0 - StationName and ProtocolName added
- * New attributes added, new data fetch was needed
+## v2.6.0 - 17.10.2018
+ * New attributes (StationName and ProtocolName) added, new data fetch was needed
 
 ## v2.5.0 - 19.09.2018
  * Finally exact series description works now
