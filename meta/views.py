@@ -2,22 +2,22 @@ import io
 import json
 import logging
 import os
-import requests
 
 import pandas as pd
+import requests
 from flask import make_response, render_template, request, send_file
 from requests import RequestException, get, post
 
-from meta.app import (REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
-                      SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION,
-                      MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL, MOVA_DASHBOARD_URL,
-                      RIMA_URL, RIMA_ANALYZE_URL, SHOW_ANALYSIS_OPTIONS, app)
+from meta.app import (MOVA_DASHBOARD_URL, MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL,
+                      REPORT_SHOW_URL, RESULT_LIMIT, RIMA_ANALYZE_URL,
+                      RIMA_URL, SHOW_ANALYSIS_OPTIONS, SHOW_DOWNLOAD_OPTIONS,
+                      SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION, app)
 from meta.paging import calc
 from meta.query import query_body, query_indexed_dates
 from meta.query_all import query_all
 from meta.solr import solr_url
-from meta.terms import get_terms_data
 from meta.statistics import calculate
+from meta.terms import get_terms_data
 
 
 @app.route('/')
@@ -140,7 +140,11 @@ def download():
     data = request.get_json(force=True)
     headers = {'content-type': "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    return json.dumps(response.json())
+    if response.status_code == requests.status_codes.ok:
+        return json.dumps(response.json())
+    else:
+        app.logger.error("Post to MOVA failed")
+        return json.dumps({'status':'error', 'message': 'POST to MOVA failed'})
 
 
 @app.route('/transfer', methods=['POST'])
@@ -169,8 +173,6 @@ def analyze():
     if response.status_code == requests.codes.ok:
         return json.dumps(response.json())
     else:
-        print(response)
-        print(response.text)
         return json.dumps({'status':'error', 'message': 'POST to RIMA failed'})
 
 
@@ -206,5 +208,4 @@ def get_statistics():
     }
     headers = {'content-type': "application/json"}
     response = get(solr_url(app.config), payload, headers=headers)
-    data = response.json()
-    return data
+    return response.json()
