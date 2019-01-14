@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.6.3 - 14.01.2019
+ * Min and Max Date corrected, Age To fixed
+
 ## v2.6.2 - 31.10.2018
  * Start and End of indexed days information added
 
