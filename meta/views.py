@@ -140,7 +140,7 @@ def download():
     data = request.get_json(force=True)
     headers = {'content-type': "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    if response.status_code == requests.status_codes.ok:
+    if response.status_code == requests.status_codes["ok"]:
         return json.dumps(response.json())
     else:
         app.logger.error("Post to MOVA failed")
