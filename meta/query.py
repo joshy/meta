@@ -92,7 +92,10 @@ def _create_date_range(start_date, end_date):
 def _create_age_range(age_from, age_to):
     if not (age_from or age_to):
         return None
-    return 'PatientAge:[' + age_from + ' TO ' + age_to + ']'
+    elif not age_to:
+        return 'PatientAge:[' + age_from + ' TO *]'
+    else:
+        return 'PatientAge:[' + age_from + ' TO ' + age_to + ']'
 
 
 def _convert(date):
