@@ -4,17 +4,17 @@ $(function () {
   var startDatePicker = $('#start-date-picker').pikaday({
     format: 'DD.MM.YYYY',
     firstDay: 1,
-    minDate: new Date(2009, 0, 1),
+    minDate: new Date(2005, 0, 1),
     maxDate: new Date(),
-    yearRange: [2009, 2018]
+    yearRange: [2005, 2019]
   });
 
   var endDatePicker = $('#end-date-picker').pikaday({
     format: 'DD.MM.YYYY',
     firstDay: 1,
-    minDate: new Date(2009, 0, 1),
+    minDate: new Date(2005, 0, 1),
     maxDate: new Date(),
-    yearRange: [2009, 2018]
+    yearRange: [2005, 2019]
   });
 
   var getCheckedData = function() {
