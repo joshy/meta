@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.6.4 - 08.02.2019
+ * Now some data has the StudyInstanceUID only on the children because of GRASP
+
 ## v2.6.3 - 14.01.2019
  * Min and Max Date corrected, Age To fixed
 
