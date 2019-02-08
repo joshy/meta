@@ -34,7 +34,21 @@
                   <input type="checkbox" name="series"
                     data-patient-id="{{ doc['groupValue'] }}"
                     data-patient-birthdate="{{ doc.doclist.docs[0]['PatientBirthDate'] }}"
-                    data-study-id="{{ study['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    {#
+                      Why is here an if?
+                      In the beginning all series had the same StudyInstanceUID. But then
+                      someone started to download the GRASP sequences. They have the same
+                      accession number *but* a different StudyInstanceUID. It was agreed
+                      not do reindex all the documents, but only some, this if-else statement
+                      is needed to ensure old behaviour is working where the StudyInstanceUID
+                      is saved on the parent, as well as the new way, where StudyInstanceUID
+                      is saved on the series level.
+                      #}
+                    {% if child.StudyInstanceUID %}
+                      data-study-id="{{ child['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    {% else %}
+                      data-study-id="{{ study['StudyInstanceUID'].strip(' \t\r\0') }}"
+                    {% endif %}
                     data-series-id="{{ child['SeriesInstanceUID'].strip(' \t\r\0') }}"
                     data-accession-number="{{ study['AccessionNumber'] }}"
                     data-series-number="{{ child['SeriesNumber'] }}"
