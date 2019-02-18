@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.6.5 - 18.02.2019
+  * Default sorting is now on StudyDate
+
 ## v2.6.4 - 08.02.2019
  * Now some data has the StudyInstanceUID only on the children because of GRASP
 
