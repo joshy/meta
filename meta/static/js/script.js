@@ -194,6 +194,13 @@ $(function () {
     }).fail(function (error) {
       console.log(error);
       console.error("Post failed");
+      noty({
+        text: 'Can\'t get connection to MOVA. Download failed!',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'error'
+      });
     });
   });
 
@@ -310,7 +317,7 @@ $(function () {
         "width": 420,
         "height": 380,
         "transform": [{
-          "filter": {"field":"year", "timeUnit":"year", "range":[2007,2017]}
+          "filter": {"field":"year", "timeUnit":"year", "range":[2007,2019]}
         }],
         "encoding": {
           "x": {
