@@ -184,7 +184,7 @@ def statistics_data():
         data = get_statistics()
         df = pd.DataFrame.from_dict(data['response']['docs'])
         df = calculate(df)
-        df.to_csv('institute_statistics.csv')
+        df.to_csv('institute_statistics.csv', index=False)
     df = pd.read_csv('institute_statistics.csv')
     return df.to_csv()
 
@@ -192,7 +192,7 @@ def statistics_data():
 def get_statistics():
     payload = {
         'q': '*',
-        'rows': '100000000',
+        'rows': '10000000',
         'fq': ['Category:parent'],
         'fl': 'InstitutionName, StudyDate'
     }
