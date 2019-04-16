@@ -102,7 +102,10 @@ $(function () {
         type: 'error'
       });
     });
-  });git 
+  });
+
+
+  $("#export").on('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     if (parseInt($('#studies_result').html()) > 10000) {
