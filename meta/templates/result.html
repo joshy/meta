@@ -1,25 +1,7 @@
 {% extends "search.html" %}
-
 {% block table %}
-
-
-<div class="container mt-3 pr-0 clearfix">
-  {% if show_transfer_targets %}
-    {% include 'partials/transfer-options.html' %}
-  {% endif %}
-  {% if show_download_options %}
-    {% include 'partials/download-options.html' %}
-  {% endif %}
-  {% if show_analysis_options %}
-    {% include 'partials/analysis-options.html' %}
-  {% endif %}
-</div>
-
 {% include 'paging.html' %}
-
-<div class="row">
-  <div id="table-view" class="w-100">
-    {% include 'patient.html' %}
-  </div>
+<div id="table-view" class="w-100">
+  {% include 'patient.html' %}
 </div>
 {% endblock %}

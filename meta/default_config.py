@@ -15,17 +15,11 @@ SOLR_HOSTNAME = 'localhost'
 SOLR_PORT = '8983'
 SOLR_CORE_NAME = 'grouping'
 
-
 SHOW_DOWNLOAD_OPTIONS = True
 SHOW_TRANSFER_TARGETS = True
-SHOW_ANALYSIS_OPTIONS = True
 
 TRANSFER_TARGETS = [{'AE_TITLE': 'AE_TITLE', 'DISPLAY_NAME': 'Foo'}]
 
 MOVA_DASHBOARD_URL = 'http://localhost:9001/rq'
 MOVA_DOWNLOAD_URL = 'http://localhost:9001/download'
 MOVA_TRANSFER_URL = 'http://localhost:9001/transfer'
-
-
-RIMA_URL = 'http://localhost:9123'
-RIMA_ANALYZE_URL = 'http://localhost:9123/analyze'

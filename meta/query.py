@@ -13,18 +13,14 @@ def query_body(args, limit=100):
     if ('RisReport' not in args) or ('RisReport' in args and args.get('RisReport') == '*'):
         # Old exams have no report that is why we must match all documents.
         body['query'] = 'Category:parent'
-    else:
+    elif args.get("RisReport"):
         body['query'] = 'RisReport:({})'.format(args.get('RisReport','*'))
+    else:
+        body['query'] = 'RisReport:*'
 
     if args.getlist('Modality'):
-        blu = args.getlist('Modality')
-        modalities = '(' + args.get('Modality')
-        if len(blu) > 1:
-            for i in range(1, len(blu)):
-                modalities = modalities + ' OR ' + blu[i]
-        modalities = modalities + ')'
+        modalities = '(' + " OR ".join(args.getlist('Modality')) + ')'
         filters2 = '{!parent which=Category:parent}(+Modality:' + modalities + ')'
-
         if args.get('SeriesDescription'):
             body['params']['fl'] = "*,[child parentFilter=Category:parent childFilter='(Modality:{} OR SeriesDescription:{})' limit=200]".format(modalities,args.get('SeriesDescription'))
             filters1 = '{!parent which=Category:parent}(+SeriesDescription:%s)' % args.get('SeriesDescription')
@@ -42,8 +38,6 @@ def query_body(args, limit=100):
 
 
     body['offset'] = int(args.get('offset', '0'))
-
-
     sort_field = args.get('sort_field')
     if sort_field and sort_field != 'Default':
         body['sort'] = '{} desc'.format(sort_field)
@@ -96,6 +90,8 @@ def _create_age_range(age_from, age_to):
         return None
     elif not age_to:
         return 'PatientAge:[' + age_from + ' TO *]'
+    elif not age_from:
+        return 'PatientAge:[* TO ' + age_to + ']'
     else:
         return 'PatientAge:[' + age_from + ' TO ' + age_to + ']'
 

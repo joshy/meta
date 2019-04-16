@@ -9,8 +9,7 @@ from flask import make_response, render_template, request, send_file
 from requests import RequestException, get, post
 
 from meta.app import (MOVA_DASHBOARD_URL, MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL,
-                      REPORT_SHOW_URL, RESULT_LIMIT, RIMA_ANALYZE_URL,
-                      RIMA_URL, SHOW_ANALYSIS_OPTIONS, SHOW_DOWNLOAD_OPTIONS,
+                      REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
                       SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION, app)
 from meta.paging import calc
 from meta.query import query_body, query_indexed_dates
@@ -114,9 +113,7 @@ def search():
             show_download_options=SHOW_DOWNLOAD_OPTIONS,
             show_transfer_targets=SHOW_TRANSFER_TARGETS,
             transfer_targets=TRANSFER_TARGETS,
-            mova_dashboard_url=MOVA_DASHBOARD_URL,
-            show_analysis_options=SHOW_ANALYSIS_OPTIONS,
-            rima_url=RIMA_URL)
+            mova_dashboard_url=MOVA_DASHBOARD_URL)
 
 
 @app.route('/export', methods=['POST'])
@@ -139,12 +136,16 @@ def download():
     app.logger.info("download called")
     data = request.get_json(force=True)
     headers = {'content-type': "application/json"}
-    response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    if response.status_code == requests.codes.ok:
-        return json.dumps(response.json())
-    else:
-        app.logger.error("Post to MOVA failed")
-        return json.dumps({'status':'error', 'message': 'POST to MOVA failed'})
+    try:
+        response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
+        if response.status_code == requests.codes.ok:
+            return json.dumps(response.json())
+        else:
+            app.logger.error("Post to MOVA failed")
+            return json.dumps({'status':'error', 'message': 'POST to MOVA failed'})
+    except requests.exceptions.ConnectionError:
+        app.logger.error("ConnectionError: Can\'t connect to MOVA")
+        return 'is MOVA running? Can\'t get a connection', 400
 
 
 @app.route('/transfer', methods=['POST'])
@@ -163,17 +164,6 @@ def transfer():
         return json.dumps(response.json())
     else:
         return 'Error: Could not find destination AE_TITLE'
-
-
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    """ Ajax post to RIMA Server for analyzing series of images """
-    data = request.get_json(force=True)
-    response = post(RIMA_ANALYZE_URL, json=data, headers = {'content-type': "application/json"})
-    if response.status_code == requests.codes.ok:
-        return json.dumps(response.json())
-    else:
-        return json.dumps({'status':'error', 'message': 'POST to RIMA failed'})
 
 
 @app.route('/terms')

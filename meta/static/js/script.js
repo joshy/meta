@@ -61,25 +61,6 @@ $(function () {
     $('.collapse').slice(1).collapse('hide');
   });
 
-  /**
-   * Whenever a user clicks on a facet links the field in the search
-   * form get populated by the clicked facet value. The form is then
-   * posted to the server. If there is only one facet, this means it is
-   * selected and with a click it will remove the facet.
-   */
-  $('.facet-link').on('click', function(e) {
-    input_name = $(this).data('name');
-    input_value = $(this).data('value');
-    selected = $(this).data('selected');
-    if (selected === 'True') {
-      $('input[name="' + input_name + '"]').val('')
-    } else {
-      $('input[name="' + input_name + '"]').val('"' + input_value + '"')
-    }
-    // Reset to zero because paging should start by zero
-    $('input[name="page"]').val('0');
-    $('#search-form').submit();
-  });
 
   $('.page-link').on('click', function(e) {
     page = $(this).data('page');
@@ -113,45 +94,15 @@ $(function () {
     }).fail(function (error) {
       console.log(error);
       console.error("Post failed");
-    });
-  });
-
-  $('#analyze-button').on('click', function (e) {
-    e.preventDefault();
-    var data = getCheckedData();
-    var target = $("input[type='radio']:checked").val();
-    var data = {
-      'data': data,
-      'queue': target,
-      'dir': target
-    }
-    $.ajax({
-      type: 'POST',
-      url: 'analyze',
-      data: JSON.stringify(data),
-      dataType: 'json'
-    }).done(function (series_length) {
       noty({
-        text: 'Successfully added ' + series_length + ' studies to analyze',
-        layout: 'centerRight',
-        timeout: '3000',
-        closeWith: ['click', 'hover'],
-        type: 'success'
-      });
-    }).fail(function (error) {
-      console.log(error);
-      console.error("Post failed");
-      noty({
-        text: 'Failed to analyze',
+        text: 'Can\'t get connection to MOVA',
         layout: 'centerRight',
         timeout: '3000',
         closeWith: ['click', 'hover'],
         type: 'error'
       });
     });
-  });
-
-  $("#export").on('click', function(e) {
+  });git 
     e.preventDefault();
     e.stopPropagation();
     if (parseInt($('#studies_result').html()) > 10000) {
