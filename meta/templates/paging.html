@@ -1,5 +1,5 @@
-<nav aria-label="Page navigation">
-  <ul class="pagination pagination-sm justify-content-end mt-5">
+
+  <ul class="pagination pagination-sm mb-0 float-right">
     {% for page in paging %}
       <li class="page-item  {% if page[2] %} active {% endif %}">
         <a href="#" class="page-link" data-offset="{{page[1]}}" data-page="{{ page[0] }}">
@@ -16,4 +16,3 @@
       </li>
     {% endfor %}
   </ul>
-</nav>

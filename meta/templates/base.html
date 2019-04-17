@@ -1,24 +1,22 @@
 {% extends "page.html" %}
 
 {% block content %}
-  <div class="container rounded pt-3 mt-4" style="background-color:#edf4f7">
-      {% block search %}
-      {% endblock %}
-  </div>
-  <div class="container rounded py-3 mt-1" style="background-color: #e9ecef">
-      {% if show_transfer_targets %}
-        {% include 'partials/transfer-options.html' %}
-      {% endif %}
-      {% if show_download_options %}
-        {% include 'partials/download-options.html' %}
-      {% endif %}
-    </div>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        {% block table %}
-        {% endblock %}
-    </div>
-    </div>
-  </div>
+<div class="container rounded pt-3 mt-4" style="background-color:#edf4f7">
+  {% block search %}
+  {% endblock %}
+</div>
+{% if show_transfer_targets or show_download_options %}
+<div class="container rounded py-3 mt-1" style="background-color: #e9ecef">
+  {% if show_transfer_targets %}
+    {% include 'partials/transfer-options.html' %}
+  {% endif %}
+  {% if show_download_options %}
+    {% include 'partials/download-options.html' %}
+  {% endif %}
+</div>
+{% endif %}
+<div class="container">
+  {% block table %}
+  {% endblock %}
+</div>
 {% endblock %}
