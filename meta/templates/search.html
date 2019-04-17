@@ -6,10 +6,7 @@
   <div class="col-sm-2">
     <a class="pl-3" href="/">Pacs / RIS Crawler</a>
     <div class="pl-3 dib">
-      <small class="nowrap f6 mt2 mt3-ns pr2 black-70 fw2">v{{ version }}</small><br>
-      {% if indexed_start_date %}
-      <small>{{indexed_start_date | int | to_date }} - {{indexed_end_date | int | to_date}}</small>
-      {% endif %}
+      <small class="nowrap f6 mt2 mt3-ns pr2 black-70 fw2">v{{ version }}</small>
     </div>
   </div>
 
@@ -26,7 +23,13 @@
         <div class="d-inline"><a data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
         </div>
         <div class="d-inline pl-4"><a class="text-dark" target="_blank" href="{{mova_dashboard_url}}">Transfer &amp;
-            Download progress <span class="oi oi-external-link small"></span></a></div>
+            Download progress <span class="oi oi-external-link small"></span></a>
+        </div>
+        {% if indexed_start_date %}
+        <div class="d-inline float-right">
+        <small>Indexed dates: {{indexed_start_date | int | to_date }} - {{indexed_end_date | int | to_date}}</small>
+        </div>
+        {% endif %}
       </small>
     </div>
     <div class="alert alert-danger small {% if not error %} d-none {% endif %}" role="alert">
