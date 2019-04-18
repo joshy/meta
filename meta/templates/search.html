@@ -19,18 +19,16 @@
           <button class="btn btn-primary" type="submit">Search in RIS Reports</button>
         </div>
       </div>
-      <small class="form-text text-muted">
-        <div class="d-inline"><a data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
-        </div>
-        <div class="d-inline pl-4"><a class="text-dark" target="_blank" href="{{mova_dashboard_url}}">Transfer &amp;
-            Download progress <span class="oi oi-external-link small"></span></a>
-        </div>
-        {% if indexed_start_date %}
-        <div class="d-inline float-right">
+      <div class="d-inline small"><a data-toggle="collapse" data-target="#search-details" href="#">Show more inputs</a>
+      </div>
+      <div class="d-inline pl-4 small"><a class="text-dark" target="_blank" href="{{mova_dashboard_url}}">Transfer &amp;
+          Download progress <span class="oi oi-external-link small"></span></a>
+      </div>
+      {% if indexed_start_date %}
+      <div class="d-inline float-right">
         <small>Indexed dates: {{indexed_start_date | int | to_date }} - {{indexed_end_date | int | to_date}}</small>
-        </div>
-        {% endif %}
-      </small>
+      </div>
+      {% endif %}
     </div>
     <div class="alert alert-danger small {% if not error %} d-none {% endif %}" role="alert">
       <strong>Error:</strong> {{error}}
