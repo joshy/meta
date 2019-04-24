@@ -2,7 +2,7 @@
   <ul class="pagination pagination-sm mb-0 float-right">
     {% for page in paging %}
       <li class="page-item  {% if page[2] %} active {% endif %}">
-        <a href="#" class="page-link" data-offset="{{page[1]}}" data-page="{{ page[0] }}">
+        <a href="#" class="page-link" data-offset="{{page[1]}}" data-page="{{ page[0] }}" style="line-height: 1.25">
           {% if page[3] and loop.first %}
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Next</span>
