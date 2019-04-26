@@ -1,6 +1,3 @@
-import ast
-import json
-
 def convert(df):
     """Convert the query all dataframe to a download json structure"""
     data = []
