@@ -11,6 +11,7 @@ from requests import RequestException, get, post
 from meta.app import (MOVA_DASHBOARD_URL, MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL,
                       REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
                       SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION, app)
+from meta.convert import convert
 from meta.paging import calc
 from meta.query import query_body, query_indexed_dates
 from meta.query_all import query_all
@@ -130,11 +131,25 @@ def export():
         out, attachment_filename="export.xlsx", as_attachment=True)
 
 
+@app.route('/download-all', methods=["POST"])
+def download_all():
+    app.logger.info("download all called")
+    q = request.form
+    df = query_all(q, solr_url(app.config))
+    data = convert(df)
+    download_data = {"data": data, "dir": q["download-dir"]}
+    return post_download(download_data)
+
+
 @app.route('/download', methods=['POST'])
 def download():
     """ Ajax post to download series of images. """
     app.logger.info("download called")
     data = request.get_json(force=True)
+    return post_download(data)
+
+
+def post_download(data):
     headers = {'content-type': "application/json"}
     try:
         response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
