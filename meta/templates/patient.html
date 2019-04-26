@@ -1,17 +1,11 @@
 <div class="container px-0 border-bottom pb-1 pt-5">
   <div class="row">
-    <div class="col">
-      <input type="checkbox" name="select-all-page"> Select all
-    </div>
     <div class="col-4">
-      Patients found: <span class="badge badge-secondary mr-3">{{ results }}</span>  Studies found: <span class="badge badge-secondary" id="studies_result">{{ studies_result }}</span>
+      <input type="checkbox" name="select-all-page"><span class="pl-1"> Patients found: </span><span class="badge badge-secondary mr-3">{{ results }}</span>  Studies found: <span class="badge badge-secondary" id="studies_result">{{ studies_result }}</span>
     </div>
     <div class="col-3">
-      {% include 'paging.html' %}
-    </div>
-    <div class="col">
-      <button id="export" class="d-inline btn btn-sm btn-outline-dark" >Export results <span class="oi oi-document"></span></button>
-    </div>
+        {% include 'paging.html' %}
+      </div>
     <div class="col">
       <div class="float-sm-right">
         <a href="#" id="expand-all"><span class="oi oi-collapse-down" title="Expand all"></span></a>
