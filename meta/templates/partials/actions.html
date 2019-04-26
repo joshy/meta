@@ -1,0 +1,25 @@
+<div class="row pt-2">
+  <div class="col-2">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Transfer selected to
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for i in transfer_targets %}
+        <a class="dropdown-item" href="#" data-transfer
+          data-transfer-target="{{ i.DISPLAY_NAME }}">{{ i.DISPLAY_NAME }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-inline float-right">
+      <label for="download-dir" class="form-label mr-2">Download to folder*:</label>
+      <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm mr-2" required>
+      <div id="download-error-text" class="invalid-feedback"></div>
+      <button id="download-button" class="btn btn-info btn-sm">Retrieve selected Images</button>
+      <button id="download-all-button" class="btn btn-info btn-sm ml-2">Retrieve All images</button>
+    </div>
+  </div>
+</div>

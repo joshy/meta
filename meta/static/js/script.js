@@ -70,10 +70,10 @@ $(function () {
     $('#search-form').submit();
   });
 
-  $('#transfer-button').on('click', function (e) {
-    e.preventDefault();
+  $('a[data-transfer]').on('click', function(e) {
+    console.log(e.target)
+    var target = $(e.target).attr("data-transfer-target");
     var data = getCheckedData();
-    var target = $("input[type='radio']:checked").val();
     var data = {
       'data': data,
       'target': target
@@ -161,7 +161,7 @@ $(function () {
     regex = /^[a-zA-Z0-9_-]+$/
     console.log('fooo');
     if (!dirName) {
-      setError('Directory name is empty');
+      setError('Please put in folder name, allowed characters are: a-Z, 0-9,_,-');
       return
     } else if (dirName.indexOf(' ') >= 0) {
       setError('No spaces are allowed');
@@ -212,7 +212,7 @@ $(function () {
     regex = /^[a-zA-Z0-9_-]+$/
     console.log('fooo');
     if (!dirName) {
-      setError('Directory name is empty');
+      setError('Please put in folder name, allowed characters are: a-Z, 0-9,_,-');
       return
     } else if (dirName.indexOf(' ') >= 0) {
       setError('No spaces are allowed');

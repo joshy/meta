@@ -7,12 +7,7 @@
 </div>
 {% if show_transfer_targets or show_download_options %}
 <div class="container rounded py-3 mt-1" style="background-color: #e9ecef">
-  {% if show_transfer_targets %}
-    {% include 'partials/transfer-options.html' %}
-  {% endif %}
-  {% if show_download_options %}
-    {% include 'partials/download-options.html' %}
-  {% endif %}
+  {% include 'partials/actions.html' %}
 </div>
 {% endif %}
 <div class="container">
