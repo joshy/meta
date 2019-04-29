@@ -70,10 +70,10 @@ $(function () {
     $('#search-form').submit();
   });
 
-  $('a[data-transfer]').on('click', function(e) {
-    console.log(e.target)
-    var target = $(e.target).attr("data-transfer-target");
+  $('#transfer-button').on('click', function (e) {
+    e.preventDefault();
     var data = getCheckedData();
+    var target = $("input[type='radio'][name='target']:checked").val();
     var data = {
       'data': data,
       'target': target
@@ -154,12 +154,12 @@ $(function () {
       });
   });
 
-
   $('#download-all-button').on('click', function (e) {
     e.preventDefault();
-    dirName = $('#download-dir').val();
-    regex = /^[a-zA-Z0-9_-]+$/
-    console.log('fooo');
+    e.stopPropagation();
+    var dirName = $('#download-dir').val();
+    var regex = /^[a-zA-Z0-9_-]+$/
+    var selection = $("input[name='selection']:checked", "#download-form").val();
     if (!dirName) {
       setError('Please put in folder name, allowed characters are: a-Z, 0-9,_,-');
       return
@@ -173,16 +173,48 @@ $(function () {
       clearError();
     }
 
-    $('#loading').removeClass('d-none');
-    q = $('#search-form').serialize() + "&download-dir=" + dirName;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/download-all', true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.responseType = 'json';
-    xhr.onload = function (e) {
-      if (this.status == 200) {
-        $('#loading').addClass('d-none');
-        var data = this.response;
+    if ("all" === selection) {
+      $('#loading').removeClass('d-none');
+      q = $('#search-form').serialize() + "&download-dir=" + dirName + "&selection=" + selection;
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/download-all', true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.responseType = 'json';
+      xhr.onload = function (e) {
+        if (this.status == 200) {
+          $('#loading').addClass('d-none');
+          var data = this.response;
+          noty({
+            text: 'Successfully added ' + data.series_length + ' series',
+            layout: 'centerRight',
+            timeout: '3000',
+            closeWith: ['click', 'hover'],
+            type: 'success'
+          });
+        } else if (this.status >= 400 || this.status == 500) {
+          $('#loading').addClass('d-none');
+          noty({
+            text: 'Can\'t get connection to MOVA. Download failed!',
+            layout: 'centerRight',
+            timeout: '3000',
+            closeWith: ['click', 'hover'],
+            type: 'error'
+          });
+        }
+      };
+      xhr.send(q);
+    } else {
+      var checkedData = getCheckedData();
+      var data = {
+        'data': checkedData,
+        'dir': dirName
+      }
+      $.ajax({
+        type: 'POST',
+        url: 'download',
+        data: JSON.stringify(data),
+        dataType: 'json'
+      }).done(function (data) {
         noty({
           text: 'Successfully added ' + data.series_length + ' series',
           layout: 'centerRight',
@@ -190,8 +222,9 @@ $(function () {
           closeWith: ['click', 'hover'],
           type: 'success'
         });
-      } else if (this.status >= 400 || this.status == 500) {
-        $('#loading').addClass('d-none');
+      }).fail(function (error) {
+        console.log(error);
+        console.error("Post failed");
         noty({
           text: 'Can\'t get connection to MOVA. Download failed!',
           layout: 'centerRight',
@@ -199,62 +232,11 @@ $(function () {
           closeWith: ['click', 'hover'],
           type: 'error'
         });
-      }
-    };
-    xhr.send(q);
-
-    return false;
+      });
+    }
   });
 
-  $('#download-button').on('click', function (e) {
-    e.preventDefault();
-    dirName = $('#download-dir').val();
-    regex = /^[a-zA-Z0-9_-]+$/
-    console.log('fooo');
-    if (!dirName) {
-      setError('Please put in folder name, allowed characters are: a-Z, 0-9,_,-');
-      return
-    } else if (dirName.indexOf(' ') >= 0) {
-      setError('No spaces are allowed');
-      return
-    } else if (!regex.test(dirName)) {
-      setError('Allowed characters are: a-Z,0-9,_,-');
-      return
-    } else {
-      clearError();
-    }
-    var checkedData = getCheckedData();
-    var data = {
-      'data': checkedData,
-      'dir': dirName
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: 'download',
-      data: JSON.stringify(data),
-      dataType: 'json'
-    }).done(function (data) {
-      noty({
-        text: 'Successfully added ' + data.series_length + ' series',
-        layout: 'centerRight',
-        timeout: '3000',
-        closeWith: ['click', 'hover'],
-        type: 'success'
-      });
-    }).fail(function (error) {
-      console.log(error);
-      console.error("Post failed");
-      noty({
-        text: 'Can\'t get connection to MOVA. Download failed!',
-        layout: 'centerRight',
-        timeout: '3000',
-        closeWith: ['click', 'hover'],
-        type: 'error'
-      });
-    });
-  });
-
+  
   if ('download-status' == $('body').data('page')) {
     $.get('/tasks/data',
       function (data) {

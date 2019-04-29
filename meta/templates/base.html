@@ -6,9 +6,7 @@
   {% endblock %}
 </div>
 {% if show_transfer_targets or show_download_options %}
-<div class="container rounded py-3 mt-1" style="background-color: #e9ecef">
-  {% include 'partials/actions.html' %}
-</div>
+{% include 'partials/actions.html' %}
 {% endif %}
 <div class="container">
   {% block table %}

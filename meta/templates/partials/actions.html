@@ -1,63 +1,76 @@
-<div class="row pt-2">
-  <div class="col">
-    <button id="export" class="d-inline btn btn-sm btn-outline-dark">Export results <span
-        class="oi oi-document"></span></button>
-  </div>
-  <div class="col">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Transfer selected to
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-          <label class="form-check-label" for="exampleRadios1">
-            Default radio
-          </label>
+<div class="container pt-5 pb-2">
+  <div class="d-flex flex-row-reverse">
+    <div class="d-inline-flex pl-2">
+      <div class="dropdown d-inline" id="download-dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-sm btn-outline-dark" type="button" id="dropdownMenu2" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" title="Store images on the server for further procesing">
+          Download exams/series to server
+        </button>
+        <div class="dropdown-menu">
+          <form class="px-4 py-3" id="download-form">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="selection" id="exampleRadios1" value="selected"
+                checked>
+              <label class="form-check-label" for="exampleRadios1">
+                Selected series
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="selection" id="exampleRadios2" value="all">
+              <label class="form-check-label" for="exampleRadios2">
+                All series
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="download-dir" class="form-label mr-2">Folder name (*):</label>
+              <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm mr-2"
+                required>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button id="download-all-button" class="btn btn-primary btn-sm">Retrieve</button>
+          </form>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-          <label class="form-check-label" for="exampleRadios2">
-            Second default radio
-          </label>
-        </div>
-        <div class="form-check disabled">
-          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
-            disabled>
-          <label class="form-check-label" for="exampleRadios3">
-            Disabled radio
-          </label>
-        </div>
-        {% for i in transfer_targets %}
-        <a class="dropdown-item" href="#" data-transfer
-          data-transfer-target="{{ i.DISPLAY_NAME }}">{{ i.DISPLAY_NAME }}</a>
-        {% endfor %}
       </div>
     </div>
-  </div>
-  <div class="col">
-    <div class="dropdown d-inline">
-      <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Retrieve Images to server
-      </button>
-      <div class="dropdown-menu">
-        <form class="px-4 py-3">
-          <div class="form-group">
-            <label for="download-dir" class="form-label mr-2">Folder name (*):</label>
-            <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm mr-2" required>
-          </div>
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-            <label class="form-check-label" for="dropdownCheck">
-              All images
-            </label>
-          </div>
-          <div class="dropdown-divider"></div>
-          <button type="submit" id="download-button" class="btn btn-primary btn-sm">Retrieve</button>
-        </form>
+    <div class="d-inline-flex pl-2">
+      <div class="dropdown d-inline" id="transfer-dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-sm btn-outline-dark" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          title="Send exams/series to another DICOM node">
+          Transfer exams/series to
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <form class="px-4 py-3">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="selection" id="exampleRadios1" value="selected"
+                checked>
+              <label class="form-check-label" for="exampleRadios1">
+                Selected series
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="selection" id="exampleRadios2" value="all">
+              <label class="form-check-label" for="exampleRadios2">
+                All series
+              </label>
+            </div>
+            <h6 class="pt-3">DICOM destinations</h6>
+            {% for i in transfer_targets %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="target" id="{{ i.DISPLAY_NAME }}"
+                value="{{ i.DISPLAY_NAME }}">
+              <label class="form-check-label" for="{{ i.DISPLAY_NAME }}">{{ i.DISPLAY_NAME }}</label>
+            </div>
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <button id="transfer-button" class="btn btn-primary btn-sm">Transfer</button>
+          </form>
+        </div>
       </div>
+    </div>
+    <div class="d-inline-flex">
+      <button id="export" class="d-inline btn btn-sm btn-outline-dark">Export results <span
+          class="oi oi-document"></span></button>
     </div>
   </div>
 </div>

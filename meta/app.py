@@ -37,6 +37,7 @@ assets = Environment(app)
 js = Bundle(
     "js/jquery-3.1.0.min.js",
     "js/tether.min.js",
+    "js/popper.min.js",
     "js/bootstrap.min.js",
     "js/moment.min.js",
     "js/pikaday.js",
