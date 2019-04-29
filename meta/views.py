@@ -163,6 +163,28 @@ def post_download(data):
         return 'is MOVA running? Can\'t get a connection', 400
 
 
+@app.route('/transfer-all', methods=['POST'])
+def transfer_all():
+    """ Ajax post to transfer series of images to <target> PACS node. """
+    app.logger.info("transfer all called")
+    q = request.form
+    df = query_all(q, solr_url(app.config))
+    data = convert(df)
+    target = q["target"]
+    transfer_data = {"data": data, "target": q["target"]}
+
+    app.logger.info("transfer called and sending to %s", target)
+    t = [t for t in TRANSFER_TARGETS if t['DISPLAY_NAME'] == target]
+    if t:
+        destination = t[0]['AE_TITLE']
+        headers = {'content-type': "application/json"}
+        transfer_data['target'] = destination
+        response = post(MOVA_TRANSFER_URL, json=transfer_data, headers=headers)
+        return json.dumps(response.json())
+    else:
+        return 'Error: Could not find destination AE_TITLE'
+
+
 @app.route('/transfer', methods=['POST'])
 def transfer():
     """ Ajax post to transfer series of images to <target> PACS node. """
