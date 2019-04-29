@@ -9,15 +9,15 @@
         <div class="dropdown-menu">
           <form class="px-4 py-3" id="download-form">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="selection" id="exampleRadios1" value="selected"
+              <input class="form-check-input" type="radio" name="download-selection" id="download-selected" value="selected"
                 checked>
-              <label class="form-check-label" for="exampleRadios1">
+              <label class="form-check-label" for="download-selected">
                 Selected series
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="selection" id="exampleRadios2" value="all">
-              <label class="form-check-label" for="exampleRadios2">
+              <input class="form-check-input" type="radio" name="download-selection" id="download-all" value="all">
+              <label class="form-check-label" for="download-all">
                 All series
               </label>
             </div>
@@ -27,7 +27,7 @@
                 required>
             </div>
             <div class="dropdown-divider"></div>
-            <button id="download-all-button" class="btn btn-primary btn-sm">Retrieve</button>
+            <button id="download-button" class="btn btn-primary btn-sm">Retrieve</button>
           </form>
         </div>
       </div>
@@ -40,17 +40,17 @@
           Transfer exams/series to
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <form class="px-4 py-3">
+          <form class="px-4 py-3" id="transfer-form">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="selection" id="exampleRadios1" value="selected"
+              <input class="form-check-input" type="radio" name="transfer-selection" id="transfer-selected" value="selected"
                 checked>
-              <label class="form-check-label" for="exampleRadios1">
+              <label class="form-check-label" for="transfer-selected">
                 Selected series
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="selection" id="exampleRadios2" value="all">
-              <label class="form-check-label" for="exampleRadios2">
+              <input class="form-check-input" type="radio" name="transfer-selection" id="transfer-all" value="all">
+              <label class="form-check-label" for="download-all">
                 All series
               </label>
             </div>

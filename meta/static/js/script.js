@@ -70,40 +70,6 @@ $(function () {
     $('#search-form').submit();
   });
 
-  $('#transfer-button').on('click', function (e) {
-    e.preventDefault();
-    var data = getCheckedData();
-    var target = $("input[type='radio'][name='target']:checked").val();
-    var data = {
-      'data': data,
-      'target': target
-    }
-    $.ajax({
-      type: 'POST',
-      url: 'transfer',
-      data: JSON.stringify(data),
-      dataType: 'json'
-    }).done(function (data) {
-      noty({
-        text: 'Successfully added ' + data + ' studies to transfer',
-        layout: 'centerRight',
-        timeout: '3000',
-        closeWith: ['click', 'hover'],
-        type: 'success'
-      });
-    }).fail(function (error) {
-      console.log(error);
-      console.error("Post failed");
-      noty({
-        text: 'Can\'t get connection to MOVA',
-        layout: 'centerRight',
-        timeout: '3000',
-        closeWith: ['click', 'hover'],
-        type: 'error'
-      });
-    });
-  });
-
 
   $("#export").on('click', function (e) {
     e.preventDefault();
@@ -154,12 +120,82 @@ $(function () {
       });
   });
 
-  $('#download-all-button').on('click', function (e) {
+  $('#transfer-button').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var target = $("input[type='radio'][name='target']:checked").val();
+    var selection = $("input[name='transfer-selection']:checked", "#transfer-form").val();
+    console.log(selection);
+    if ("all" === selection) {
+      $('#loading').removeClass('d-none');
+      q = $('#search-form').serialize() + "&target=" + target + "&selection=" + selection;
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/transfer-all', true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.responseType = 'json';
+      xhr.onload = function (e) {
+        if (this.status == 200) {
+          $('#loading').addClass('d-none');
+          var data = this.response;
+          console.log(data)
+          noty({
+            text: 'Successfully added ' + data.series_length + ' series',
+            layout: 'centerRight',
+            timeout: '3000',
+            closeWith: ['click', 'hover'],
+            type: 'success'
+          });
+        } else if (this.status >= 400 || this.status == 500) {
+          $('#loading').addClass('d-none');
+          noty({
+            text: 'Can\'t get connection to MOVA. Download failed!',
+            layout: 'centerRight',
+            timeout: '3000',
+            closeWith: ['click', 'hover'],
+            type: 'error'
+          });
+        }
+      };
+      xhr.send(q);
+    } else {
+      var checkedData = getCheckedData();
+      var data = {
+        'data': checkedData,
+        'target': target
+      }
+      $.ajax({
+        type: 'POST',
+        url: 'transfer',
+        data: JSON.stringify(data),
+        dataType: 'json'
+      }).done(function (data) {
+        noty({
+          text: 'Successfully added ' + data.series_length + ' studies to transfer',
+          layout: 'centerRight',
+          timeout: '3000',
+          closeWith: ['click', 'hover'],
+          type: 'success'
+        });
+      }).fail(function (error) {
+        console.log(error);
+        console.error("Post failed");
+        noty({
+          text: 'Can\'t get connection to MOVA',
+          layout: 'centerRight',
+          timeout: '3000',
+          closeWith: ['click', 'hover'],
+          type: 'error'
+        });
+      });
+    }
+  });
+
+  $('#download-button').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
     var dirName = $('#download-dir').val();
     var regex = /^[a-zA-Z0-9_-]+$/
-    var selection = $("input[name='selection']:checked", "#download-form").val();
+    var selection = $("input[name='download-selection']:checked", "#download-form").val();
     if (!dirName) {
       setError('Please put in folder name, allowed characters are: a-Z, 0-9,_,-');
       return
@@ -236,7 +272,7 @@ $(function () {
     }
   });
 
-  
+
   if ('download-status' == $('body').data('page')) {
     $.get('/tasks/data',
       function (data) {
