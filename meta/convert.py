@@ -14,6 +14,6 @@ def convert(df):
             p = parent.copy()
             p["series_uid"] = s["SeriesInstanceUID"]
             p["series_description"] = s.get("SeriesDescription", "")
-            p["series_number"] = s["SeriesNumber"]
+            p["series_number"] = s.get("SeriesNumber", 9999)
             data.append(p)
     return data
