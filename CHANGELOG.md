@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.7.0 - 29.04.2019
+  * Redesign and possibility to download all series
+
 ## v2.6.5 - 18.02.2019
   * Default sorting is now on StudyDate
 
