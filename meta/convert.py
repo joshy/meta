@@ -12,6 +12,10 @@ def convert(df):
         }
         for s in row["_childDocuments_"]:
             p = parent.copy()
+            # Important: Newer versions of the crawler has the StudyInstanceUID
+            # on the series level (because of GRASP e.g.) Now if the series level
+            # is empty it should  use the one from the study level
+            p["study_uid"] = s.get("StudyInstanceUID", row.StudyInstanceUID)
             p["series_uid"] = s["SeriesInstanceUID"]
             p["series_description"] = s.get("SeriesDescription", "")
             p["series_number"] = s.get("SeriesNumber", 9999)
