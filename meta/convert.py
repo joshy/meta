@@ -8,7 +8,7 @@ def convert(df):
             "study_description":row.StudyDescription,
             "study_date": row.StudyDate,
             "accession_number":row.AccessionNumber,
-            "study_uid": row.StudyInstanceUID
+            "study_uid": row.get("StudyInstanceUID", "") # newer ones have none!
         }
         for s in row["_childDocuments_"]:
             p = parent.copy()
