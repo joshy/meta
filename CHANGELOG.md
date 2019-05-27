@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.8.0 - 27.05.2019
+  * Integration of institution wide Zero Footprint Viewer
+
 ## v2.7.0 - 29.04.2019
   * Redesign and possibility to download all series
 
