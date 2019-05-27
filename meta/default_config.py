@@ -23,3 +23,6 @@ TRANSFER_TARGETS = [{'AE_TITLE': 'AE_TITLE', 'DISPLAY_NAME': 'Foo'}]
 MOVA_DASHBOARD_URL = 'http://localhost:9001/rq'
 MOVA_DOWNLOAD_URL = 'http://localhost:9001/download'
 MOVA_TRANSFER_URL = 'http://localhost:9001/transfer'
+
+# Zero foot print viewer integration
+ZFP_VIEWER = ""

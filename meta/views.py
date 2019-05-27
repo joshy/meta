@@ -10,7 +10,8 @@ from requests import RequestException, get, post
 
 from meta.app import (MOVA_DASHBOARD_URL, MOVA_DOWNLOAD_URL, MOVA_TRANSFER_URL,
                       REPORT_SHOW_URL, RESULT_LIMIT, SHOW_DOWNLOAD_OPTIONS,
-                      SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION, app)
+                      SHOW_TRANSFER_TARGETS, TRANSFER_TARGETS, VERSION,
+                      ZFP_VIEWER,app)
 from meta.convert import convert
 from meta.paging import calc
 from meta.query import query_body, query_indexed_dates
@@ -108,6 +109,7 @@ def search():
             paging=paging,
             version=VERSION,
             report_show_url=REPORT_SHOW_URL,
+            zfp_viewer=ZFP_VIEWER,
             modalities=params.getlist('Modality'),
             page=page,
             offset=0,

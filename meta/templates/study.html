@@ -4,8 +4,13 @@
       <input type="checkbox" name='select-all-accession-number' data-patient-id="{{ doc['groupValue'] }}" data-accession-number="{{ study['AccessionNumber'] }}">
       <a href="#{{ study['AccessionNumber'] }}" data-toggle="collapse" class="exam-details">
             <span class="small oi oi-collapse-down float-right " title="Collapse"></span>
-            {{study['StudyDescription']}}, {{study['AccessionNumber']}}
-    </a></h5>
+            {{study['StudyDescription']}}
+
+      </a>
+      {% if zfp_viewer %}
+        <a class="text-success pl-2" target="_blank" href="{{ study['AccessionNumber'] | zfp_url }}">Open images in ZFP <span class="oi oi-external-link small"></span></a>
+      {% endif %}
+    </h5>
     <h6 class="card-subtitle" style="font-size:0.8rem">{{ study['StudyDate'] | to_date}}, Age {{study['PatientAge']}}, {{study['AccessionNumber']}}, {{study['ProtocolName']}}, {{study['ReferringPhysicianName']}}, {{study['InstitutionName']}}</h6>
     <div class="container p-0 pt-2 collapse" id="{{study['AccessionNumber']}}">
       <div class="row">

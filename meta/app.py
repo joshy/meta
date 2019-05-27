@@ -1,6 +1,8 @@
 from datetime import datetime
+from string import Template
+
 from flask import Flask, g
-from flask_assets import Environment, Bundle
+from flask_assets import Bundle, Environment
 
 from meta.config import dcmtk_config, pacs_config
 
@@ -22,7 +24,7 @@ TRANSFER_TARGETS = app.config["TRANSFER_TARGETS"]
 MOVA_DASHBOARD_URL = app.config["MOVA_DASHBOARD_URL"]
 MOVA_DOWNLOAD_URL = app.config["MOVA_DOWNLOAD_URL"]
 MOVA_TRANSFER_URL = app.config["MOVA_TRANSFER_URL"]
-
+ZFP_VIEWER = app.config["ZFP_VIEWER"]
 
 @app.template_filter("to_date")
 def to_date(date_as_int):
@@ -31,6 +33,12 @@ def to_date(date_as_int):
     else:
         return ""
 
+
+@app.template_filter("zfp_url")
+def create_zfp_url(accession_number):
+     s = Template(ZFP_VIEWER)
+     x = s.substitute(accession_number=accession_number)
+     return x
 
 # JS Assets part
 assets = Environment(app)
