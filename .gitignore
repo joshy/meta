@@ -118,4 +118,4 @@ tasks.db
 .vscode/*
 dcmtk/*
 
-*.xlsx
+meta/**/*.xlsx
