@@ -1,4 +1,5 @@
 import logging
+import ast
 
 
 def convert(df):
@@ -12,7 +13,11 @@ def convert(df):
             "study_date": row.StudyDate,
             "accession_number": row.AccessionNumber,
         }
-        for s in row["_childDocuments_"]:
+        children = row["_childDocuments_"]
+        if isinstance(children, str):
+            children = ast.literal_eval(children)
+
+        for s in children:
             p = parent.copy()
             # Important: Newer versions of the crawler has the StudyInstanceUID
             # on the series level (because of GRASP e.g.) Now if the series level
