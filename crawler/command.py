@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Tuple
 
-from pypacscrawler.config import pacs_settings
+from crawler.config import pacs_settings
 
 
 MODALITIES = ['CT', 'MR', 'PT', 'CR', 'XA', 'SR', 'NM', 'MG', 'US', 'DX', 'RF',
