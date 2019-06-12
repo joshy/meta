@@ -29,7 +29,7 @@ def main():
     except RequestException:
         return render_template(
             'search.html',
-            params=params,
+            params={},
             error='No response from Solr, is it running?',
             trace=solr_url(app.config))
 
