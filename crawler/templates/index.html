@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+  <meta charset="utf-8">
+  <title>PACS Crawler</title>
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/pikaday.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/open-iconic-bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="w-100 h-100 sans-serif">
+    {% include 'partials/search.html' %}
+    <div class="container rounded pt-3 mt-4 h-100" style="background-color:#ecf0f5">
+        <div class="f4 lh-title normal ph2">
+            <span>Task status </span>
+            <a class="navy pl-5" target="_blank" href="{{luigi_scheduler}}"><i
+                    class="fas fa-external-link-square-alt"></i></a>
+            <a id="reload-button" class="f6 link dim ba ph3 pv2 mb2 dib white bg-navy fr" href="">Reload <i
+                    class="fas fa-sync-alt"></i></a>
+        </div>
+        <iframe id="luigi" class="w-100 h-100" frameborder="0"
+            src="{{luigi_scheduler}}"></iframe>
+    </div>
+    {% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+</body>
+</html>

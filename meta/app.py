@@ -1,15 +1,21 @@
 from datetime import datetime
+
 from flask import Flask, g
-from flask_assets import Environment, Bundle
+from flask_assets import Bundle, Environment
+
+import crawler
 
 from meta.config import dcmtk_config, pacs_config
 
 app = Flask(__name__, instance_relative_config=True)
+# first default config from blueprint
+app.config.from_object(crawler.default_settings)
+app.register_blueprint(crawler.crawler, url_prefix="/crawler")
+# second override with instance config
 app.config.from_object("meta.default_config")
 app.config.from_pyfile("config.cfg", silent=True)
 
 # Exposing constants to use
-
 VERSION = app.config["VERSION"] = "2.7.0"
 RESULT_LIMIT = app.config["RESULT_LIMIT"]
 
