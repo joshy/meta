@@ -8,7 +8,6 @@ from datetime import datetime
 
 import pandas as pd
 import requests
-import schedule
 from flask import Blueprint, current_app, Flask, g, jsonify, render_template, request
 from flask_assets import Bundle, Environment
 
