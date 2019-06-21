@@ -123,6 +123,7 @@ def search():
 def export():
     q = request.form
     df = query_all(q, solr_url(app.config))
+    df = df.drop(["PatientName", "PatientAge"], axis=1)
     out = io.BytesIO()
     writer = pd.ExcelWriter(out)
     df.to_excel(writer, index=False, sheet_name='Sheet1')
