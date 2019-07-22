@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.8.1 - 22.07.2019
+  * Export anonymized and with patient data allowed
+
 ## v2.8.0 - 27.05.2019
   * Integration of institution wide Zero Footprint Viewer
 
