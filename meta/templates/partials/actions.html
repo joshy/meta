@@ -1,39 +1,15 @@
-<div class="container pt-5 pb-2">
-  <div class="d-flex flex-row-reverse">
-    <div class="d-inline-flex pl-2">
-      <div class="dropdown d-inline" id="download-dropdown">
-        <button class="btn btn-secondary dropdown-toggle btn-sm btn-outline-dark" type="button" id="dropdownMenu2" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" title="Store images on the server for further procesing">
-          Download exams/series to server
-        </button>
-        <div class="dropdown-menu">
-          <form class="px-4 py-3" id="download-form">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="download-selection" id="download-selected" value="selected"
-                checked>
-              <label class="form-check-label" for="download-selected">
-                Selected series
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="download-selection" id="download-all" value="all">
-              <label class="form-check-label" for="download-all">
-                All series
-              </label>
-            </div>
-            <div class="form-group">
-              <label for="download-dir" class="form-label mr-2">Folder name (*):</label>
-              <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm mr-2"
-                required>
-            </div>
-            <div class="dropdown-divider"></div>
-            <button id="download-button" class="btn btn-primary btn-sm">Retrieve</button>
-          </form>
-        </div>
-      </div>
+<div class="container py-3 bg-light rounded mt-1">
+  <div class="d-flex justify-content-between">
+    <div>
+      <button id="export" class="d-inline btn btn-sm btn-outline-danger" title="Export with sensitive patient data. You are responsible to handle it with care.">Export results <span
+          class="oi oi-document"></span>
+      </button>
     </div>
-    <div class="d-inline-flex pl-2">
-      <div class="dropdown d-inline" id="transfer-dropdown">
+    <div>
+      <button id="export_anon" class="d-inline btn btn-sm btn-outline-dark" title="Export without patient name and birthdate">Export anonymized<span
+          class="oi oi-document pl-1"></span>
+      </button>
+      <div class="dropdown d-inline pl-2" id="transfer-dropdown">
         <button class="btn btn-secondary dropdown-toggle btn-sm btn-outline-dark" type="button" id="dropdownMenuButton"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
           title="Send exams/series to another DICOM node">
@@ -42,8 +18,8 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <form class="px-4 py-3" id="transfer-form">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="transfer-selection" id="transfer-selected" value="selected"
-                checked>
+              <input class="form-check-input" type="radio" name="transfer-selection" id="transfer-selected"
+                value="selected" checked>
               <label class="form-check-label" for="transfer-selected">
                 Selected series
               </label>
@@ -67,10 +43,38 @@
           </form>
         </div>
       </div>
-    </div>
-    <div class="d-inline-flex">
-      <button id="export" class="d-inline btn btn-sm btn-outline-dark">Export results <span
-          class="oi oi-document"></span></button>
+
+      <div class="dropdown d-inline pl-2" id="download-dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-sm btn-outline-dark" type="button" id="dropdownMenu2"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          title="Store images on the server for further procesing">
+          Download exams/series to server
+        </button>
+        <div class="dropdown-menu">
+          <form class="px-4 py-3" id="download-form">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="download-selection" id="download-selected"
+                value="selected" checked>
+              <label class="form-check-label" for="download-selected">
+                Selected series
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="download-selection" id="download-all" value="all">
+              <label class="form-check-label" for="download-all">
+                All series
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="download-dir" class="form-label mr-2">Folder name (*):</label>
+              <input id="download-dir" type="text" name="download-dir" class="form-control form-control-sm mr-2"
+                required>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button id="download-button" class="btn btn-primary btn-sm">Retrieve</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

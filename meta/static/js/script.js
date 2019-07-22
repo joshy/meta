@@ -103,6 +103,41 @@ $(function () {
 
     return false;
   });
+  
+  
+  $("#export_anon").on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (parseInt($('#studies_result').html()) > 10000) {
+      noty({
+        text: 'Too many results to export (Studies > 10000)',
+        layout: 'centerRight',
+        timeout: '3000',
+        closeWith: ['click', 'hover'],
+        type: 'error'
+      });
+      return
+    }
+    $('#loading').removeClass('d-none');
+    q = $('#search-form').serialize();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/export_anon', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.responseType = 'blob';
+    xhr.onload = function (e) {
+      if (this.status == 200) {
+        $('#loading').addClass('d-none');
+        var blob = this.response;
+        saveAs(blob, 'download.xlsx');
+      } else if (this.status >= 400 || this.status == 500) {
+        $('#loading').addClass('d-none');
+      }
+    };
+    xhr.send(q);
+
+    return false;
+  });
+  
 
   $("#download-ris-reports").on('click', function (e) {
     e.preventDefault();

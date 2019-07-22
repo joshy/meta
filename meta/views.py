@@ -119,11 +119,25 @@ def search():
             mova_dashboard_url=MOVA_DASHBOARD_URL)
 
 
+@app.route('/export_anon', methods=['POST'])
+def export_anon():
+    q = request.form
+    df = query_all(q, solr_url(app.config))
+    df = df.drop(["PatientName", "PatientBirthDate"], axis=1)
+    out = io.BytesIO()
+    writer = pd.ExcelWriter(out)
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    writer.save()
+    writer.close()
+    out.seek(0)
+    return send_file(
+        out, attachment_filename="export.xlsx", as_attachment=True)
+
+
 @app.route('/export', methods=['POST'])
 def export():
     q = request.form
     df = query_all(q, solr_url(app.config))
-    df = df.drop(["PatientName", "PatientBirthDate"], axis=1)
     out = io.BytesIO()
     writer = pd.ExcelWriter(out)
     df.to_excel(writer, index=False, sheet_name='Sheet1')
