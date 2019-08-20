@@ -19,7 +19,7 @@ from meta.query_all import query_all
 from meta.solr import solr_url
 from meta.statistics import calculate
 from meta.terms import get_terms_data
-
+from meta.day_aggregate import agg
 
 @app.route('/')
 def main():
@@ -95,6 +95,7 @@ def search():
         docs = data['grouped']['PatientID']
         results = data['grouped']['PatientID']['ngroups']
         studies_result = data['grouped']['PatientID']['matches']
+        r_agg, r_agg_min, r_agg_max = agg(docs)
         page = params.get('page', 0)
         offset = params.get('offset', 0)
         paging = calc(results, page, RESULT_LIMIT)
@@ -113,6 +114,9 @@ def search():
             modalities=params.getlist('Modality'),
             page=page,
             offset=0,
+            r_agg=json.dumps(r_agg),
+            r_agg_min=r_agg_min,
+            r_agg_max=r_agg_max,
             show_download_options=SHOW_DOWNLOAD_OPTIONS,
             show_transfer_targets=SHOW_TRANSFER_TARGETS,
             transfer_targets=TRANSFER_TARGETS,

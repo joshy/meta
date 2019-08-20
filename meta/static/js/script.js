@@ -1,6 +1,28 @@
 $(function () {
   console.log("ready!");
 
+
+  var cal = new CalHeatMap();
+  var r_agg_data = $("#r_agg").data("r-agg")
+  var r_agg_min = $("#r_agg").data("r-agg-min")
+  var r_agg_max = $("#r_agg").data("r-agg-max")
+  console.log(r_agg_data, r_agg_min, r_agg_max)
+  console.log(new Date(r_agg_min * 1000))
+  console.log(new Date(r_agg_max * 1000))
+  cal.init({
+    itemSelector: "#cal-heatmap",
+    data: r_agg_data,
+    domain: "month",
+    subDomain: "x_day",
+    range:12,
+    //start: new Date(r_agg_min * 1000),
+    minDate: new Date(r_agg_min * 1000),
+    maxDate: new Date(r_agg_max * 1000),
+    domainLabelFormat: "%b-%Y",
+    considerMissingDataAsZero: false
+  });
+
+
   var startDatePicker = $('#start-date-picker').pikaday({
     format: 'DD.MM.YYYY',
     firstDay: 1,
@@ -103,8 +125,8 @@ $(function () {
 
     return false;
   });
-  
-  
+
+
   $("#export_anon").on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -137,7 +159,7 @@ $(function () {
 
     return false;
   });
-  
+
 
   $("#download-ris-reports").on('click', function (e) {
     e.preventDefault();

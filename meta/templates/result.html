@@ -1,5 +1,8 @@
 {% extends "search.html" %}
 {% block table %}
+<div id="r_agg" class="hidden" data-r-agg="{{r_agg}}" data-r-agg-min="{{r_agg_min}}"  data-r-agg-max="{{r_agg_max}}">
+  
+</div>
 <div id="table-view" class="w-100">
   {% include 'patient.html' %}
 </div>
